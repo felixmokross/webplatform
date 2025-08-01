@@ -1,0 +1,23 @@
+name: Build
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      release:
+        description: "Create a release"
+        required: false
+        default: false
+        type: boolean
+
+env:
+  NODE_VERSION: 22
+
+jobs:
+  version:
+    name: "Generate version"
+    uses: ./.github/workflows/version.yml
+    with:
+      release: ${{ github.event.inputs.release }}
