@@ -36,30 +36,32 @@ jobs:
       - name: Build releaser
         run: pnpm --filter releaser build
       - name: Version
-        run: pnpm --filter releaser version ${{ needs.version.outputs.version }}
+        run: |
+          pnpm --dir tools/releaser version ${{ needs.version.outputs.version }} --no-git-tag-version
       - name: Publish releaser
-        run: pnpm --filter releaser publish --access=public
+        run: pnpm --filter releaser publish --access=public --dry-run
+
         # env:
         #   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-  create-release:
-    name: Create release
-    runs-on: ubuntu-latest
-    if: needs.version.outputs.is_new_release == 'true'
-    needs: [releaser-build-publish, version]
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout with full history
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Setup
-        uses: ./.github/actions/setup
-      - name: Install dependencies
-        run: pnpm --filter releaser install
-      - name: Create release
-        run: |
-          pnpm --filter releaser start publish ${{ needs.version.outputs.version }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # create-release:
+  #   name: Create release
+  #   runs-on: ubuntu-latest
+  #   if: needs.version.outputs.is_new_release == 'true'
+  #   needs: [releaser-build, version]
+  #   permissions:
+  #     contents: write
+  #   steps:
+  #     - name: Checkout with full history
+  #       uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
+  #     - name: Setup
+  #       uses: ./.github/actions/setup
+  #     - name: Install dependencies
+  #       run: pnpm --filter releaser install
+  #     - name: Create release
+  #       run: |
+  #         pnpm --filter releaser start publish ${{ needs.version.outputs.version }}
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
