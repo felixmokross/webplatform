@@ -1,2 +1,2 @@
-export * from "./rich-text.model";
-export * from "./rich-text.builders";
+export * from "./rich-text.model.js";
+export * from "./rich-text.builders.js";
