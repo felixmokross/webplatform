@@ -38,6 +38,8 @@ jobs:
       - name: Version
         run: |
           pnpm -r exec pnpm version ${{ needs.version.outputs.version }} --no-git-tag-version
+      - name: Add environment variable with NPM token to .npmrc
+        run: echo '//registry.npmjs.org/:_authToken=\${NPM_TOKEN}' >> ~/.npmrc
       - name: Publish releaser
         run: |
           pnpm --filter releaser publish --access=public --no-git-checks
