@@ -42,7 +42,7 @@ jobs:
         run: echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> .npmrc
       - name: Publish common
         run: |
-          pnpm --filter releaser publish --access=public --no-git-checks
+          pnpm --filter common publish --access=public --no-git-checks
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
