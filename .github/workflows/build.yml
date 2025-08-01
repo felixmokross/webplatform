@@ -39,7 +39,8 @@ jobs:
         run: |
           pnpm -r exec pnpm version ${{ needs.version.outputs.version }} --no-git-tag-version
       - name: Publish releaser
-        run: pnpm --filter releaser publish --access=public --dry-run
+        run: |
+          pnpm --filter releaser publish --access=public --no-git-checks --dry-run
 
         # env:
         #   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
