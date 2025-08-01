@@ -1,0 +1,22 @@
+name: Deploy
+on:
+  workflow_call:
+    inputs:
+      environment:
+        type: string
+        required: true
+
+jobs:
+  version:
+    name: "Generate version"
+    uses: ./.github/workflows/export.version.yml
+
+  deploy-version:
+    name: "Deploy version"
+    needs: version
+    uses: ./.github/workflows/export.deploy-version.yml
+    with:
+      version_with_sha: ${{ needs.version.outputs.version_with_sha }}
+      sha: ${{ needs.version.outputs.sha }}
+      environment: ${{ inputs.environment }}
+    secrets: inherit
