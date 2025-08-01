@@ -37,7 +37,7 @@ jobs:
         run: pnpm --filter releaser build
       - name: Version
         run: |
-          pnpm --dir tools/releaser version ${{ needs.version.outputs.version }} --no-git-tag-version
+          pnpm -r exec pnpm version ${{ needs.version.outputs.version }} --no-git-tag-version
       - name: Publish releaser
         run: pnpm --filter releaser publish --access=public --dry-run
 
