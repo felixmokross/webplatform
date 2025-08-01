@@ -1,6 +1,7 @@
 {
   "folders": [
     { "name": "<root>", "path": "." },
+    { "name": "libs/common", "path": "./libs/common" },
     { "name": "tools/releaser", "path": "./tools/releaser" },
   ],
   "settings": {

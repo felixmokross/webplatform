@@ -22,6 +22,30 @@ jobs:
     with:
       release: ${{ github.event.inputs.release }}
 
+  common-build-publish:
+    name: "Common: Build and Publish"
+    runs-on: ubuntu-latest
+    needs: version
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup
+        uses: ./.github/actions/setup
+      - name: Install dependencies
+        run: pnpm --filter common install
+      - name: Build common
+        run: pnpm --filter common build
+      - name: Version
+        run: |
+          pnpm -r exec pnpm version ${{ needs.version.outputs.version }} --no-git-tag-version
+      - name: Add environment variable with NPM token to .npmrc
+        run: echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> .npmrc
+      - name: Publish common
+        run: |
+          pnpm --filter releaser publish --access=public --no-git-checks
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
   releaser-build-publish:
     name: "Releaser: Build and Publish"
     runs-on: ubuntu-latest
@@ -45,25 +69,3 @@ jobs:
           pnpm --filter releaser publish --access=public --no-git-checks
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-  # create-release:
-  #   name: Create release
-  #   runs-on: ubuntu-latest
-  #   if: needs.version.outputs.is_new_release == 'true'
-  #   needs: [releaser-build, version]
-  #   permissions:
-  #     contents: write
-  #   steps:
-  #     - name: Checkout with full history
-  #       uses: actions/checkout@v4
-  #       with:
-  #         fetch-depth: 0
-  #     - name: Setup
-  #       uses: ./.github/actions/setup
-  #     - name: Install dependencies
-  #       run: pnpm --filter releaser install
-  #     - name: Create release
-  #       run: |
-  #         pnpm --filter releaser start publish ${{ needs.version.outputs.version }}
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

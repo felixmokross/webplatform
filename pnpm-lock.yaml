@@ -13,6 +13,12 @@ importers:
         specifier: 3.5.3
         version: 3.5.3
 
+  libs/common:
+    devDependencies:
+      typescript:
+        specifier: ^5.8.3
+        version: 5.9.2
+
   tools/releaser:
     dependencies:
       '@octokit/rest':
@@ -36,7 +42,7 @@ importers:
         version: 7.7.0
       pkgroll:
         specifier: ^2.15.0
-        version: 2.15.0
+        version: 2.15.0(typescript@5.9.2)
       tsx:
         specifier: ^4.20.3
         version: 4.20.3
@@ -755,6 +761,11 @@ packages:
     engines: {node: '>=18.0.0'}
     hasBin: true
 
+  typescript@5.9.2:
+    resolution: {integrity: sha512-CWBzXQrc/qOkhidw1OzBTQuYRbfyxDXJMVJ1XNwUHGROVmuaeiEm3OslpZ1RV96d7SKKjZKrSJu3+t/xlw3R9A==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
   ufo@1.6.1:
     resolution: {integrity: sha512-9a4/uxlTWJ4+a5i0ooc1rU7C7YOw3wT+UGqdeNNHWnOF9qcMBgLRS+4IYUqbczewFx4mLEig6gawh7X6mFlEkA==}
 
@@ -1305,7 +1316,7 @@ snapshots:
       exsolve: 1.0.7
       pathe: 2.0.3
 
-  pkgroll@2.15.0:
+  pkgroll@2.15.0(typescript@5.9.2):
     dependencies:
       '@rollup/plugin-alias': 5.1.1(rollup@4.46.2)
       '@rollup/plugin-commonjs': 28.0.6(rollup@4.46.2)
@@ -1318,6 +1329,8 @@ snapshots:
       magic-string: 0.30.17
       rollup: 4.46.2
       rollup-pluginutils: 2.8.2
+    optionalDependencies:
+      typescript: 5.9.2
 
   prettier@3.5.3: {}
 
@@ -1396,6 +1409,8 @@ snapshots:
       get-tsconfig: 4.10.1
     optionalDependencies:
       fsevents: 2.3.3
+
+  typescript@5.9.2: {}
 
   ufo@1.6.1: {}
 
