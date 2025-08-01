@@ -1,14 +1,21 @@
 {
-  "name": "@webplatform/releaser",
+  "name": "@fxmk/releaser",
   "version": "0.0.0-unknown",
-  "private": true,
   "type": "module",
   "scripts": {
-    "start": "tsx src/index.ts"
+    "start": "tsx src/index.ts",
+    "build": "pkgroll"
   },
+  "exports": "./dist/index.mjs",
+  "bin": "./dist/index.mjs",
+  "files": [
+    "dist",
+    "package.json"
+  ],
   "devDependencies": {
     "@types/node": "^22.16.5",
     "@types/semver": "^7.7.0",
+    "pkgroll": "^2.15.0",
     "tsx": "^4.20.3"
   },
   "dependencies": {
