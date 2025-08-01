@@ -11,7 +11,7 @@ env:
 jobs:
   version:
     name: "Generate version"
-    uses: ./.github/workflows/export/version.yml
+    uses: ./.github/workflows/export.version.yml
     with:
       release: ${{ github.event.inputs.release }}
 
@@ -324,7 +324,7 @@ jobs:
       - cms-check-format
       - cms-build-push
       - e2e-tests
-    uses: ./.github/workflows/deploy-version.yml
+    uses: ./.github/workflows/export.deploy-version.yml
     with:
       version_with_sha: ${{ needs.version.outputs.version_with_sha }}
       sha: ${{ needs.version.outputs.sha }}
@@ -338,7 +338,7 @@ jobs:
       - version
       - frontend-build-push
       - cms-build-push
-    uses: ./.github/workflows/deploy-version.yml
+    uses: ./.github/workflows/export.deploy-version.yml
     with:
       version_with_sha: ${{ needs.version.outputs.version_with_sha }}
       sha: ${{ needs.version.outputs.sha }}
@@ -370,6 +370,6 @@ jobs:
 
   clean-preview:
     name: Clean Preview Apps
-    uses: ./.github/workflows/clean-preview.yml
+    uses: ./.github/workflows/export.clean-preview.yml
     secrets: inherit
     needs: deploy-preview

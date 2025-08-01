@@ -1,0 +1,172 @@
+name: Deploy version
+on:
+  workflow_call:
+    inputs:
+      version_with_sha:
+        type: string
+        required: true
+      sha:
+        type: string
+        required: true
+      environment:
+        type: string
+        required: true
+      high_availability:
+        type: boolean
+        default: true
+
+env:
+  FLYCTL_VERSION: 0.3.95
+  FRONTEND_INTERNAL_PORT: 3000
+
+jobs:
+  frontend-deploy:
+    name: "Frontend: Deploy"
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ inputs.environment }}-frontend
+      url:
+        https://${{ inputs.environment == 'preview' && format('{0}.fly.dev',
+        steps.create-app.outputs.app_name) || vars.CANONICAL_HOSTNAME }}/
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+        with:
+          version: ${{ env.FLYCTL_VERSION }}
+      - name: Create app
+        if: inputs.environment == 'preview'
+        id: create-app
+        run: |
+          APP_NAME=${{ vars.FLY_PREVIEW_FRONTEND_APP_PREFIX }}-${{ inputs.sha }}
+          CMS_APP_NAME=${{ vars.FLY_PREVIEW_CMS_APP_PREFIX }}-${{ inputs.sha }}
+
+          echo "app_name=$APP_NAME" >> $GITHUB_OUTPUT
+          echo "cms_app_name=$CMS_APP_NAME" >> $GITHUB_OUTPUT
+
+          flyctl apps destroy --yes $APP_NAME || true
+
+          flyctl apps create --name $APP_NAME --org ${{ vars.FLY_ORG }}
+          flyctl secrets set \
+            PAYLOAD_CMS_API_KEY=${{ secrets.PREVIEW_PAYLOAD_CMS_API_KEY }} \
+            SESSION_SECRET=$(openssl rand -hex 12) \
+            GOOGLE_MAPS_API_KEY="${{ secrets.PREVIEW_GOOGLE_MAPS_API_KEY }}" \
+            REDIS_URL="${{ secrets.PREVIEW_REDIS_URL }}" \
+            --app $APP_NAME --stage
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      - name: Prepare configuration file
+        run: |
+          envsubst \
+            < apps/frontend/fly.template.toml \
+            > apps/frontend/fly.generated.toml \
+
+          echo "Generated configuration file:"
+          cat apps/frontend/fly.generated.toml
+        env:
+          FLY_APP:
+            ${{ inputs.environment == 'preview' &&
+            steps.create-app.outputs.app_name || vars.FLY_APP }}
+          FLY_PRIMARY_REGION: ${{ vars.FLY_PRIMARY_REGION }}
+          FLY_MIN_MACHINES_RUNNING: ${{ vars.FLY_MIN_MACHINES_RUNNING }}
+          FLY_MEMORY: ${{ vars.FLY_MEMORY }}
+          FLY_CPU_KIND: ${{ vars.FLY_CPU_KIND }}
+          FLY_CPUS: ${{ vars.FLY_CPUS }}
+          CANONICAL_HOSTNAME:
+            ${{ inputs.environment == 'preview' && format('https://{0}.fly.dev',
+            steps.create-app.outputs.app_name) || vars.CANONICAL_HOSTNAME }}
+          PAYLOAD_CMS_BASE_URL:
+            ${{ inputs.environment == 'preview' && format('https://{0}.fly.dev',
+            steps.create-app.outputs.cms_app_name) ||
+            vars.PAYLOAD_CMS_BASE_URL}}
+          IMAGEKIT_BASE_URL: ${{ vars.IMAGEKIT_BASE_URL }}
+          ANALYTICS_DOMAIN: ${{ vars.ANALYTICS_DOMAIN }}
+      - name: Deploy frontend
+        run: |
+          flyctl deploy \
+          --config apps/frontend/fly.generated.toml \
+          --ha=${{ inputs.high_availability }} \
+          --image registry.fly.io/${{ vars.FLY_STAGING_FRONTEND_APP }}:v${{ inputs.version_with_sha }} \
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+  cms-deploy:
+    name: "CMS: Deploy"
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ inputs.environment }}-cms
+      url:
+        ${{ inputs.environment == 'preview' && format('https://{0}.fly.dev',
+        steps.create-app.outputs.app_name) || vars.SERVER_URL }}/
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+        with:
+          version: ${{ env.FLYCTL_VERSION }}
+      - name: Create app
+        if: inputs.environment == 'preview'
+        id: create-app
+        run: |
+          APP_NAME=${{ vars.FLY_PREVIEW_CMS_APP_PREFIX }}-${{ inputs.sha }}
+          FRONTEND_APP_NAME=${{ vars.FLY_PREVIEW_FRONTEND_APP_PREFIX }}-${{ inputs.sha }}
+
+          echo "app_name=$APP_NAME" >> $GITHUB_OUTPUT
+          echo "frontend_app_name=$FRONTEND_APP_NAME" >> $GITHUB_OUTPUT
+
+          flyctl apps destroy --yes $APP_NAME || true
+
+          flyctl apps create --name $APP_NAME --org ${{ vars.FLY_ORG }}
+          flyctl secrets set \
+            DATABASE_URI="${{ secrets.PREVIEW_DATABASE_URI }}" \
+            PAYLOAD_SECRET=${{ secrets.PREVIEW_PAYLOAD_SECRET }} \
+            MEDIA_S3_ACCESS_KEY_ID=${{ secrets.PREVIEW_MEDIA_S3_ACCESS_KEY_ID }} \
+            MEDIA_S3_SECRET_ACCESS_KEY="${{ secrets.PREVIEW_MEDIA_S3_SECRET_ACCESS_KEY }}" \
+            DEEPL_API_AUTH_KEY="${{ secrets.PREVIEW_DEEPL_API_AUTH_KEY }}" \
+            OPENAI_API_KEY="${{ secrets.PREVIEW_OPENAI_API_KEY }}" \
+            RESEND_API_KEY="${{ secrets.PREVIEW_RESEND_API_KEY }}" \
+            --app $APP_NAME --stage
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      - name: Prepare configuration file
+        run: |
+          envsubst \
+            < apps/cms/fly.template.toml \
+            > apps/cms/fly.generated.toml \
+            
+          echo "Generated configuration file:"
+          cat apps/cms/fly.generated.toml
+        env:
+          FLY_APP:
+            ${{ inputs.environment == 'preview' &&
+            steps.create-app.outputs.app_name || vars.FLY_APP }}
+          FLY_PRIMARY_REGION: ${{ vars.FLY_PRIMARY_REGION }}
+          FLY_MIN_MACHINES_RUNNING: ${{ vars.FLY_MIN_MACHINES_RUNNING }}
+          FLY_MEMORY: ${{ vars.FLY_MEMORY }}
+          FLY_CPU_KIND: ${{ vars.FLY_CPU_KIND }}
+          FLY_CPUS: ${{ vars.FLY_CPUS }}
+          MEDIA_S3_REGION: ${{ vars.MEDIA_S3_REGION }}
+          MEDIA_S3_BUCKET: ${{ vars.MEDIA_S3_BUCKET }}
+          CACHE_REFRESH_TARGET_TYPE: fly
+          CACHE_REFRESH_TARGET_ARG:
+            "${{ inputs.environment == 'preview' &&
+            steps.create-app.outputs.frontend_app_name || vars.FLY_FRONTEND_APP
+            }},${{ env.FRONTEND_INTERNAL_PORT }}"
+          LIVE_PREVIEW_URL:
+            ${{ inputs.environment == 'preview' && format('https://{0}.fly.dev',
+            steps.create-app.outputs.frontend_app_name) || vars.LIVE_PREVIEW_URL
+            }}
+          IMAGEKIT_BASE_URL: ${{ vars.IMAGEKIT_BASE_URL }}
+          SERVER_URL:
+            ${{ inputs.environment == 'preview' && format('https://{0}.fly.dev',
+            steps.create-app.outputs.app_name) || vars.SERVER_URL }}
+      - name: Deploy CMS
+        run: |
+          flyctl deploy \
+            --config apps/cms/fly.generated.toml \
+            --ha=${{ inputs.high_availability }} \
+            --image registry.fly.io/${{ vars.FLY_STAGING_CMS_APP }}:v${{ inputs.version_with_sha }} \
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
