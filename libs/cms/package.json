@@ -3,15 +3,21 @@
   "version": "0.0.0-unknown",
   "type": "module",
   "exports": {
-    ".": "./dist/index.js"
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./labels.client": {
+      "import": "./dist/common/labels.client.js",
+      "types": "./dist/common/labels.client.d.ts"
+    }
   },
-  "types": "./dist/index.d.ts",
   "files": [
     "dist",
     "package.json"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format esm --dts"
+    "build": "tsup"
   },
   "devDependencies": {
     "@payloadcms/richtext-lexical": "^3.49.1",
