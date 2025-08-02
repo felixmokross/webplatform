@@ -12,7 +12,7 @@ export function usagesField(config: UsagesConfig): UIField {
     admin: {
       components: {
         Field: {
-          path: "src/fields/usages/usages-field",
+          path: "@fxmk/cms/usages-field",
           exportName: "UsagesField",
           serverProps: { config },
         },

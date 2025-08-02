@@ -10,6 +10,10 @@
     "./labels.client": {
       "import": "./dist/common/labels.client.js",
       "types": "./dist/common/labels.client.d.ts"
+    },
+    "./usages-field": {
+      "import": "./dist/fields/usages/usages-field.js",
+      "types": "./dist/fields/usages/usages-field.d.ts"
     }
   },
   "files": [
