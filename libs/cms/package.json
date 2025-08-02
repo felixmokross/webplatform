@@ -7,6 +7,10 @@
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
     },
+    "./labels": {
+      "import": "./dist/common/labels.js",
+      "types": "./dist/common/labels.d.ts"
+    },
     "./labels.client": {
       "import": "./dist/common/labels.client.js",
       "types": "./dist/common/labels.client.d.ts"
