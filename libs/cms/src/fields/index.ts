@@ -8,3 +8,4 @@ export * from "./usages";
 export * from "./call-to-action";
 export * from "./description";
 export * from "./image";
+export * from "./element-id";
