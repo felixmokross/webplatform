@@ -1,7 +1,6 @@
 {
   "folders": [
     { "name": "<root>", "path": "." },
-    { "name": "libs/cms", "path": "./libs/cms" },
     { "name": "libs/common", "path": "./libs/common" },
     { "name": "tools/releaser", "path": "./tools/releaser" },
   ],
