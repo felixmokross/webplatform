@@ -3,7 +3,6 @@ lockfileVersion: '9.0'
 settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
-  injectWorkspacePackages: true
 
 importers:
 
@@ -17,7 +16,7 @@ importers:
     dependencies:
       '@fxmk/cms-plugin':
         specifier: workspace:*
-        version: file:libs/cms-plugin(payload@3.49.1(graphql@16.11.0)(typescript@5.7.3))
+        version: link:../../libs/cms-plugin
       '@payloadcms/db-mongodb':
         specifier: 3.49.1
         version: 3.49.1(@aws-sdk/credential-providers@3.859.0)(payload@3.49.1(graphql@16.11.0)(typescript@5.7.3))
@@ -1333,12 +1332,6 @@ packages:
 
   '@floating-ui/utils@0.2.10':
     resolution: {integrity: sha512-aGTxbpbg8/b5JfU1HXSrbH3wXZuLPJcNEcZQFMxLs3oSzgtVu6nFPkbbGGUvBcUjKV2YyB9Wxxabo+HEH9tcRQ==}
-
-  '@fxmk/cms-plugin@file:libs/cms-plugin':
-    resolution: {directory: libs/cms-plugin, type: directory}
-    engines: {node: ^18.20.2 || >=20.9.0, pnpm: ^9 || ^10}
-    peerDependencies:
-      payload: ^3.37.0
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -8194,10 +8187,6 @@ snapshots:
       tabbable: 6.2.0
 
   '@floating-ui/utils@0.2.10': {}
-
-  '@fxmk/cms-plugin@file:libs/cms-plugin(payload@3.49.1(graphql@16.11.0)(typescript@5.7.3))':
-    dependencies:
-      payload: 3.49.1(graphql@16.11.0)(typescript@5.7.3)
 
   '@humanfs/core@0.19.1': {}
 
