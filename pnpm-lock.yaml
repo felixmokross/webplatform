@@ -9,9 +9,6 @@ importers:
 
   .:
     devDependencies:
-      '@fxmk/releaser':
-        specifier: workspace:*
-        version: link:tools/releaser
       prettier:
         specifier: 3.5.3
         version: 3.5.3
