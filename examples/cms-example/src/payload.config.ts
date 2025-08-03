@@ -44,13 +44,25 @@ export default buildConfig({
   sharp,
   onInit: async (payload) => {
     // add admin user if it doesn't exist
-    await payload.create({
+    const user = await payload.find({
       collection: 'users',
-      data: {
-        email: 'admin@example.com',
-        password: 'password',
+      where: {
+        email: {
+          equals: 'admin@example.com',
+        },
       },
+      pagination: false,
+      limit: 1,
     })
+    if (user.totalDocs === 0) {
+      await payload.create({
+        collection: 'users',
+        data: {
+          email: 'admin@example.com',
+          password: 'password',
+        },
+      })
+    }
   },
   plugins: [
     payloadCloudPlugin(),
