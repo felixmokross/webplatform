@@ -108,13 +108,6 @@
     "main": "./dist/exports/index.js",
     "types": "./dist/exports/index.d.ts"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "sharp",
-      "esbuild",
-      "unrs-resolver"
-    ]
-  },
   "registry": "https://registry.npmjs.org/",
   "dependencies": {}
 }
