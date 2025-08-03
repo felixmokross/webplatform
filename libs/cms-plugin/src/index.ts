@@ -2,6 +2,8 @@ import type { CollectionSlug, Config } from 'payload'
 
 import { customEndpointHandler } from './endpoints/customEndpointHandler.js'
 
+export * from './fields/index.js'
+
 export type CmsPluginConfig = {
   /**
    * List of collections to add a custom field
@@ -69,12 +71,8 @@ export const cmsPlugin =
       config.admin.components.beforeDashboard = []
     }
 
-    config.admin.components.beforeDashboard.push(
-      `cms-plugin/client#BeforeDashboardClient`,
-    )
-    config.admin.components.beforeDashboard.push(
-      `cms-plugin/rsc#BeforeDashboardServer`,
-    )
+    config.admin.components.beforeDashboard.push(`cms-plugin/client#BeforeDashboardClient`)
+    config.admin.components.beforeDashboard.push(`cms-plugin/rsc#BeforeDashboardServer`)
 
     config.endpoints.push({
       handler: customEndpointHandler,

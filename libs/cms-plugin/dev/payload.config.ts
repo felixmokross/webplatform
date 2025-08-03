@@ -1,9 +1,9 @@
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { cmsPlugin, showField } from 'cms-plugin'
 import { MongoMemoryReplSet } from 'mongodb-memory-server'
 import path from 'path'
 import { buildConfig } from 'payload'
-import { cmsPlugin } from 'cms-plugin'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
@@ -38,7 +38,7 @@ const buildConfigWithMemoryDB = async () => {
     collections: [
       {
         slug: 'posts',
-        fields: [],
+        fields: [showField()],
       },
       {
         slug: 'media',
