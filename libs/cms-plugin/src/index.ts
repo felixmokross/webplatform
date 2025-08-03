@@ -2,6 +2,7 @@ import type { CollectionSlug, Config } from 'payload'
 
 import { customEndpointHandler } from './endpoints/customEndpointHandler.js'
 
+export * from './common/index.js'
 export * from './fields/index.js'
 
 export type CmsPluginConfig = {

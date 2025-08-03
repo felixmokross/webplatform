@@ -21,20 +21,20 @@
     "generate:types": "pnpm dev:generate-types",
     "lint": "eslint",
     "lint:fix": "eslint ./src --fix",
-    "prepublishOnly": "pnpm clean && pnpm build",
     "test": "pnpm test:int && pnpm test:e2e",
     "test:e2e": "playwright test",
     "test:int": "vitest"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
-    "@payloadcms/db-mongodb": "3.37.0",
-    "@payloadcms/db-postgres": "3.37.0",
-    "@payloadcms/db-sqlite": "3.37.0",
+    "@payloadcms/db-mongodb": "^3.49.1",
+    "@payloadcms/db-postgres": "^3.49.1",
+    "@payloadcms/db-sqlite": "^3.49.1",
     "@payloadcms/eslint-config": "3.9.0",
-    "@payloadcms/next": "3.37.0",
-    "@payloadcms/richtext-lexical": "3.37.0",
-    "@payloadcms/ui": "3.37.0",
+    "@payloadcms/next": "^3.49.1",
+    "@payloadcms/richtext-lexical": "^3.49.1",
+    "@payloadcms/translations": "^3.49.1",
+    "@payloadcms/ui": "^3.49.1",
     "@playwright/test": "^1.52.0",
     "@swc-node/register": "1.10.9",
     "@swc/cli": "0.6.0",
@@ -49,7 +49,7 @@
     "mongodb-memory-server": "10.1.4",
     "next": "15.4.4",
     "open": "^10.1.0",
-    "payload": "3.37.0",
+    "payload": "^3.49.1",
     "prettier": "^3.4.2",
     "qs-esm": "7.0.2",
     "react": "19.1.0",
@@ -62,7 +62,7 @@
     "vitest": "^3.1.2"
   },
   "peerDependencies": {
-    "payload": "^3.37.0"
+    "payload": "^3.49.0"
   },
   "engines": {
     "node": "^18.20.2 || >=20.9.0",
@@ -87,6 +87,5 @@
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "registry": "https://registry.npmjs.org/",
-  "dependencies": {}
+  "registry": "https://registry.npmjs.org/"
 }
