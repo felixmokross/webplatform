@@ -62,7 +62,12 @@
     "vitest": "^3.1.2"
   },
   "peerDependencies": {
-    "payload": "^3.49.0"
+    "payload": "^3.49.0",
+    "@payloadcms/ui": "^3.49.0",
+    "@payloadcms/next": "^3.49.0",
+    "@payloadcms/richtext-lexical": "^3.49.0",
+    "react": "^18 || ^19",
+    "react-dom": "^18 || ^19"
   },
   "engines": {
     "node": "^18.20.2 || >=20.9.0",
