@@ -3,7 +3,7 @@ import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
-import { buildConfig } from 'payload'
+import { buildConfig, TextField } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 import { showField } from '@fxmk/cms-plugin'
@@ -30,9 +30,30 @@ export default buildConfig({
     Media,
     {
       slug: 'posts',
-      fields: [showField()],
+      fields: [
+        showField(),
+        {
+          name: 'text',
+          label: {
+            en: 'Text',
+            es: 'Texto',
+          },
+          type: 'text',
+          localized: true,
+          required: true,
+          admin: {
+            components: {
+              Label: '@fxmk/cms-plugin/client#TranslationsFieldLabel',
+            },
+          },
+        } as TextField,
+      ],
     },
   ],
+  localization: {
+    defaultLocale: 'en',
+    locales: ['en', 'es'],
+  },
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

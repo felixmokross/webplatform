@@ -88,7 +88,7 @@ export interface Config {
   };
   globals: {};
   globalsSelect: {};
-  locale: null;
+  locale: 'en' | 'es';
   user: User & {
     collection: 'users';
   };
@@ -165,6 +165,7 @@ export interface Media {
 export interface Post {
   id: string;
   show?: boolean | null;
+  text: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -275,6 +276,7 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface PostsSelect<T extends boolean = true> {
   show?: T;
+  text?: T;
   updatedAt?: T;
   createdAt?: T;
 }
