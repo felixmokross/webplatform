@@ -1,6 +1,7 @@
 import type { CollectionSlug, Config } from 'payload'
 
 import { translationsEndpoint } from './endpoints/translations.js'
+import { translations } from './translations.js'
 
 export * from './common/index.js'
 export * from './fields/index.js'
@@ -101,6 +102,18 @@ export const cmsPlugin =
             id: 'seeded-by-plugin',
           },
         })
+      }
+    }
+
+    if (!config.i18n?.translations) {
+      config.i18n = { ...config.i18n, translations: {} }
+    }
+
+    for (const language in translations) {
+      const key = language as keyof typeof translations
+      config.i18n.translations![key] = {
+        ...config.i18n.translations![key],
+        ...translations[key],
       }
     }
 
