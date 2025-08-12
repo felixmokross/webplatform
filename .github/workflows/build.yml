@@ -35,6 +35,8 @@ jobs:
         uses: ./.github/actions/build-publish
         with:
           package: "cms-plugin"
+          version: ${{ needs.version.outputs.version }}
+          npmToken: ${{ secrets.NPM_TOKEN }}
 
   common-build-publish:
     name: "common: Build and Publish"
@@ -49,6 +51,8 @@ jobs:
         uses: ./.github/actions/build-publish
         with:
           package: "common"
+          version: ${{ needs.version.outputs.version }}
+          npmToken: ${{ secrets.NPM_TOKEN }}
 
   releaser-build-publish:
     name: "releaser: Build and Publish"
@@ -63,6 +67,8 @@ jobs:
         uses: ./.github/actions/build-publish
         with:
           package: "releaser"
+          version: ${{ needs.version.outputs.version }}
+          npmToken: ${{ secrets.NPM_TOKEN }}
 
   cms-example-build-publish:
     name: "cms-example: Build and Publish"
@@ -77,3 +83,5 @@ jobs:
         uses: ./.github/actions/build-publish
         with:
           package: "cms-example"
+          version: ${{ needs.version.outputs.version }}
+          npmToken: ${{ secrets.NPM_TOKEN }}

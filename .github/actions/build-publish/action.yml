@@ -4,32 +4,31 @@ inputs:
   package:
     description: "The package to build and publish"
     required: true
+  version:
+    description: "The version to publish"
+    required: true
+  npmToken:
+    description: "NPM token for publishing"
+    required: true
 runs:
   using: "composite"
   steps:
     - name: Install dependencies
       shell: bash
-      run: pnpm --filter $PACKAGE install
-      env:
-        PACKAGE: ${{ inputs.package }}
+      run: pnpm --filter  ${{ inputs.package }} install
     - name: Build
       shell: bash
-      run: pnpm --filter $PACKAGE build
-      env:
-        PACKAGE: ${{ inputs.package }}
+      run: pnpm --filter ${{ inputs.package }} build
     - name: Version
       shell: bash
       run: |
-        pnpm --filter $PACKAGE exec pnpm version ${{ needs.version.outputs.version }} --no-git-tag-version
-      env:
-        PACKAGE: ${{ inputs.package }}
+        pnpm --filter ${{ inputs.package }} exec pnpm version ${{ inputs.version }} --no-git-tag-version
     - name: Add environment variable with NPM token to .npmrc
       shell: bash
       run: echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> .npmrc
     - name: Publish
       shell: bash
       run: |
-        pnpm --filter $PACKAGE publish --access=public --no-git-checks
+        pnpm --filter ${{ inputs.package }} publish --access=public --no-git-checks
       env:
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        PACKAGE: ${{ inputs.package }}
