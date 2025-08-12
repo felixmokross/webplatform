@@ -13,12 +13,10 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Install dependencies
-      shell: bash
-      run: pnpm --filter  ${{ inputs.package }} install
     - name: Build
-      shell: bash
-      run: pnpm --filter ${{ inputs.package }} build
+      uses: ./.github/actions/build
+      with:
+        package: ${{ inputs.package }}
     - name: Version
       shell: bash
       run: |

@@ -1,0 +1,15 @@
+name: "Build"
+description: Builds the package
+inputs:
+  package:
+    description: "The package to build"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Install dependencies
+      shell: bash
+      run: pnpm --filter ${{ inputs.package }} install
+    - name: Build
+      shell: bash
+      run: pnpm --filter ${{ inputs.package }} build
