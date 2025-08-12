@@ -22,8 +22,8 @@ jobs:
     with:
       release: ${{ github.event.inputs.release }}
 
-  build-publish:
-    name: "Build and Publish"
+  cms-plugin-build-publish:
+    name: "cms-plugin: Build and Publish"
     runs-on: ubuntu-latest
     needs: version
     steps:
@@ -31,17 +31,65 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup
         uses: ./.github/actions/setup
-      - name: Install dependencies
-        run: pnpm install
+      - name: Build and Publish
+        uses: ./.github/actions/build-publish
+        with:
+          package: "cms-plugin"
+          version: ${{ needs.version.outputs.version }}
+          npmToken: ${{ secrets.NPM_TOKEN }}
+      - name: Upload cms-plugin 'dist' directory
+        uses: actions/upload-artifact@v4
+        with:
+          name: cms-plugin-dist
+          path: libs/cms-plugin/dist
+
+  common-build-publish:
+    name: "common: Build and Publish"
+    runs-on: ubuntu-latest
+    needs: version
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup
+        uses: ./.github/actions/setup
+      - name: Build and Publish
+        uses: ./.github/actions/build-publish
+        with:
+          package: "common"
+          version: ${{ needs.version.outputs.version }}
+          npmToken: ${{ secrets.NPM_TOKEN }}
+
+  releaser-build-publish:
+    name: "releaser: Build and Publish"
+    runs-on: ubuntu-latest
+    needs: version
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup
+        uses: ./.github/actions/setup
+      - name: Build and Publish
+        uses: ./.github/actions/build-publish
+        with:
+          package: "releaser"
+          version: ${{ needs.version.outputs.version }}
+          npmToken: ${{ secrets.NPM_TOKEN }}
+
+  cms-example-build:
+    name: "cms-example: Build"
+    runs-on: ubuntu-latest
+    needs: [version, cms-plugin-build-publish]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup
+        uses: ./.github/actions/setup
+      - name: Download cms-plugin 'dist' directory
+        uses: actions/download-artifact@v4
+        with:
+          name: cms-plugin-dist
+          path: libs/cms-plugin/dist
       - name: Build
-        run: pnpm -r build
-      - name: Version
-        run: |
-          pnpm -r exec pnpm version ${{ needs.version.outputs.version }} --no-git-tag-version
-      - name: Add environment variable with NPM token to .npmrc
-        run: echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> .npmrc
-      - name: Publish
-        run: |
-          pnpm publish -r --access=public --no-git-checks
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        uses: ./.github/actions/build
+        with:
+          package: "cms-example"
