@@ -1,6 +1,6 @@
 import type { CollectionSlug, Config } from 'payload'
 
-import { customEndpointHandler } from './endpoints/customEndpointHandler.js'
+import { translationsEndpoint } from './endpoints/translations.js'
 
 export * from './common/index.js'
 export * from './fields/index.js'
@@ -75,11 +75,7 @@ export const cmsPlugin =
     config.admin.components.beforeDashboard.push(`cms-plugin/client#BeforeDashboardClient`)
     config.admin.components.beforeDashboard.push(`cms-plugin/rsc#BeforeDashboardServer`)
 
-    config.endpoints.push({
-      handler: customEndpointHandler,
-      method: 'get',
-      path: '/my-plugin-endpoint',
-    })
+    config.endpoints.push(translationsEndpoint)
 
     const incomingOnInit = config.onInit
 
