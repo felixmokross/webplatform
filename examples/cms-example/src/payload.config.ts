@@ -6,7 +6,7 @@ import path from 'path'
 import { buildConfig, TextField } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
-import { showField } from '@fxmk/cms-plugin'
+import { showField, cmsPlugin } from '@fxmk/cms-plugin'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
@@ -87,6 +87,7 @@ export default buildConfig({
   },
   plugins: [
     payloadCloudPlugin(),
+    cmsPlugin({}),
     // storage-adapter-placeholder
   ],
 })

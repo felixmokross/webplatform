@@ -73,9 +73,6 @@ export const cmsPlugin =
       config.admin.components.beforeDashboard = []
     }
 
-    config.admin.components.beforeDashboard.push(`cms-plugin/client#BeforeDashboardClient`)
-    config.admin.components.beforeDashboard.push(`cms-plugin/rsc#BeforeDashboardServer`)
-
     config.endpoints.push(translationsEndpoint)
 
     const incomingOnInit = config.onInit

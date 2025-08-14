@@ -8,8 +8,8 @@ export const translationsEndpoint: Endpoint = {
       return new Response(null, { status: 401, statusText: 'Unauthorized' })
     }
 
-    const collection = req.searchParams.get('collection') as CollectionSlug | undefined
-    const global = req.searchParams.get('global') as GlobalSlug | undefined
+    const collection = req.searchParams.get('collection')
+    const global = req.searchParams.get('global')
     const id = req.searchParams.get('id')
 
     if (!collection && !global) {
@@ -37,10 +37,11 @@ export const translationsEndpoint: Endpoint = {
       collection && id
         ? await req.payload.findByID({
             id,
-            collection,
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+            collection: collection as CollectionSlug,
             locale: 'all',
           })
-        : await req.payload.findGlobal({ slug: global!, locale: 'all' })
+        : await req.payload.findGlobal({ slug: global as GlobalSlug, locale: 'all' })
 
     return new Response(JSON.stringify({ value: getValueByPath(data, fieldPath) }), {
       headers: {
