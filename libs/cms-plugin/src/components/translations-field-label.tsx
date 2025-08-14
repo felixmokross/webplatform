@@ -12,8 +12,7 @@ import type {
 } from 'payload'
 import type { PropsWithChildren, ReactNode } from 'react'
 
-import { getLabelText } from '@fxmk/cms-plugin'
-import { Label } from '@fxmk/cms-plugin/client'
+import { getLabelText, Label } from '@fxmk/cms-plugin/client'
 import { convertLexicalToHTML } from '@payloadcms/richtext-lexical/html'
 import { convertLexicalToPlaintext } from '@payloadcms/richtext-lexical/plaintext'
 import {

@@ -1,5 +1,6 @@
 import type { CollectionSlug, Config } from 'payload'
 
+import { autoTranslateEndpoint } from './endpoints/auto-translate.js'
 import { translationsEndpoint } from './endpoints/translations.js'
 import { translations } from './translations.js'
 
@@ -61,19 +62,8 @@ export const cmsPlugin =
       config.endpoints = []
     }
 
-    if (!config.admin) {
-      config.admin = {}
-    }
-
-    if (!config.admin.components) {
-      config.admin.components = {}
-    }
-
-    if (!config.admin.components.beforeDashboard) {
-      config.admin.components.beforeDashboard = []
-    }
-
     config.endpoints.push(translationsEndpoint)
+    config.endpoints.push(autoTranslateEndpoint)
 
     const incomingOnInit = config.onInit
 
