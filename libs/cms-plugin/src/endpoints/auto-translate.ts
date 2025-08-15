@@ -91,7 +91,7 @@ export const autoTranslateEndpoint: Endpoint = {
     }
 
     const configuredLocales = await req.payload.find({
-      // @ts-expect-error TODO fix this
+      // @ts-ignore TODO fix this
       collection: 'locale-configs',
       pagination: false,
       req,
@@ -165,14 +165,14 @@ export const autoTranslateEndpoint: Endpoint = {
         throw new Error(`Source locale ${sourceLocaleCode} not found in configured locales`)
       }
 
-      // @ts-expect-error TODO fix this
+      // @ts-ignore TODO fix this
       if (!sourceLocale.deeplSourceLanguage) {
         throw new Error(
           `Source locale ${sourceLocaleCode} does not have a DeepL source language configured`,
         )
       }
 
-      // @ts-expect-error TODO fix this
+      // @ts-ignore TODO fix this
       return sourceLocale.deeplSourceLanguage as SourceLanguageCode
     }
 
@@ -182,14 +182,14 @@ export const autoTranslateEndpoint: Endpoint = {
         throw new Error(`Target locale ${targetLocaleCode} not found in configured locales`)
       }
 
-      // @ts-expect-error TODO fix this
+      // @ts-ignore TODO fix this
       if (!targetLocale.deeplTargetLanguage) {
         throw new Error(
           `Source locale ${targetLocaleCode} does not have a DeepL target language configured`,
         )
       }
 
-      // @ts-expect-error TODO fix this
+      // @ts-ignore TODO fix this
       return targetLocale.deeplTargetLanguage as TargetLanguageCode
     }
   },
