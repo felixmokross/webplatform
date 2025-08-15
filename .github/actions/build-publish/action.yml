@@ -7,6 +7,11 @@ inputs:
   version:
     description: "The version to publish"
     required: true
+  prerelease_tag:
+    description:
+      "The prerelease tag of the package (if any). If not provided, the package
+      will be published as 'latest'."
+    required: false
   npmToken:
     description: "NPM token for publishing"
     required: true
@@ -27,6 +32,6 @@ runs:
     - name: Publish
       shell: bash
       run: |
-        pnpm --filter ${{ inputs.package }} publish --access=public --no-git-checks
+        pnpm --filter ${{ inputs.package }} publish --access=public --no-git-checks --tag ${{ inputs.prerelease_tag || 'latest' }}
       env:
         NPM_TOKEN: ${{ inputs.npmToken }}
