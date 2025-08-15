@@ -93,3 +93,29 @@ jobs:
         uses: ./.github/actions/build
         with:
           package: "cms-example"
+
+  create-release:
+    name: Create release
+    runs-on: ubuntu-latest
+    if: needs.version.outputs.is_new_release == 'true'
+    needs:
+      - cms-plugin-build-publish
+      - common-build-publish
+      - releaser-build-publish
+      - version
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout with full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup
+        uses: felixmokross/webplatform/.github/actions/setup@main
+      - name: Install dependencies
+        run: pnpm --workspace-root install
+      - name: Create release
+        run: |
+          pnpm releaser publish --draft ${{ needs.version.outputs.version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
