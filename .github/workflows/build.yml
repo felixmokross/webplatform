@@ -36,6 +36,7 @@ jobs:
         with:
           package: "cms-plugin"
           version: ${{ needs.version.outputs.version }}
+          prerelease_tag: ${{ needs.version.outputs.prerelease_tag }}
           npmToken: ${{ secrets.NPM_TOKEN }}
       - name: Upload cms-plugin 'dist' directory
         uses: actions/upload-artifact@v4
@@ -57,6 +58,7 @@ jobs:
         with:
           package: "common"
           version: ${{ needs.version.outputs.version }}
+          prerelease_tag: ${{ needs.version.outputs.prerelease_tag }}
           npmToken: ${{ secrets.NPM_TOKEN }}
 
   releaser-build-publish:
@@ -73,6 +75,7 @@ jobs:
         with:
           package: "releaser"
           version: ${{ needs.version.outputs.version }}
+          prerelease_tag: ${{ needs.version.outputs.prerelease_tag }}
           npmToken: ${{ secrets.NPM_TOKEN }}
 
   cms-example-build:
