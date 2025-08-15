@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@fxmk/cms-plugin": "workspace:*",
+    "@fxmk/common": "workspace:*",
     "@payloadcms/db-mongodb": "3.50.0",
     "@payloadcms/next": "3.50.0",
     "@payloadcms/payload-cloud": "3.50.0",

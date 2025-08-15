@@ -10,6 +10,7 @@ import { showField, cmsPlugin } from '@fxmk/cms-plugin'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { richTextRoot } from '@fxmk/common'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -81,6 +82,7 @@ export default buildConfig({
         data: {
           email: 'admin@example.com',
           password: 'password',
+          text: richTextRoot(),
         },
       })
     }

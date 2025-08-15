@@ -33,14 +33,15 @@ const features = [
   UnorderedListFeature(),
   OrderedListFeature(),
   IndentFeature(),
-  LinkFeature({
-    enabledCollections: ['pages'],
-    fields: ({ defaultFields }) => [
-      // Not using the 'newTab' field, as our external links are automatically opened in a new tab and for internal we don't want this (yet).
-      ...defaultFields.filter((f) => f.name !== 'newTab'),
-      queryStringAndFragmentField(),
-    ],
-  }),
+  // TODO add feature when pages are available
+  // LinkFeature({
+  //   enabledCollections: ['pages'],
+  //   fields: ({ defaultFields }) => [
+  //     // Not using the 'newTab' field, as our external links are automatically opened in a new tab and for internal we don't want this (yet).
+  //     ...defaultFields.filter((f) => f.name !== 'newTab'),
+  //     queryStringAndFragmentField(),
+  //   ],
+  // }),
 
   InlineToolbarFeature(),
 ]

@@ -54,20 +54,21 @@ export function linkField({
         ].filter((o) => !allowedLinkTypes || allowedLinkTypes.includes(o.value)),
         required,
       },
-      {
-        name: 'doc',
-        type: 'relationship',
-        admin: {
-          appearance: 'drawer',
-          condition: (_, siblingData) => siblingData.linkType === 'internal',
-        },
-        label: {
-          en: 'Choose a document to link',
-          es: 'Elige un documento a enlazar',
-        },
-        relationTo: 'pages',
-        required,
-      },
+      // TODO add pages
+      // {
+      //   name: 'doc',
+      //   type: 'relationship',
+      //   admin: {
+      //     appearance: 'drawer',
+      //     condition: (_, siblingData) => siblingData.linkType === 'internal',
+      //   },
+      //   label: {
+      //     en: 'Choose a document to link',
+      //     es: 'Elige un documento a enlazar',
+      //   },
+      //   relationTo: 'pages',
+      //   required,
+      // },
       queryStringAndFragmentField(),
       {
         name: 'url',

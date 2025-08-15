@@ -1,2 +1,6 @@
 export * from './link.js'
 export * from './show.js'
+export * from './description.js'
+export * from './element-id.js'
+export * from './more-options.js'
+export * from './rich-text.js'
