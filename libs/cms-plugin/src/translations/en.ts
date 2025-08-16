@@ -34,6 +34,7 @@ export const en = {
           "An element ID allows you to link to this element from other parts of the site. If the ID is 'about-us', you can link to it with an URL ending in '#about-us'.",
         label: "Element ID",
       },
+      image: { label: "Image" },
       link: {
         doc: { label: "Choose a document to link" },
         fragment: {

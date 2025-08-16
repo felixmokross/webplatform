@@ -32,6 +32,7 @@ export const es: TranslationsObject = {
           "Un ID de elemento te permite enlazar a este elemento desde otras partes del sitio. Si el ID es 'about-us', puedes enlazar a él con una URL que termine en '#about-us'.",
         label: "ID de Elemento",
       },
+      image: { label: "Imagen" },
       link: {
         doc: { label: "Elige un documento a enlazar" },
         fragment: {
