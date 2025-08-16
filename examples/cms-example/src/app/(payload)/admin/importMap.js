@@ -17,6 +17,7 @@ import { UnderlineFeatureClient as UnderlineFeatureClient_e70f5e05f09f93e00b997e
 import { BoldFeatureClient as BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { VersionInfo as VersionInfo_28fa94cce12a23e7fb2af3fe07ac7e9a } from '@fxmk/cms-plugin/rsc'
+import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
 
 export const importMap = {
   "@fxmk/cms-plugin/client#TranslationsFieldLabel": TranslationsFieldLabel_4e4d92471a8ffe9293251f3f72fec394,
@@ -37,5 +38,6 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#UnderlineFeatureClient": UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#BoldFeatureClient": BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
-  "@fxmk/cms-plugin/rsc#VersionInfo": VersionInfo_28fa94cce12a23e7fb2af3fe07ac7e9a
+  "@fxmk/cms-plugin/rsc#VersionInfo": VersionInfo_28fa94cce12a23e7fb2af3fe07ac7e9a,
+  "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24
 }

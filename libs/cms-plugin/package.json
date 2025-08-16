@@ -86,6 +86,7 @@
   "types": "./dist/index.d.ts",
   "registry": "https://registry.npmjs.org/",
   "dependencies": {
+    "@payloadcms/storage-s3": "^3.50.0",
     "deepl-node": "^1.19.0",
     "openai": "^5.12.2"
   }

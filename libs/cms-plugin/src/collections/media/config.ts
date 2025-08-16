@@ -120,8 +120,7 @@ export function Media({
     },
     upload: {
       crop: false,
-      // TODO enable this
-      // disableLocalStorage: true,
+      disableLocalStorage: true,
       displayPreview: true,
       focalPoint: false,
       imageSizes: [

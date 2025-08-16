@@ -1,4 +1,6 @@
-import type { Config } from "payload";
+import type { Config, Plugin } from "payload";
+
+import { s3Storage } from "@payloadcms/storage-s3";
 
 import { ApiKeys } from "./collections/api-keys/config.js";
 import { LocaleConfigs } from "./collections/locale-configs/config.js";
@@ -20,13 +22,19 @@ export * from "./fields/index.js";
 
 export type CmsPluginOptions = {
   deeplApiKey?: string;
+  mediaS3Storage: {
+    accessKeyId: string;
+    bucket: string;
+    region: string;
+    secretAccessKey: string;
+  };
   openaiApiKey?: string;
   publicMediaBaseUrl?: string;
 };
 
 export const cmsPlugin =
-  (options: CmsPluginOptions = {}) =>
-  (config: Config): Config => {
+  (options: CmsPluginOptions): Plugin =>
+  (config: Config) => {
     if (!config.collections) {
       config.collections = [];
     }
@@ -175,5 +183,17 @@ export const cmsPlugin =
       };
     }
 
-    return config;
+    return s3Storage({
+      bucket: options.mediaS3Storage.bucket,
+      collections: {
+        media: true,
+      },
+      config: {
+        credentials: {
+          accessKeyId: options.mediaS3Storage.accessKeyId,
+          secretAccessKey: options.mediaS3Storage.secretAccessKey,
+        },
+        region: options.mediaS3Storage.region,
+      },
+    })(config);
   };

@@ -19,7 +19,13 @@ export default buildConfig({
     cmsPlugin({
       deeplApiKey: process.env.DEEPL_API_KEY,
       openaiApiKey: process.env.OPENAI_API_KEY,
-      publicMediaBaseUrl: "http://localhost:3000/api/media/file",
+      publicMediaBaseUrl: process.env.PUBLIC_MEDIA_BASE_URL,
+      mediaS3Storage: {
+        bucket: process.env.MEDIA_S3_BUCKET || "",
+        accessKeyId: process.env.MEDIA_S3_ACCESS_KEY_ID || "",
+        secretAccessKey: process.env.MEDIA_S3_SECRET_ACCESS_KEY || "",
+        region: process.env.MEDIA_S3_REGION || "",
+      },
     }),
   ],
 });
