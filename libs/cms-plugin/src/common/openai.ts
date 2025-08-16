@@ -2,12 +2,22 @@ import type { TypedLocale } from "payload";
 
 import OpenAI from "openai";
 
+let openai: null | OpenAI = null;
+
+export function initializeOpenAI({ apiKey }: { apiKey: string }) {
+  openai = new OpenAI({
+    apiKey,
+  });
+}
+
 export const DEFAULT_LOCALE: TypedLocale = "en";
 
 export async function generateAltText(imageUrl: string, locale: TypedLocale) {
-  const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-  });
+  if (!openai) {
+    throw new Error(
+      "OpenAI client not initialized. Has the plugin been initialized with an OpenAI API key?",
+    );
+  }
 
   const response = await openai.chat.completions.create({
     max_completion_tokens: 300,

@@ -7,6 +7,7 @@ import { MediaCategories } from "./collections/media-categories/config.js";
 import { Users } from "./collections/users/config.js";
 import { editor } from "./common/editor.js";
 import { localization } from "./common/localization.js";
+import { initializeOpenAI } from "./common/openai.js";
 import { initializeTranslator } from "./common/translation.js";
 import { autoTranslateEndpoint } from "./endpoints/auto-translate.js";
 import { translationsEndpoint } from "./endpoints/translations.js";
@@ -19,7 +20,8 @@ export * from "./fields/index.js";
 
 export type CmsPluginOptions = {
   deeplApiKey?: string;
-  openAIApiKey?: string;
+  openaiApiKey?: string;
+  publicMediaBaseUrl?: string;
 };
 
 export const cmsPlugin =
@@ -33,7 +35,19 @@ export const cmsPlugin =
       initializeTranslator({ apiKey: options.deeplApiKey });
     }
 
-    config.collections.push(Media);
+    if (options.openaiApiKey) {
+      initializeOpenAI({ apiKey: options.openaiApiKey });
+    }
+
+    config.collections.push(
+      Media({
+        generateAltTextOptions: options.publicMediaBaseUrl
+          ? {
+              publicMediaBaseUrl: options.publicMediaBaseUrl,
+            }
+          : undefined,
+      }),
+    );
     config.collections.push(MediaCategories);
     config.collections.push(Users);
     config.collections.push(ApiKeys);

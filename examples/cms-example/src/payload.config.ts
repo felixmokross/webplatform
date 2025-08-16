@@ -15,5 +15,11 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.DATABASE_URI || "",
   }),
-  plugins: [cmsPlugin({ deeplApiKey: process.env.DEEPL_API_KEY })],
+  plugins: [
+    cmsPlugin({
+      deeplApiKey: process.env.DEEPL_API_KEY,
+      openaiApiKey: process.env.OPENAI_API_KEY,
+      publicMediaBaseUrl: "http://localhost:3000/api/media/file",
+    }),
+  ],
 });
