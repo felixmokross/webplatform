@@ -19,7 +19,8 @@
     "lint:fix": "eslint ./src --fix",
     "test": "pnpm test:int && pnpm test:e2e",
     "test:e2e": "playwright test",
-    "test:int": "vitest"
+    "test:int": "vitest",
+    "check-format": "prettier --check ."
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",

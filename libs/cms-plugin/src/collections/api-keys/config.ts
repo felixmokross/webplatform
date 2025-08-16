@@ -1,12 +1,12 @@
-import { isAdmin } from '../../common/access-control.js'
-import { adminGroup } from '../../groups.js'
-import { CollectionConfig } from 'payload'
+import { isAdmin } from "../../common/access-control.js";
+import { adminGroup } from "../../groups.js";
+import { CollectionConfig } from "payload";
 
 export const ApiKeys: CollectionConfig = {
-  slug: 'api-keys',
+  slug: "api-keys",
   labels: {
-    singular: { en: 'API Key', es: 'Clave API' },
-    plural: { en: 'API Keys', es: 'Claves API' },
+    singular: { en: "API Key", es: "Clave API" },
+    plural: { en: "API Keys", es: "Claves API" },
   },
   access: {
     read: ({ req }) => isAdmin(req),
@@ -20,23 +20,23 @@ export const ApiKeys: CollectionConfig = {
   },
   admin: {
     group: adminGroup,
-    defaultColumns: ['name', 'role', 'remark', 'createdAt', 'updatedAt'],
-    useAsTitle: 'id',
+    defaultColumns: ["name", "role", "remark", "createdAt", "updatedAt"],
+    useAsTitle: "id",
   },
   fields: [
     {
-      name: 'role',
+      name: "role",
       label: {
-        en: 'Role',
-        es: 'Rol',
+        en: "Role",
+        es: "Rol",
       },
-      type: 'radio',
+      type: "radio",
       options: [
-        { value: 'cicd', label: { en: 'CI/CD', es: 'CI/CD' } },
-        { value: 'frontend', label: { en: 'Frontend', es: 'Frontend' } },
-        { value: 'e2e-tests', label: { en: 'E2E Tests', es: 'E2E Tests' } },
+        { value: "cicd", label: { en: "CI/CD", es: "CI/CD" } },
+        { value: "frontend", label: { en: "Frontend", es: "Frontend" } },
+        { value: "e2e-tests", label: { en: "E2E Tests", es: "E2E Tests" } },
       ],
-      defaultValue: 'editor',
+      defaultValue: "editor",
       required: true,
       access: {
         read: () => true,
@@ -45,12 +45,12 @@ export const ApiKeys: CollectionConfig = {
       },
     },
     {
-      name: 'remark',
+      name: "remark",
       label: {
-        en: 'Remark',
-        es: 'Comentario',
+        en: "Remark",
+        es: "Comentario",
       },
-      type: 'text',
+      type: "text",
     },
   ],
-}
+};

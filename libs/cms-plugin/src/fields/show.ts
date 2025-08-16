@@ -1,13 +1,13 @@
-import type { CheckboxField } from 'payload'
+import type { CheckboxField } from "payload";
 
 export function showField(config: Partial<CheckboxField> = {}): CheckboxField {
   return {
-    name: 'show',
-    type: 'checkbox',
+    name: "show",
+    type: "checkbox",
     label: {
-      en: 'Show',
-      es: 'Mostrar',
+      en: "Show",
+      es: "Mostrar",
     },
     ...config,
-  }
+  };
 }

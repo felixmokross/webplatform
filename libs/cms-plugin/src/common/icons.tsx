@@ -14,5 +14,5 @@ export function SparklesIcon() {
         strokeLinejoin="round"
       />
     </svg>
-  )
+  );
 }

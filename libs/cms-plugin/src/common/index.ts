@@ -1,2 +1,2 @@
-export * from './labels.js'
-export * from './translation.js'
+export * from "./labels.js";
+export * from "./translation.js";

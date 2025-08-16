@@ -1,15 +1,17 @@
-version: '3'
+version: "3"
 
 services:
   payload:
     image: node:18-alpine
     ports:
-      - '3000:3000'
+      - "3000:3000"
     volumes:
       - .:/home/node/app
       - node_modules:/home/node/app/node_modules
     working_dir: /home/node/app/
-    command: sh -c "corepack enable && corepack prepare pnpm@latest --activate && pnpm install && pnpm dev"
+    command:
+      sh -c "corepack enable && corepack prepare pnpm@latest --activate && pnpm
+      install && pnpm dev"
     depends_on:
       - mongo
       # - postgres
@@ -20,7 +22,7 @@ services:
   mongo:
     image: mongo:latest
     ports:
-      - '27017:27017'
+      - "27017:27017"
     command:
       - --storageEngine=wiredTiger
     volumes:

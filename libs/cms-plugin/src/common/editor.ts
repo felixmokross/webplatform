@@ -1,4 +1,4 @@
-import type { SanitizedConfig } from 'payload'
+import type { SanitizedConfig } from "payload";
 
 import {
   BoldFeature,
@@ -17,10 +17,10 @@ import {
   StrikethroughFeature,
   UnderlineFeature,
   UnorderedListFeature,
-} from '@payloadcms/richtext-lexical'
-import { createHeadlessEditor } from '@payloadcms/richtext-lexical/lexical/headless'
+} from "@payloadcms/richtext-lexical";
+import { createHeadlessEditor } from "@payloadcms/richtext-lexical/lexical/headless";
 
-import { queryStringAndFragmentField } from '../fields/link.js'
+import { queryStringAndFragmentField } from "../fields/link.js";
 
 const features = [
   BoldFeature(),
@@ -29,7 +29,7 @@ const features = [
   StrikethroughFeature(),
   InlineCodeFeature(),
   ParagraphFeature(),
-  HeadingFeature({ enabledHeadingSizes: ['h4', 'h5'] }),
+  HeadingFeature({ enabledHeadingSizes: ["h4", "h5"] }),
   UnorderedListFeature(),
   OrderedListFeature(),
   IndentFeature(),
@@ -44,7 +44,7 @@ const features = [
   // }),
 
   InlineToolbarFeature(),
-]
+];
 
 export async function getEditorConfig(payloadConfig: SanitizedConfig) {
   return await sanitizeServerEditorConfig(
@@ -53,11 +53,11 @@ export async function getEditorConfig(payloadConfig: SanitizedConfig) {
       features,
     },
     payloadConfig,
-  )
+  );
 }
 
 export function editor() {
-  return lexicalEditor({ features })
+  return lexicalEditor({ features });
 }
 
 export async function createEditor(payloadConfig: SanitizedConfig) {
@@ -65,5 +65,5 @@ export async function createEditor(payloadConfig: SanitizedConfig) {
     nodes: getEnabledNodes({
       editorConfig: await getEditorConfig(payloadConfig),
     }),
-  })
+  });
 }

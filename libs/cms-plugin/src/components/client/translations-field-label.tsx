@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
+import type { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical";
 import type {
   CollectionSlug,
   FieldLabelClientProps,
@@ -9,13 +9,13 @@ import type {
   RichTextFieldClient,
   TextareaFieldClient,
   TextFieldClient,
-} from 'payload'
-import type { PropsWithChildren, ReactNode } from 'react'
+} from "payload";
+import type { PropsWithChildren, ReactNode } from "react";
 
-import { getLabelText } from '../../common/labels.js'
+import { getLabelText } from "../../common/labels.js";
 
-import { convertLexicalToHTML } from '@payloadcms/richtext-lexical/html'
-import { convertLexicalToPlaintext } from '@payloadcms/richtext-lexical/plaintext'
+import { convertLexicalToHTML } from "@payloadcms/richtext-lexical/html";
+import { convertLexicalToPlaintext } from "@payloadcms/richtext-lexical/plaintext";
 import {
   Button,
   CheckIcon,
@@ -30,59 +30,74 @@ import {
   useLocale,
   useModal,
   useTranslation,
-} from '@payloadcms/ui'
-import { formatDrawerSlug, useDrawerDepth } from '@payloadcms/ui/elements/Drawer'
-import { useCallback, useEffect, useId, useRef, useState } from 'react'
+} from "@payloadcms/ui";
+import {
+  formatDrawerSlug,
+  useDrawerDepth,
+} from "@payloadcms/ui/elements/Drawer";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 
-import type { TranslationsKey, TranslationsObject } from '../../translations.js'
+import type {
+  TranslationsKey,
+  TranslationsObject,
+} from "../../translations.js";
 
-import { cn } from '../../common/cn.js'
-import { SparklesIcon } from '../../common/icons.js'
-import { Label } from './labels.js'
+import { cn } from "../../common/cn.js";
+import { SparklesIcon } from "../../common/icons.js";
+import { Label } from "./labels.js";
 
 export function TranslationsFieldLabel({
   field,
   path,
-}: FieldLabelClientProps<RichTextFieldClient | TextareaFieldClient | TextFieldClient>) {
-  const { closeModal, isModalOpen, openModal } = useModal()
+}: FieldLabelClientProps<
+  RichTextFieldClient | TextareaFieldClient | TextFieldClient
+>) {
+  const { closeModal, isModalOpen, openModal } = useModal();
 
-  const { id, collectionSlug, globalSlug } = useDocumentInfo()
-  const locale = useLocale()
-  const isModified = useFormModified()
+  const { id, collectionSlug, globalSlug } = useDocumentInfo();
+  const locale = useLocale();
+  const isModified = useFormModified();
 
-  const { i18n, t } = useTranslation<TranslationsObject, TranslationsKey>()
-  const depth = useDrawerDepth()
+  const { i18n, t } = useTranslation<TranslationsObject, TranslationsKey>();
+  const depth = useDrawerDepth();
   const modalSlug = formatDrawerSlug({
     slug: `translations-${path}`,
     depth,
-  })
+  });
 
-  const { config } = useConfig()
+  const { config } = useConfig();
 
   if (!config.localization) {
-    throw new Error('Localization must be enabled')
+    throw new Error("Localization must be enabled");
   }
-  if (typeof id === 'number') {
-    throw new Error('number ids are not supported')
+  if (typeof id === "number") {
+    throw new Error("number ids are not supported");
   }
 
-  const translationsDisabled = (collectionSlug && !id) || isModified
+  const translationsDisabled = (collectionSlug && !id) || isModified;
 
-  const label = field?.label ? getLabelText(field.label, i18n) : undefined
+  const label = field?.label ? getLabelText(field.label, i18n) : undefined;
   //  The Label is also rendered in the List view, here without path, see https://payloadcms.com/docs/fields/overview#label
   if (!path) {
-    return <FieldLabel label={label} unstyled={true} />
+    return <FieldLabel label={label} unstyled={true} />;
   }
 
   return (
     <div className="tw:flex tw:justify-between tw:items-baseline tw:gap-4">
-      <FieldLabel label={label} localized={true} path={path} required={field?.required} />
+      <FieldLabel
+        label={label}
+        localized={true}
+        path={path}
+        required={field?.required}
+      />
       {path && (
         <>
           <div
             title={
               translationsDisabled
-                ? t('cmsPlugin:translations:pleaseSaveYourChangesToEnableAutoTranslate')
+                ? t(
+                    "cmsPlugin:translations:pleaseSaveYourChangesToEnableAutoTranslate",
+                  )
                 : undefined
             }
           >
@@ -92,10 +107,13 @@ export function TranslationsFieldLabel({
               onClick={() => openModal(modalSlug)}
               type="button"
             >
-              {i18n.t('cmsPlugin:translations:translationsButtonLabel')}
+              {i18n.t("cmsPlugin:translations:translationsButtonLabel")}
             </button>
           </div>
-          <Drawer slug={modalSlug} title={t('cmsPlugin:translations:translationsTitle')}>
+          <Drawer
+            slug={modalSlug}
+            title={t("cmsPlugin:translations:translationsTitle")}
+          >
             {isModalOpen(modalSlug) && (
               <DrawerContent
                 collectionSlug={collectionSlug}
@@ -111,7 +129,7 @@ export function TranslationsFieldLabel({
         </>
       )}
     </div>
-  )
+  );
 }
 
 function DrawerContent({
@@ -123,81 +141,93 @@ function DrawerContent({
   locales,
   onClose,
 }: {
-  collectionSlug?: CollectionSlug
-  currentLocale: Locale
-  fieldPath: string
-  globalSlug?: GlobalSlug
-  id?: string
-  locales: Locale[]
-  onClose: () => void
+  collectionSlug?: CollectionSlug;
+  currentLocale: Locale;
+  fieldPath: string;
+  globalSlug?: GlobalSlug;
+  id?: string;
+  locales: Locale[];
+  onClose: () => void;
 }) {
-  const [data, setData] = useState<AllLocalesText | null>(null)
+  const [data, setData] = useState<AllLocalesText | null>(null);
 
   const updateData = useCallback(
     async function updateData() {
-      const searchParams = new URLSearchParams()
+      const searchParams = new URLSearchParams();
       if (collectionSlug) {
-        searchParams.set('collection', collectionSlug)
+        searchParams.set("collection", collectionSlug);
       }
       if (globalSlug) {
-        searchParams.set('global', globalSlug)
+        searchParams.set("global", globalSlug);
       }
       if (id) {
-        searchParams.set('id', id)
+        searchParams.set("id", id);
       }
-      searchParams.set('fieldPath', fieldPath)
-      const result = await fetch(`/api/translations?${searchParams.toString()}`, {
-        credentials: 'include',
-      })
+      searchParams.set("fieldPath", fieldPath);
+      const result = await fetch(
+        `/api/translations?${searchParams.toString()}`,
+        {
+          credentials: "include",
+        },
+      );
 
       if (result.ok) {
-        setData(await result.json())
+        setData(await result.json());
       } else {
-        setData(null)
+        setData(null);
       }
     },
     [id, collectionSlug, fieldPath, globalSlug],
-  )
+  );
 
-  const { closeModal, openModal } = useModal()
-  const drawerDepth = useDrawerDepth()
+  const { closeModal, openModal } = useModal();
+  const drawerDepth = useDrawerDepth();
 
   useEffect(() => {
     void (async function () {
-      await updateData()
-    })()
-  }, [updateData])
+      await updateData();
+    })();
+  }, [updateData]);
 
-  const { i18n, t } = useTranslation<TranslationsObject, TranslationsKey>()
-  const [isTranslating, setIsTranslating] = useState(false)
-  const otherLocales = locales.filter((locale) => locale.code !== currentLocale.code)
+  const { i18n, t } = useTranslation<TranslationsObject, TranslationsKey>();
+  const [isTranslating, setIsTranslating] = useState(false);
+  const otherLocales = locales.filter(
+    (locale) => locale.code !== currentLocale.code,
+  );
   const [selectedLocaleCodes, setSelectedLocaleCodes] = useState(
     otherLocales.map((locale) => locale.code),
-  )
+  );
 
   if (!data) {
     return (
       <div className="tw:flex tw:h-[calc(100vh-10rem)] tw:items-center tw:justify-center tw:text-2xl tw:text-theme-elevation-600">
-        {t('cmsPlugin:common:loading')}
+        {t("cmsPlugin:common:loading")}
       </div>
-    )
+    );
   }
-  const showWideColumns = isLongContent(data, currentLocale.code)
+  const showWideColumns = isLongContent(data, currentLocale.code);
 
   const selectLocalesModalSlug = formatDrawerSlug({
     slug: `auto-translate-confirmation`,
     depth: drawerDepth,
-  })
+  });
 
   return (
     <>
-      <Drawer slug={selectLocalesModalSlug} title={t('cmsPlugin:translations:selectLocales')}>
+      <Drawer
+        slug={selectLocalesModalSlug}
+        title={t("cmsPlugin:translations:selectLocales")}
+      >
         <div className="tw:mt-8 tw:space-y-4">
           <p>
             <Translation
               elements={{
                 a: ({ children }) => (
-                  <a href="https://www.deepl.com" rel="noreferrer" target="_blank">
+                  <a
+                    href="https://www.deepl.com"
+                    rel="noreferrer"
+                    target="_blank"
+                  >
                     {children}
                   </a>
                 ),
@@ -221,7 +251,9 @@ function DrawerContent({
                 name={`locale-${locale.code}`}
                 setChecked={(checked) =>
                   setSelectedLocaleCodes((slc) =>
-                    checked ? [...slc, locale.code] : slc.filter((lc) => lc !== locale.code),
+                    checked
+                      ? [...slc, locale.code]
+                      : slc.filter((lc) => lc !== locale.code),
                   )
                 }
               />
@@ -242,59 +274,78 @@ function DrawerContent({
           <Button
             disabled={isTranslating || selectedLocaleCodes.length === 0}
             onClick={async () => {
-              setIsTranslating(true)
+              setIsTranslating(true);
               try {
-                const searchParams = new URLSearchParams()
+                const searchParams = new URLSearchParams();
                 if (collectionSlug) {
-                  searchParams.set('collection', collectionSlug)
+                  searchParams.set("collection", collectionSlug);
                 }
                 if (id) {
-                  searchParams.set('id', id)
+                  searchParams.set("id", id);
                 }
                 if (globalSlug) {
-                  searchParams.set('global', globalSlug)
+                  searchParams.set("global", globalSlug);
                 }
-                searchParams.set('fieldPath', fieldPath)
-                searchParams.set('locale', currentLocale.code)
-                const response = await fetch(`/api/auto-translate?${searchParams.toString()}`, {
-                  body: JSON.stringify({
-                    targetLocaleCodes: selectedLocaleCodes,
-                  }),
-                  credentials: 'include',
-                  method: 'POST',
-                })
+                searchParams.set("fieldPath", fieldPath);
+                searchParams.set("locale", currentLocale.code);
+                const response = await fetch(
+                  `/api/auto-translate?${searchParams.toString()}`,
+                  {
+                    body: JSON.stringify({
+                      targetLocaleCodes: selectedLocaleCodes,
+                    }),
+                    credentials: "include",
+                    method: "POST",
+                  },
+                );
                 if (response.ok) {
-                  await updateData()
-                  closeModal(selectLocalesModalSlug)
-                  toast.success(t('cmsPlugin:translations:autoTranslatedSuccessfully'), {
-                    duration: 3000,
-                  })
+                  await updateData();
+                  closeModal(selectLocalesModalSlug);
+                  toast.success(
+                    t("cmsPlugin:translations:autoTranslatedSuccessfully"),
+                    {
+                      duration: 3000,
+                    },
+                  );
                 } else {
-                  toast.error(t('cmsPlugin:translations:failedToAutoTranslate'), {
-                    duration: 3000,
-                  })
+                  toast.error(
+                    t("cmsPlugin:translations:failedToAutoTranslate"),
+                    {
+                      duration: 3000,
+                    },
+                  );
                 }
               } finally {
-                setIsTranslating(false)
+                setIsTranslating(false);
               }
             }}
             size="large"
             type="submit"
           >
             {isTranslating
-              ? t('cmsPlugin:translations:translating')
-              : t('cmsPlugin:translations:translateToSelectedLocales')}
+              ? t("cmsPlugin:translations:translating")
+              : t("cmsPlugin:translations:translateToSelectedLocales")}
           </Button>
         </div>
       </Drawer>
       <div className="table">
         <div className="tw:max-h-[calc(100vh-10rem)] tw:overflow-y-auto">
-          <table cellPadding="0" cellSpacing="0" className="tw:min-w-[unset] tw:table-fixed">
+          <table
+            cellPadding="0"
+            cellSpacing="0"
+            className="tw:min-w-[unset] tw:table-fixed"
+          >
             <thead className="tw:bg-theme-bg">
               <tr>
-                <TableHeaderFooterCell isHighlighted={true} isStickyLeft={true} isStickyTop={true}>
+                <TableHeaderFooterCell
+                  isHighlighted={true}
+                  isStickyLeft={true}
+                  isStickyTop={true}
+                >
                   <Label>{currentLocale.label}</Label>
-                  <Pill rounded={true}>{t('cmsPlugin:translations:currentLocale')}</Pill>
+                  <Pill rounded={true}>
+                    {t("cmsPlugin:translations:currentLocale")}
+                  </Pill>
                 </TableHeaderFooterCell>
                 {otherLocales.map((locale) => (
                   <TableHeaderFooterCell isStickyTop={true} key={locale.code}>
@@ -305,12 +356,22 @@ function DrawerContent({
             </thead>
             <tbody>
               <tr>
-                <TableContentCell isHighlighted={true} isStickyLeft={true} isWide={showWideColumns}>
-                  <AllLocalesTextRenderer data={data} localeCode={currentLocale.code} />
+                <TableContentCell
+                  isHighlighted={true}
+                  isStickyLeft={true}
+                  isWide={showWideColumns}
+                >
+                  <AllLocalesTextRenderer
+                    data={data}
+                    localeCode={currentLocale.code}
+                  />
                 </TableContentCell>
                 {otherLocales.map((locale) => (
                   <TableContentCell isWide={showWideColumns} key={locale.code}>
-                    <AllLocalesTextRenderer data={data} localeCode={locale.code} />
+                    <AllLocalesTextRenderer
+                      data={data}
+                      localeCode={locale.code}
+                    />
                   </TableContentCell>
                 ))}
               </tr>
@@ -329,11 +390,14 @@ function DrawerContent({
                     onClick={() => openModal(selectLocalesModalSlug)}
                     size="medium"
                   >
-                    {t('cmsPlugin:translations:autoTranslate')}
+                    {t("cmsPlugin:translations:autoTranslate")}
                   </Button>
                 </TableHeaderFooterCell>
                 {otherLocales.map((locale) => (
-                  <TableHeaderFooterCell isStickyBottom={true} key={locale.code}>
+                  <TableHeaderFooterCell
+                    isStickyBottom={true}
+                    key={locale.code}
+                  >
                     <Button
                       buttonStyle="secondary"
                       disabled={isTranslating}
@@ -343,7 +407,7 @@ function DrawerContent({
                       size="medium"
                       to={`?locale=${encodeURIComponent(locale.code)}`}
                     >
-                      {t('cmsPlugin:translations:goToTranslation')}
+                      {t("cmsPlugin:translations:goToTranslation")}
                     </Button>
                   </TableHeaderFooterCell>
                 ))}
@@ -353,15 +417,15 @@ function DrawerContent({
         </div>
       </div>
     </>
-  )
+  );
 }
 
 type TableHeaderCellProps = PropsWithChildren<{
-  isHighlighted?: boolean
-  isStickyBottom?: boolean
-  isStickyLeft?: boolean
-  isStickyTop?: boolean
-}>
+  isHighlighted?: boolean;
+  isStickyBottom?: boolean;
+  isStickyLeft?: boolean;
+  isStickyTop?: boolean;
+}>;
 
 function TableHeaderFooterCell({
   children,
@@ -373,29 +437,31 @@ function TableHeaderFooterCell({
   return (
     <th
       className={cn(
-        'tw:px-12 tw:py-3',
-        isHighlighted ? 'tw:bg-theme-elevation-50 tw:text-theme-elevation-700' : 'tw:bg-theme-bg',
+        "tw:px-12 tw:py-3",
+        isHighlighted
+          ? "tw:bg-theme-elevation-50 tw:text-theme-elevation-700"
+          : "tw:bg-theme-bg",
         (isStickyTop || isStickyLeft || isStickyBottom) &&
           cn(
-            'tw:sticky',
-            isStickyLeft && 'tw:left-0',
-            isStickyTop && 'tw:top-0 tw:shadow-sm tw:z-20',
-            isStickyBottom && 'tw:bottom-0',
+            "tw:sticky",
+            isStickyLeft && "tw:left-0",
+            isStickyTop && "tw:top-0 tw:shadow-sm tw:z-20",
+            isStickyBottom && "tw:bottom-0",
           ),
-        isStickyTop && isStickyLeft && 'tw:z-30',
-        isStickyBottom && isStickyLeft && 'tw:z-20',
+        isStickyTop && isStickyLeft && "tw:z-30",
+        isStickyBottom && isStickyLeft && "tw:z-20",
       )}
     >
       <div className="tw:flex tw:gap-4 tw:items-center">{children}</div>
     </th>
-  )
+  );
 }
 
 type TableContentCellProps = PropsWithChildren<{
-  isHighlighted?: boolean
-  isStickyLeft?: boolean
-  isWide?: boolean
-}>
+  isHighlighted?: boolean;
+  isStickyLeft?: boolean;
+  isWide?: boolean;
+}>;
 
 function TableContentCell({
   children,
@@ -406,35 +472,42 @@ function TableContentCell({
   return (
     <td
       className={cn(
-        isWide ? 'tw:w-[40rem] tw:min-w-[40rem]' : 'tw:w-[24rem] tw:min-w-[24rem]',
-        'tw:p-12',
-        isHighlighted ? 'tw:bg-theme-elevation-100' : 'tw:bg-theme-elevation-50',
-        isStickyLeft && 'tw:sticky tw:left-0 tw:z-10',
+        isWide
+          ? "tw:w-[40rem] tw:min-w-[40rem]"
+          : "tw:w-[24rem] tw:min-w-[24rem]",
+        "tw:p-12",
+        isHighlighted
+          ? "tw:bg-theme-elevation-100"
+          : "tw:bg-theme-elevation-50",
+        isStickyLeft && "tw:sticky tw:left-0 tw:z-10",
       )}
     >
       {children}
     </td>
-  )
+  );
 }
 
 type AllLocalesText = {
-  value: null | Record<string, SerializedEditorState | string> | undefined
-}
+  value: null | Record<string, SerializedEditorState | string> | undefined;
+};
 
 type AllLocalesTextRendererProps = {
-  data: AllLocalesText
-  localeCode: string
-}
+  data: AllLocalesText;
+  localeCode: string;
+};
 
-function AllLocalesTextRenderer({ data, localeCode }: AllLocalesTextRendererProps) {
+function AllLocalesTextRenderer({
+  data,
+  localeCode,
+}: AllLocalesTextRendererProps) {
   if (!data.value) {
-    return null
+    return null;
   }
 
-  const text = data.value[localeCode]
+  const text = data.value[localeCode];
   return (
     <>
-      {typeof text === 'string' ? (
+      {typeof text === "string" ? (
         text
       ) : (
         <div
@@ -448,33 +521,33 @@ function AllLocalesTextRenderer({ data, localeCode }: AllLocalesTextRendererProp
         />
       )}
     </>
-  )
+  );
 }
 
 function isLongContent(data: AllLocalesText, localeCode: string) {
   if (!data.value) {
-    return false
+    return false;
   }
 
-  const text = data.value[localeCode]
+  const text = data.value[localeCode];
 
   const plainText =
-    typeof text === 'string'
+    typeof text === "string"
       ? text
       : convertLexicalToPlaintext({
           data: text,
-        })
-  return !!plainText && plainText.length > 200
+        });
+  return !!plainText && plainText.length > 200;
 }
 
 type CheckboxInputProps = {
-  checked: boolean
-  defaultChecked?: boolean
-  label: ReactNode
-  name?: string
-  readOnly?: boolean
-  setChecked: (checked: boolean) => void
-}
+  checked: boolean;
+  defaultChecked?: boolean;
+  label: ReactNode;
+  name?: string;
+  readOnly?: boolean;
+  setChecked: (checked: boolean) => void;
+};
 
 export function CheckboxInput({
   name,
@@ -483,9 +556,9 @@ export function CheckboxInput({
   readOnly = false,
   setChecked,
 }: CheckboxInputProps) {
-  const inputBaseClass = 'checkbox-input'
-  const ref = useRef<HTMLInputElement>(null)
-  const id = `checkbox-input-${useId()}`
+  const inputBaseClass = "checkbox-input";
+  const ref = useRef<HTMLInputElement>(null);
+  const id = `checkbox-input-${useId()}`;
 
   return (
     <div
@@ -495,7 +568,7 @@ export function CheckboxInput({
         readOnly && `${inputBaseClass}--read-only`,
       ]
         .filter(Boolean)
-        .join(' ')}
+        .join(" ")}
     >
       <div className={`${inputBaseClass}__input`}>
         <input
@@ -508,9 +581,9 @@ export function CheckboxInput({
           type="checkbox"
         />
         <span
-          className={[`${inputBaseClass}__icon`, !checked ? 'partial' : 'check']
+          className={[`${inputBaseClass}__icon`, !checked ? "partial" : "check"]
             .filter(Boolean)
-            .join(' ')}
+            .join(" ")}
         >
           {checked && <CheckIcon />}
         </span>
@@ -519,5 +592,5 @@ export function CheckboxInput({
         {label}
       </label>
     </div>
-  )
+  );
 }
