@@ -1,12 +1,15 @@
-import type { Config, LocalizationConfig } from "payload";
+import type { Config } from "payload";
 
 import { ApiKeys } from "./collections/api-keys/config.js";
 import { LocaleConfigs } from "./collections/locale-configs/config.js";
+import { Media } from "./collections/media/config.js";
+import { MediaCategories } from "./collections/media-categories/config.js";
 import { Users } from "./collections/users/config.js";
 import { editor } from "./common/editor.js";
 import { localization } from "./common/localization.js";
 import { autoTranslateEndpoint } from "./endpoints/auto-translate.js";
 import { translationsEndpoint } from "./endpoints/translations.js";
+import { Common } from "./globals/common/config.js";
 import { Settings } from "./globals/settings/config.js";
 import { translations } from "./translations.js";
 
@@ -20,6 +23,8 @@ export const cmsPlugin =
       config.collections = [];
     }
 
+    config.collections.push(Media);
+    config.collections.push(MediaCategories);
     config.collections.push(Users);
     config.collections.push(ApiKeys);
     config.collections.push(LocaleConfigs);
@@ -29,6 +34,7 @@ export const cmsPlugin =
     }
 
     config.globals.push(Settings);
+    config.globals.push(Common);
 
     if (!config.admin) {
       config.admin = {};

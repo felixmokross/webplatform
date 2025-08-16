@@ -7,6 +7,18 @@ export const translations = {
       common: {
         loading: "Loading…",
       },
+      media: {
+        generate: {
+          confirm:
+            "This will send the image to OpenAI to generate an alternative text for the current locale.\n\nThe existing alternative text will be overwritten. Do you want to continue?",
+          failure: "Failed to generate alt text",
+          generate: "Generate",
+          generating: "Generating…",
+          pleaseSaveYourChangesToGenerateAltText:
+            "Please save your changes to generate the alt text.",
+          success: "Alt text generated successfully",
+        },
+      },
       translations: {
         autoTranslate: "Auto-Translate",
         autoTranslatedSuccessfully: "Auto-translated successfully",
@@ -27,12 +39,33 @@ export const translations = {
         translationsButtonLabel: "Translations…",
         translationsTitle: "Translations",
       },
+      usages: {
+        name: "Name",
+        type: "Type",
+        fieldPath: "Field Path",
+        global: "Global",
+        noUsages: "There are no usages of this item.",
+        numberOfUsages_one: "{{ count }} usage",
+        numberOfUsages_other: "{{ count }} usages",
+      },
     },
   },
   es: {
     cmsPlugin: {
       common: {
         loading: "Cargando…",
+      },
+      media: {
+        generate: {
+          confirm:
+            "Esto enviará la imagen a OpenAI para generar un texto alternativo para el idioma actual.\n\nEl texto alternativo existente será sobrescrito. ¿Desea continuar?",
+          failure: "Error al generar el texto alternativo",
+          generate: "Generar",
+          generating: "Generando…",
+          pleaseSaveYourChangesToGenerateAltText:
+            "Por favor, guarde sus cambios para generar el texto alternativo.",
+          success: "Texto alternativo generado con éxito",
+        },
       },
       translations: {
         autoTranslate: "Auto-traducir",
@@ -53,6 +86,15 @@ export const translations = {
         translating: "Traduciendo…",
         translationsButtonLabel: "Traducciones…",
         translationsTitle: "Traducciones",
+      },
+      usages: {
+        name: "Nombre",
+        type: "Tipo",
+        fieldPath: "Ruta del campo",
+        global: "Global",
+        noUsages: "No hay usos de este elemento.",
+        numberOfUsages_one: "{{ count }} uso",
+        numberOfUsages_other: "{{ count }} usos",
       },
     },
   },

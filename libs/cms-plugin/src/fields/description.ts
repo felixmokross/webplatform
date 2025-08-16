@@ -2,19 +2,19 @@ import type { UIField } from "payload";
 
 export function descriptionField(description: Record<string, string>): UIField {
   return {
-    type: "ui",
     name: "adminDescription",
-    label: { en: "Description", es: "Descripción" },
+    type: "ui",
     admin: {
       components: {
         Field: {
-          path: "/src/components/description-field",
           exportName: "DescriptionField",
+          path: "@fxmk/cms-plugin/rsc",
           serverProps: {
             description,
           },
         },
       },
     },
+    label: { en: "Description", es: "Descripción" },
   };
 }

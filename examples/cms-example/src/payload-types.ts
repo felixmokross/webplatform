@@ -68,6 +68,8 @@ export interface Config {
   };
   blocks: {};
   collections: {
+    media: Media;
+    mediaCategory: MediaCategory;
     users: User;
     'api-keys': ApiKey;
     'locale-configs': LocaleConfig;
@@ -75,8 +77,14 @@ export interface Config {
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    mediaCategory: {
+      media: 'media';
+    };
+  };
   collectionsSelect: {
+    media: MediaSelect<false> | MediaSelect<true>;
+    mediaCategory: MediaCategorySelect<false> | MediaCategorySelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'api-keys': ApiKeysSelect<false> | ApiKeysSelect<true>;
     'locale-configs': LocaleConfigsSelect<false> | LocaleConfigsSelect<true>;
@@ -89,9 +97,11 @@ export interface Config {
   };
   globals: {
     settings: Settings;
+    common: Common;
   };
   globalsSelect: {
     settings: SettingsSelect<false> | SettingsSelect<true>;
+    common: CommonSelect<false> | CommonSelect<true>;
   };
   locale:
     | 'en'
@@ -281,6 +291,63 @@ export interface ApiKeyAuthOperations {
     email: string;
     password: string;
   };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: string;
+  /**
+   * Add a media category to easily find this media. When you select the media, you can filter by this category.
+   */
+  category?: (string | null) | MediaCategory;
+  /**
+   * Add an internal comment to note any important information about this media, e.g. the source.
+   */
+  comment?: string | null;
+  /**
+   * A brief description of the media for screen readers and search engines. It is not displayed on the page but is important for accessibility. For images an alt text can be generated automatically using OpenAI.
+   */
+  alt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
+ * Use media categories to organize your media as you find it useful. When you select media, you can filter by category.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "mediaCategory".
+ */
+export interface MediaCategory {
+  id: string;
+  name: string;
+  media?: {
+    docs?: (string | Media)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -633,6 +700,14 @@ export interface PayloadLockedDocument {
   id: string;
   document?:
     | ({
+        relationTo: 'media';
+        value: string | Media;
+      } | null)
+    | ({
+        relationTo: 'mediaCategory';
+        value: string | MediaCategory;
+      } | null)
+    | ({
         relationTo: 'users';
         value: string | User;
       } | null)
@@ -695,6 +770,50 @@ export interface PayloadMigration {
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media_select".
+ */
+export interface MediaSelect<T extends boolean = true> {
+  category?: T;
+  comment?: T;
+  alt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+  sizes?:
+    | T
+    | {
+        thumbnail?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "mediaCategory_select".
+ */
+export interface MediaCategorySelect<T extends boolean = true> {
+  name?: T;
+  media?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -806,6 +925,65 @@ export interface Settings {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "common".
+ */
+export interface Common {
+  id: string;
+  pageNotFoundScreen?: {
+    heading?: string | null;
+    text?: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+  };
+  errorScreen?: {
+    heading?: string | null;
+    text?: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+  };
+  uiLabels?: {
+    errorBoundary?: {
+      title?: string | null;
+      text?: string | null;
+    };
+    maintenanceScreen?: {
+      login?: string | null;
+    };
+    login?: {
+      email?: string | null;
+      password?: string | null;
+      submit?: string | null;
+    };
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "settings_select".
  */
 export interface SettingsSelect<T extends boolean = true> {
@@ -820,6 +998,49 @@ export interface SettingsSelect<T extends boolean = true> {
     | {
         show?: T;
         message?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "common_select".
+ */
+export interface CommonSelect<T extends boolean = true> {
+  pageNotFoundScreen?:
+    | T
+    | {
+        heading?: T;
+        text?: T;
+      };
+  errorScreen?:
+    | T
+    | {
+        heading?: T;
+        text?: T;
+      };
+  uiLabels?:
+    | T
+    | {
+        errorBoundary?:
+          | T
+          | {
+              title?: T;
+              text?: T;
+            };
+        maintenanceScreen?:
+          | T
+          | {
+              login?: T;
+            };
+        login?:
+          | T
+          | {
+              email?: T;
+              password?: T;
+              submit?: T;
+            };
       };
   updatedAt?: T;
   createdAt?: T;
