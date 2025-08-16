@@ -8,6 +8,7 @@ import {
   optionalTextField,
 } from "../../fields/index.js";
 import { contentGroup } from "../../groups.js";
+import { allTranslations, translated } from "../../translations/index.js";
 
 export const Common: GlobalConfig = {
   slug: "common",
@@ -24,20 +25,23 @@ export const Common: GlobalConfig = {
         {
           name: "pageNotFoundScreen",
           fields: [
-            descriptionField({
-              en: "This screen is shown when a user tries to access a page that does not exist.",
-              es: "Esta pantalla se muestra cuando un usuario intenta acceder a una página que no existe.",
-            }),
+            descriptionField(
+              allTranslations(
+                (v) =>
+                  v.cmsPlugin.globals.common.pageNotFoundScreen.description,
+              ),
+            ),
             optionalTextField({
               name: "heading",
-              label: { en: "Heading", es: "Título" },
+              label: translated(
+                "cmsPlugin:globals:common:pageNotFoundScreen:heading:label",
+              ),
             }),
             optionalRichTextField(),
           ],
-          label: {
-            en: "Page Not Found Screen",
-            es: "Pantalla de Página No Encontrada",
-          },
+          label: translated(
+            "cmsPlugin:globals:common:pageNotFoundScreen:label",
+          ),
         },
         {
           name: "errorScreen",
@@ -120,8 +124,5 @@ export const Common: GlobalConfig = {
       ],
     },
   ],
-  label: {
-    en: "Common",
-    es: "Común",
-  },
+  label: translated("cmsPlugin:globals:common:label"),
 };

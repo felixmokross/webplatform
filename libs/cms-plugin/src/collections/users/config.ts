@@ -1,60 +1,59 @@
-import { CollectionConfig } from "payload";
+import type { CollectionConfig } from "payload";
+
 import {
   canManageContent,
   isAdmin,
   isSelf,
 } from "../../common/access-control.js";
 import { adminGroup } from "../../groups.js";
+import { translated } from "../../translations/index.js";
 
 export const Users: CollectionConfig = {
   slug: "users",
-  labels: {
-    singular: {
-      en: "User",
-      es: "Usuario",
-    },
-    plural: {
-      en: "Users",
-      es: "Usuarios",
-    },
+  access: {
+    admin: canManageContent,
+    create: ({ req }) => isAdmin(req),
+    delete: ({ req }) => isAdmin(req),
+    read: ({ id, req }) => isSelf(req, id!, "users") || isAdmin(req),
+    update: ({ id, req }) => isSelf(req, id!, "users") || isAdmin(req),
+  },
+  admin: {
+    defaultColumns: ["email", "role", "updatedAt"],
+    group: adminGroup,
+    listSearchableFields: ["id", "email", "role"],
+    useAsTitle: "email",
   },
   auth: true,
-  defaultSort: "email",
   defaultPopulate: {
     email: true,
     role: true,
   },
-  admin: {
-    useAsTitle: "email",
-    defaultColumns: ["email", "role", "updatedAt"],
-    listSearchableFields: ["id", "email", "role"],
-    group: adminGroup,
-  },
-  access: {
-    read: ({ req, id }) => isSelf(req, id!, "users") || isAdmin(req),
-    create: ({ req }) => isAdmin(req),
-    update: ({ req, id }) => isSelf(req, id!, "users") || isAdmin(req),
-    delete: ({ req }) => isAdmin(req),
-    admin: canManageContent,
-  },
+  defaultSort: "email",
   fields: [
     {
       name: "role",
-      label: {
-        en: "Role",
-        es: "Rol",
-      },
       type: "radio",
-      options: [
-        { value: "editor", label: { en: "Editor", es: "Editor" } },
-        { value: "admin", label: { en: "Admin", es: "Administrador" } },
-      ],
-      defaultValue: "editor",
-      required: true,
       access: {
         create: ({ req }) => isAdmin(req),
         update: ({ req }) => isAdmin(req),
       },
+      defaultValue: "editor",
+      label: translated("cmsPlugin:users:role:label"),
+      options: [
+        {
+          label: translated("cmsPlugin:users:role:options:editor"),
+          value: "editor",
+        },
+        {
+          label: translated("cmsPlugin:users:role:options:admin"),
+          value: "admin",
+        },
+      ],
+      required: true,
     },
   ],
+  labels: {
+    plural: translated("cmsPlugin:users:labels:plural"),
+    singular: translated("cmsPlugin:users:labels:singular"),
+  },
 };

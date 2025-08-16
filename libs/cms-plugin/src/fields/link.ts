@@ -3,6 +3,8 @@ import type { GroupField, RowField, TextField } from "payload";
 import { validateUrl } from "@payloadcms/richtext-lexical";
 import { text } from "payload/shared";
 
+import { translated } from "../translations/index.js";
+
 type LinkFieldOptions = {
   allowedLinkTypes?: ("custom" | "internal")[];
   fieldConfig?: Partial<GroupField>;
@@ -25,30 +27,20 @@ export function linkField({
         name: "linkType",
         type: "radio",
         admin: {
-          description: {
-            en: "Choose between entering a custom text URL or linking to another document.",
-            es: "Elige entre ingresar una URL personalizada o enlazar a otro documento.",
-          },
+          description: translated("cmsPlugin:fields:link:linkType:description"),
           position: "sidebar",
         },
         defaultValue: "internal",
-        label: {
-          en: "Link Type",
-          es: "Tipo de enlace",
-        },
+        label: translated("cmsPlugin:fields:link:linkType:label"),
         options: [
           {
-            label: {
-              en: "Custom URL",
-              es: "URL Personalizado",
-            },
+            label: translated("cmsPlugin:fields:link:linkType:options:custom"),
             value: "custom" as const,
           },
           {
-            label: {
-              en: "Internal Link",
-              es: "Enlace interno",
-            },
+            label: translated(
+              "cmsPlugin:fields:link:linkType:options:internal",
+            ),
             value: "internal" as const,
           },
         ].filter(
@@ -63,10 +55,7 @@ export function linkField({
           appearance: "drawer",
           condition: (_, siblingData) => siblingData.linkType === "internal",
         },
-        label: {
-          en: "Choose a document to link",
-          es: "Elige un documento a enlazar",
-        },
+        label: translated("cmsPlugin:fields:link:doc:label"),
         // @ts-ignore TODO add pages to cms-plugin config
         relationTo: "pages",
         required,
@@ -78,10 +67,7 @@ export function linkField({
         admin: {
           condition: (_, siblingData) => siblingData.linkType === "custom",
         },
-        label: {
-          en: "URL",
-          es: "URL",
-        },
+        label: translated("cmsPlugin:fields:link:url:label"),
         required,
         validate: (value, options) => {
           const textValidationResult = text(value, options);
@@ -92,7 +78,7 @@ export function linkField({
           if (value) {
             if (!validateUrl(value)) {
               // @ts-expect-error t function is not typed with custom translations here
-              return options.req.t("custom:validation:mustBeValidUrl");
+              return options.req.t("cmsPlugin:validation:mustBeValidUrl");
             }
           }
 
@@ -101,10 +87,7 @@ export function linkField({
       } as TextField,
     ],
     interfaceName: "NewLink", // TODO rename interface once Link collection is removed
-    label: {
-      en: "Link",
-      es: "Enlace",
-    },
+    label: translated("cmsPlugin:fields:link:label"),
     ...fieldConfig,
   };
 }
@@ -118,32 +101,22 @@ export function queryStringAndFragmentField(): RowField {
         type: "text",
         admin: {
           condition: (_, siblingData) => siblingData.linkType === "internal",
-          description: {
-            en: "If a query string is provided, it will be appended to the URL with a '?' character.",
-            es: "Si se proporciona una cadena de consulta, se añadirá a la URL con un carácter '?'.",
-          },
+          description: translated(
+            "cmsPlugin:fields:link:queryString:description",
+          ),
           width: "50%",
         },
-        label: {
-          en: "Query String",
-          es: "Cadena de consulta",
-        },
+        label: translated("cmsPlugin:fields:link:queryString:label"),
       },
       {
         name: "fragment",
         type: "text",
         admin: {
           condition: (_, siblingData) => siblingData.linkType === "internal",
-          description: {
-            en: "If a fragment is provided, it will be appended to the URL with a '#' character. Use this to link to a section of a page, defined by an 'Element ID'.",
-            es: "Si se proporciona un fragmento, se añadirá a la URL con un carácter '#'. Úsalo para enlazar a una sección de una página, definida por un 'ID de elemento'.",
-          },
+          description: translated("cmsPlugin:fields:link:fragment:description"),
           width: "50%",
         },
-        label: {
-          en: "Fragment",
-          es: "Fragmento",
-        },
+        label: translated("cmsPlugin:fields:link:fragment:label"),
       },
     ],
   };

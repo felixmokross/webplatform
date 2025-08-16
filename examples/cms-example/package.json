@@ -22,6 +22,7 @@
     "@payloadcms/next": "^3.52.0",
     "@payloadcms/ui": "^3.52.0",
     "@payloadcms/richtext-lexical": "^3.52.0",
+    "@payloadcms/db-mongodb": "^3.52.0",
     "cross-env": "^7.0.3",
     "next": "15.4.4",
     "payload": "^3.52.0",

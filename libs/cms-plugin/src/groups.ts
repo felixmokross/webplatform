@@ -1,9 +1,13 @@
-export const adminGroup = {
-  en: "Administration",
-  es: "Administración",
-};
+import type { CollectionAdminOptions } from "payload";
 
-export const contentGroup = {
-  en: "Content",
-  es: "Contenido",
-};
+import { allTranslations } from "./translations/index.js";
+
+// Admin groups don't provide a way to use a 't' function
+
+export const adminGroup: CollectionAdminOptions["group"] = allTranslations(
+  (v) => v.cmsPlugin.admin.groups.admin,
+);
+
+export const contentGroup: CollectionAdminOptions["group"] = allTranslations(
+  (v) => v.cmsPlugin.admin.groups.content,
+);

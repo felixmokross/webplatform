@@ -38,7 +38,7 @@ import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type {
   TranslationsKey,
   TranslationsObject,
-} from "../../translations.js";
+} from "../../translations/index.js";
 
 import { cn } from "../../common/cn.js";
 import { SparklesIcon } from "../../common/icons.js";
@@ -234,7 +234,6 @@ function DrawerContent({
               }}
               // @ts-expect-error types don't match
               i18nKey="cmsPlugin:translations:selectLocalesDescription"
-              // @ts-expect-error types don't match
               t={t}
               variables={{
                 sourceLocale: getLabelText(currentLocale.label, i18n),
@@ -266,7 +265,6 @@ function DrawerContent({
             elements={{ s: ({ children }) => <strong>{children}</strong> }}
             // @ts-expect-error types don't match
             i18nKey="cmsPlugin:translations:selectLocalesNote"
-            // @ts-expect-error types don't match
             t={t}
           />
         </p>

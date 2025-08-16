@@ -7,7 +7,7 @@ import type { UsagesConfig } from "../../fields/usages/types.js";
 import type {
   TranslationsKey,
   TranslationsObject,
-} from "../../translations.js";
+} from "../../translations/index.js";
 
 import { findUsages } from "../../fields/usages/find-usages.js";
 import { Label } from "../client/labels.js";

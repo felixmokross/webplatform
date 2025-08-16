@@ -6,6 +6,7 @@ import {
   deeplTargetLanguage as deeplTargetLanguageCodes,
 } from "../../common/translation.js";
 import { adminGroup } from "../../groups.js";
+import { translated } from "../../translations/index.js";
 import { googleMapLanguageCodes } from "./google-maps-language-codes.js";
 
 export const LocaleConfigs: CollectionConfig = {
@@ -28,10 +29,7 @@ export const LocaleConfigs: CollectionConfig = {
       admin: {
         hidden: true,
       },
-      label: {
-        en: "ID",
-        es: "ID",
-      },
+      label: translated("cmsPlugin:common:id"),
     },
     {
       name: "locale",
@@ -39,10 +37,7 @@ export const LocaleConfigs: CollectionConfig = {
       access: {
         update: () => false,
       },
-      label: {
-        en: "Locale",
-        es: "Idioma",
-      },
+      label: translated("cmsPlugin:localeConfigs:locale:label"),
       options: locales
         .toSorted((a, b) => a.code.localeCompare(b.code))
         .map((locale) => ({
@@ -60,24 +55,17 @@ export const LocaleConfigs: CollectionConfig = {
       name: "displayLabel",
       type: "text",
       admin: {
-        description: {
-          en: "The label to be displayed in the application. This should be the name in the respective language so that it can be easily recognized by speakers of that language. E.g. 'English' for English, 'Español' for Spanish.",
-          es: "La etiqueta que se mostrará en la aplicación. Debe ser el nombre en el idioma respectivo para que pueda ser fácilmente reconocido por los hablantes de ese idioma. Por ejemplo, 'English' para inglés, 'Español' para español.",
-        },
+        description: translated(
+          "cmsPlugin:localeConfigs:displayLabel:description",
+        ),
       },
-      label: {
-        en: "Display Label",
-        es: "Etiqueta de Visualización",
-      },
+      label: translated("cmsPlugin:localeConfigs:displayLabel:label"),
       required: true,
     },
     {
       name: "deeplSourceLanguage",
       type: "select",
-      label: {
-        en: "DeepL Source Language",
-        es: "Idioma de Origen DeepL",
-      },
+      label: translated("cmsPlugin:localeConfigs:deeplSourceLanguage:label"),
       options: deeplSourceLanguageCodes
         .toSorted((a, b) => a.localeCompare(b))
         .map((languageCode) => ({
@@ -92,10 +80,7 @@ export const LocaleConfigs: CollectionConfig = {
     {
       name: "deeplTargetLanguage",
       type: "select",
-      label: {
-        en: "DeepL Target Language",
-        es: "Idioma de Destino DeepL",
-      },
+      label: translated("cmsPlugin:localeConfigs:deeplTargetLanguage:label"),
       options: deeplTargetLanguageCodes
         .toSorted((a, b) => a.localeCompare(b))
         .map((languageCode) => ({
@@ -110,11 +95,7 @@ export const LocaleConfigs: CollectionConfig = {
     {
       name: "googleMapsLanguage",
       type: "select",
-      label: {
-        en: "Google Maps Language",
-        es: "Idioma de Google Maps",
-      },
-
+      label: translated("cmsPlugin:localeConfigs:googleMapsLanguage:label"),
       options: googleMapLanguageCodes
         .toSorted((a, b) => a.localeCompare(b))
         .map((languageCode) => ({
@@ -135,13 +116,7 @@ export const LocaleConfigs: CollectionConfig = {
     ],
   },
   labels: {
-    plural: {
-      en: "Locale Configurations",
-      es: "Configuraciones de Idioma",
-    },
-    singular: {
-      en: "Locale Configuration",
-      es: "Configuración de Idioma",
-    },
+    plural: translated("cmsPlugin:localeConfigs:labels:plural"),
+    singular: translated("cmsPlugin:localeConfigs:labels:singular"),
   },
 };

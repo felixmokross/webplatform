@@ -1,5 +1,7 @@
 import type { UIField } from "payload";
 
+import { allTranslations } from "../translations/index.js";
+
 export function descriptionField(description: Record<string, string>): UIField {
   return {
     name: "adminDescription",
@@ -15,6 +17,7 @@ export function descriptionField(description: Record<string, string>): UIField {
         },
       },
     },
-    label: { en: "Description", es: "Descripción" },
+    // UIField doesn't seem to support a 't' function
+    label: allTranslations((v) => v.cmsPlugin.fields.description.label),
   };
 }

@@ -1,5 +1,7 @@
 import type { TextField } from "payload";
 
+import { translated } from "../translations/index.js";
+
 export function optionalTextField(config: Partial<TextField> = {}): TextField {
   return textField({ ...config, required: false });
 }
@@ -7,11 +9,8 @@ export function optionalTextField(config: Partial<TextField> = {}): TextField {
 export function textField(config: Partial<TextField> = {}): TextField {
   return {
     name: "text",
-    label: {
-      en: "Text",
-      es: "Texto",
-    },
     type: "text",
+    label: translated("cmsPlugin:fields:text:label"),
     localized: true,
     required: true,
     ...config,

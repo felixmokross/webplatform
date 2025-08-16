@@ -3,6 +3,8 @@ import path from "path";
 import { buildConfig } from "payload";
 import { cmsPlugin } from "@fxmk/cms-plugin";
 import { fileURLToPath } from "url";
+import { en } from "payload/i18n/en";
+import { es } from "payload/i18n/es";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -28,4 +30,5 @@ export default buildConfig({
       },
     }),
   ],
+  i18n: { supportedLanguages: { en, es } },
 });

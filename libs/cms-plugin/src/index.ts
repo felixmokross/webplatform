@@ -15,7 +15,7 @@ import { autoTranslateEndpoint } from "./endpoints/auto-translate.js";
 import { translationsEndpoint } from "./endpoints/translations.js";
 import { Common } from "./globals/common/config.js";
 import { Settings } from "./globals/settings/config.js";
-import { translations } from "./translations.js";
+import { translations } from "./translations/index.js";
 
 export * from "./common/index.js";
 export * from "./fields/index.js";
@@ -124,6 +124,8 @@ export const cmsPlugin =
 
     config.localization = localization;
 
+    config.graphQL = { disable: false };
+
     const incomingOnInit = config.onInit;
 
     config.onInit = async (payload) => {
@@ -175,7 +177,11 @@ export const cmsPlugin =
       config.i18n = { ...config.i18n, translations: {} };
     }
 
-    for (const language in translations) {
+    const supportedLanguages = config.i18n.supportedLanguages
+      ? Object.keys(config.i18n.supportedLanguages)
+      : ["en"];
+
+    for (const language of supportedLanguages) {
       const key = language as keyof typeof translations;
       config.i18n.translations![key] = {
         ...config.i18n.translations![key],

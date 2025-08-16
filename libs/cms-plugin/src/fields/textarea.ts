@@ -1,5 +1,7 @@
 import type { TextareaField } from "payload";
 
+import { translated } from "../translations/index.js";
+
 export function optionalTextareaField(
   config: Partial<TextareaField> = {},
 ): TextareaField {
@@ -10,11 +12,8 @@ export function textareaField(
 ): TextareaField {
   return {
     name: "text",
-    label: {
-      en: "Text",
-      es: "Texto",
-    },
     type: "textarea",
+    label: translated("cmsPlugin:fields:textarea:label"),
     localized: true,
     required: true,
     ...config,

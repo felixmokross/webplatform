@@ -1,5 +1,7 @@
 import type { RichTextField } from "payload";
 
+import { translated } from "../translations/index.js";
+
 export function optionalRichTextField(
   config: Partial<RichTextField> = {},
 ): RichTextField {
@@ -11,11 +13,8 @@ export function richTextField(
 ): RichTextField {
   return {
     name: "text",
-    label: {
-      en: "Text",
-      es: "Texto",
-    },
     type: "richText",
+    label: translated("cmsPlugin:fields:richText:label"),
     localized: true,
     required: true,
     ...config,

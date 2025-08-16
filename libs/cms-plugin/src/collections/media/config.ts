@@ -3,6 +3,7 @@ import type { CollectionConfig } from "payload";
 import { canManageContent } from "../../common/access-control.js";
 import { textareaField } from "../../fields/index.js";
 import { contentGroup } from "../../groups.js";
+import { translated } from "../../translations/index.js";
 import { generateAltTextEndpoint } from "./generate-alt-text-endpoint.js";
 import { mediaUsagesField } from "./usages.js";
 
@@ -39,16 +40,10 @@ export function Media({
         name: "category",
         type: "relationship",
         admin: {
-          description: {
-            en: "Add a media category to easily find this media. When you select the media, you can filter by this category.",
-            es: "Agrega una categoría de medios para encontrar fácilmente este medio. Al seleccionar el medio, puedes filtrar por esta categoría.",
-          },
+          description: translated("cmsPlugin:media:category:description"),
           position: "sidebar",
         },
-        label: {
-          en: "Category",
-          es: "Categoría",
-        },
+        label: translated("cmsPlugin:media:category:label"),
         relationTo: "mediaCategory",
       },
 
@@ -56,16 +51,10 @@ export function Media({
         name: "comment",
         type: "textarea",
         admin: {
-          description: {
-            en: "Add an internal comment to note any important information about this media, e.g. the source.",
-            es: "Agrega un comentario interno para anotar cualquier información importante sobre este medio, por ejemplo, la fuente.",
-          },
+          description: translated("cmsPlugin:media:comment:description"),
           position: "sidebar",
         },
-        label: {
-          en: "Comment (internal)",
-          es: "Comentario (interno)",
-        },
+        label: translated("cmsPlugin:media:comment:label"),
       },
 
       {
@@ -81,42 +70,24 @@ export function Media({
                       "@fxmk/cms-plugin/client#GenerateAltTextButton",
                     ],
                   },
-                  description: {
-                    en: "A brief description of the media for screen readers and search engines. It is not displayed on the page but is important for accessibility. For images an alt text can be generated automatically using OpenAI.",
-                    es: "Una breve descripción del medio para lectores de pantalla y motores de búsqueda. No se muestra en la página pero es importante para la accesibilidad. Para las imágenes se puede generar un texto alternativo automáticamente utilizando OpenAI.",
-                  },
+                  description: translated("cmsPlugin:media:alt:description"),
                 },
-                label: {
-                  en: "Alternative Text",
-                  es: "Texto alternativo",
-                },
+                label: translated("cmsPlugin:media:alt:label"),
                 required: false,
               }),
             ],
-            label: {
-              en: "Alternative Text",
-              es: "Texto alternativo",
-            },
+            label: translated("cmsPlugin:media:alt:label"),
           },
           {
             fields: [mediaUsagesField()],
-            label: {
-              en: "Usages",
-              es: "Usos",
-            },
+            label: translated("cmsPlugin:common:usages:label"),
           },
         ],
       },
     ],
     labels: {
-      plural: {
-        en: "Media",
-        es: "Medios",
-      },
-      singular: {
-        en: "Media",
-        es: "Medio",
-      },
+      plural: translated("cmsPlugin:media:labels:plural"),
+      singular: translated("cmsPlugin:media:labels:singular"),
     },
     upload: {
       crop: false,

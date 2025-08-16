@@ -298,17 +298,8 @@ export interface ApiKeyAuthOperations {
  */
 export interface Media {
   id: string;
-  /**
-   * Add a media category to easily find this media. When you select the media, you can filter by this category.
-   */
   category?: (string | null) | MediaCategory;
-  /**
-   * Add an internal comment to note any important information about this media, e.g. the source.
-   */
   comment?: string | null;
-  /**
-   * A brief description of the media for screen readers and search engines. It is not displayed on the page but is important for accessibility. For images an alt text can be generated automatically using OpenAI.
-   */
   alt?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -333,8 +324,6 @@ export interface Media {
   };
 }
 /**
- * Use media categories to organize your media as you find it useful. When you select media, you can filter by category.
- *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "mediaCategory".
  */
@@ -535,9 +524,6 @@ export interface LocaleConfig {
     | 'zh-Hant'
     | 'zh-HK'
     | 'zh-TW';
-  /**
-   * The label to be displayed in the application. This should be the name in the respective language so that it can be easily recognized by speakers of that language. E.g. 'English' for English, 'Español' for Spanish.
-   */
   displayLabel: string;
   deeplSourceLanguage?:
     | (

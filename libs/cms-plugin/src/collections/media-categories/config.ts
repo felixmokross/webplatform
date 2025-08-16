@@ -2,6 +2,7 @@ import type { CollectionConfig } from "payload";
 
 import { canManageContent } from "../../common/access-control.js";
 import { adminGroup } from "../../groups.js";
+import { translated } from "../../translations/index.js";
 
 export const MediaCategories: CollectionConfig = {
   slug: "mediaCategory",
@@ -12,10 +13,7 @@ export const MediaCategories: CollectionConfig = {
   },
   admin: {
     defaultColumns: ["name", "updatedAt"],
-    description: {
-      en: "Use media categories to organize your media as you find it useful. When you select media, you can filter by category.",
-      es: "Usa las categorías de medios para organizar tus medios como te sea útil. Al seleccionar medios, puedes filtrar por categoría.",
-    },
+    description: translated("cmsPlugin:mediaCategories:admin:description"),
     group: adminGroup,
     listSearchableFields: ["id", "name"],
     useAsTitle: "name",
@@ -28,31 +26,19 @@ export const MediaCategories: CollectionConfig = {
     {
       name: "name",
       type: "text",
-      label: {
-        en: "Name",
-        es: "Nombre",
-      },
+      label: translated("cmsPlugin:mediaCategories:name:label"),
       required: true,
     },
     {
       name: "media",
       type: "join",
       collection: "media",
-      label: {
-        en: "Media",
-        es: "Medios",
-      },
+      label: translated("cmsPlugin:mediaCategories:media:label"),
       on: "category",
     },
   ],
   labels: {
-    plural: {
-      en: "Media Categories",
-      es: "Categorías de medios",
-    },
-    singular: {
-      en: "Media Category",
-      es: "Categoría de medios",
-    },
+    plural: translated("cmsPlugin:mediaCategories:labels:plural"),
+    singular: translated("cmsPlugin:mediaCategories:labels:singular"),
   },
 };

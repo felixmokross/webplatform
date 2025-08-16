@@ -1,56 +1,61 @@
+import type { CollectionConfig } from "payload";
+
 import { isAdmin } from "../../common/access-control.js";
 import { adminGroup } from "../../groups.js";
-import { CollectionConfig } from "payload";
+import { translated } from "../../translations/index.js";
 
 export const ApiKeys: CollectionConfig = {
   slug: "api-keys",
-  labels: {
-    singular: { en: "API Key", es: "Clave API" },
-    plural: { en: "API Keys", es: "Claves API" },
-  },
   access: {
-    read: ({ req }) => isAdmin(req),
     create: ({ req }) => isAdmin(req),
-    update: ({ req }) => isAdmin(req),
     delete: ({ req }) => isAdmin(req),
+    read: ({ req }) => isAdmin(req),
+    update: ({ req }) => isAdmin(req),
+  },
+  admin: {
+    defaultColumns: ["name", "role", "remark", "createdAt", "updatedAt"],
+    group: adminGroup,
+    useAsTitle: "id",
   },
   auth: {
     disableLocalStrategy: true,
     useAPIKey: true,
   },
-  admin: {
-    group: adminGroup,
-    defaultColumns: ["name", "role", "remark", "createdAt", "updatedAt"],
-    useAsTitle: "id",
-  },
   fields: [
     {
       name: "role",
-      label: {
-        en: "Role",
-        es: "Rol",
-      },
       type: "radio",
-      options: [
-        { value: "cicd", label: { en: "CI/CD", es: "CI/CD" } },
-        { value: "frontend", label: { en: "Frontend", es: "Frontend" } },
-        { value: "e2e-tests", label: { en: "E2E Tests", es: "E2E Tests" } },
-      ],
-      defaultValue: "editor",
-      required: true,
       access: {
-        read: () => true,
         create: ({ req }) => isAdmin(req),
+        read: () => true,
         update: ({ req }) => isAdmin(req),
       },
+      defaultValue: "editor",
+      label: translated("cmsPlugin:apiKeys:role:label"),
+      options: [
+        {
+          label: translated("cmsPlugin:apiKeys:role:options:cicd"),
+          value: "cicd",
+        },
+        {
+          label: translated("cmsPlugin:apiKeys:role:options:frontend"),
+          value: "frontend",
+        },
+        {
+          label: translated("cmsPlugin:apiKeys:role:options:e2eTests"),
+          value: "e2e-tests",
+        },
+      ],
+      required: true,
     },
     {
       name: "remark",
-      label: {
-        en: "Remark",
-        es: "Comentario",
-      },
       type: "text",
+      label: translated("cmsPlugin:apiKeys:remark:label"),
     },
   ],
+  labels: {
+    plural: translated("cmsPlugin:apiKeys:labels:plural"),
+    singular: translated("cmsPlugin:apiKeys:labels:singular"),
+  },
 };
