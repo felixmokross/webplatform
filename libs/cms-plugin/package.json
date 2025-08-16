@@ -71,9 +71,14 @@
       "default": "./dist/index.js"
     },
     "./client": {
-      "import": "./dist/exports/client.js",
-      "types": "./dist/exports/client.d.ts",
-      "default": "./dist/exports/client.js"
+      "import": "./dist/components/client/index.js",
+      "types": "./dist/components/client/index.d.ts",
+      "default": "./dist/components/client/index.js"
+    },
+    "./rsc": {
+      "import": "./dist/components/rsc/index.js",
+      "types": "./dist/components/rsc/index.d.ts",
+      "default": "./dist/components/rsc/index.js"
     }
   },
   "main": "./dist/index.js",

@@ -12,7 +12,8 @@ import type {
 } from 'payload'
 import type { PropsWithChildren, ReactNode } from 'react'
 
-import { getLabelText, Label } from '@fxmk/cms-plugin/client'
+import { getLabelText } from '../../common/labels.js'
+
 import { convertLexicalToHTML } from '@payloadcms/richtext-lexical/html'
 import { convertLexicalToPlaintext } from '@payloadcms/richtext-lexical/plaintext'
 import {
@@ -33,10 +34,11 @@ import {
 import { formatDrawerSlug, useDrawerDepth } from '@payloadcms/ui/elements/Drawer'
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
 
-import type { TranslationsKey, TranslationsObject } from '../translations.js'
+import type { TranslationsKey, TranslationsObject } from '../../translations.js'
 
-import { cn } from '../common/cn.js'
-import { SparklesIcon } from '../common/icons.js'
+import { cn } from '../../common/cn.js'
+import { SparklesIcon } from '../../common/icons.js'
+import { Label } from './labels.js'
 
 export function TranslationsFieldLabel({
   field,

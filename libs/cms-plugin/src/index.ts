@@ -1,62 +1,35 @@
-import type { CollectionSlug, Config } from 'payload'
+import type { Config } from 'payload'
 
 import { autoTranslateEndpoint } from './endpoints/auto-translate.js'
 import { translationsEndpoint } from './endpoints/translations.js'
 import { translations } from './translations.js'
+import { Users } from './collections/users/config.js'
+import { ApiKeys } from './collections/api-keys/config.js'
 
 export * from './common/index.js'
 export * from './fields/index.js'
 
-export type CmsPluginConfig = {
-  /**
-   * List of collections to add a custom field
-   */
-  collections?: Partial<Record<CollectionSlug, true>>
-  disabled?: boolean
-}
-
 export const cmsPlugin =
-  (pluginOptions: CmsPluginConfig) =>
+  () =>
   (config: Config): Config => {
     if (!config.collections) {
       config.collections = []
     }
 
-    config.collections.push({
-      slug: 'plugin-collection',
-      fields: [
-        {
-          name: 'id',
-          type: 'text',
-        },
-      ],
-    })
+    config.collections.push(Users)
+    config.collections.push(ApiKeys)
 
-    if (pluginOptions.collections) {
-      for (const collectionSlug in pluginOptions.collections) {
-        const collection = config.collections.find(
-          (collection) => collection.slug === collectionSlug,
-        )
-
-        if (collection) {
-          collection.fields.push({
-            name: 'addedByPlugin',
-            type: 'text',
-            admin: {
-              position: 'sidebar',
-            },
-          })
-        }
-      }
+    if (!config.admin) {
+      config.admin = {}
     }
 
-    /**
-     * If the plugin is disabled, we still want to keep added collections/fields so the database schema is consistent which is important for migrations.
-     * If your plugin heavily modifies the database schema, you may want to remove this property.
-     */
-    if (pluginOptions.disabled) {
-      return config
+    config.admin.user = Users.slug
+
+    if (!config.admin.components) {
+      config.admin.components = {}
     }
+
+    config.admin.components.beforeNavLinks = ['@fxmk/cms-plugin/rsc#VersionInfo']
 
     if (!config.endpoints) {
       config.endpoints = []
@@ -71,24 +44,6 @@ export const cmsPlugin =
       // Ensure we are executing any existing onInit functions before running our own.
       if (incomingOnInit) {
         await incomingOnInit(payload)
-      }
-
-      const { totalDocs } = await payload.count({
-        collection: 'plugin-collection',
-        where: {
-          id: {
-            equals: 'seeded-by-plugin',
-          },
-        },
-      })
-
-      if (totalDocs === 0) {
-        await payload.create({
-          collection: 'plugin-collection',
-          data: {
-            id: 'seeded-by-plugin',
-          },
-        })
       }
     }
 
