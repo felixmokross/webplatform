@@ -1,8 +1,10 @@
-import type { Config } from "payload";
+import type { Config, LocalizationConfig } from "payload";
 
 import { ApiKeys } from "./collections/api-keys/config.js";
+import { LocaleConfigs } from "./collections/locale-configs/config.js";
 import { Users } from "./collections/users/config.js";
 import { editor } from "./common/editor.js";
+import { localization } from "./common/localization.js";
 import { autoTranslateEndpoint } from "./endpoints/auto-translate.js";
 import { translationsEndpoint } from "./endpoints/translations.js";
 import { Settings } from "./globals/settings/config.js";
@@ -20,6 +22,7 @@ export const cmsPlugin =
 
     config.collections.push(Users);
     config.collections.push(ApiKeys);
+    config.collections.push(LocaleConfigs);
 
     if (!config.globals) {
       config.globals = [];
@@ -81,12 +84,35 @@ export const cmsPlugin =
     config.endpoints.push(translationsEndpoint);
     config.endpoints.push(autoTranslateEndpoint);
 
+    config.localization = localization;
+
     const incomingOnInit = config.onInit;
 
     config.onInit = async (payload) => {
       // Ensure we are executing any existing onInit functions before running our own.
       if (incomingOnInit) {
         await incomingOnInit(payload);
+      }
+
+      // TODO extend this to allow for configurable default locale
+      const localeConfigs = await payload.find({
+        collection: "locale-configs",
+        limit: 1,
+        where: {
+          id: {
+            equals: "en",
+          },
+        },
+      });
+
+      if (localeConfigs.totalDocs === 0) {
+        await payload.create({
+          collection: "locale-configs",
+          data: {
+            displayLabel: "English",
+            locale: "en",
+          },
+        });
       }
     };
 

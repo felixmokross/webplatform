@@ -1,12 +1,7 @@
 import type {} from "@payloadcms/db-mongodb";
 import type { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical";
 import type { SourceLanguageCode, TargetLanguageCode } from "deepl-node";
-import type {
-  CollectionSlug,
-  Endpoint,
-  GlobalSlug,
-  TypedLocale,
-} from "payload";
+import type { Endpoint, TypedLocale } from "payload";
 
 import { convertHTMLToLexical } from "@payloadcms/richtext-lexical";
 import { convertLexicalToHTML } from "@payloadcms/richtext-lexical/html";
@@ -14,6 +9,7 @@ import { type ObjectId as ObjectIdType } from "bson";
 import { JSDOM } from "jsdom";
 import { addLocalesToRequestFromData } from "payload";
 
+import { canManageContent } from "../common/access-control.js";
 import { getEditorConfig } from "../common/editor.js";
 import { translate } from "../common/translation.js";
 import { getValueByPath } from "../common/utils.js";
@@ -24,10 +20,9 @@ export const autoTranslateEndpoint: Endpoint = {
       return new Response(null, { status: 401, statusText: "Unauthorized" });
     }
 
-    // TODO extend User to have a role
-    // if (!canManageContent({ req })) {
-    //   return new Response(null, { status: 403, statusText: 'Forbidden' })
-    // }
+    if (!canManageContent({ req })) {
+      return new Response(null, { status: 403, statusText: "Forbidden" });
+    }
 
     if (!req.json) {
       throw new Error("No JSON body");
@@ -39,10 +34,8 @@ export const autoTranslateEndpoint: Endpoint = {
 
     const { ObjectId } = await import("bson");
 
-    const collection = req.searchParams.get(
-      "collection",
-    ) as CollectionSlug | null;
-    const global = req.searchParams.get("global") as GlobalSlug | null;
+    const collection = req.searchParams.get("collection");
+    const global = req.searchParams.get("global");
     const id = req.searchParams.get("id");
 
     if (!collection && !global) {
