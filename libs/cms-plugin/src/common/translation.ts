@@ -1,8 +1,15 @@
-import type {
-  SourceLanguageCode,
-  TargetLanguageCode,
-  TranslateTextOptions,
+import {
+  type SourceLanguageCode,
+  type TargetLanguageCode,
+  type TranslateTextOptions,
+  Translator,
 } from "deepl-node";
+
+let translator: null | Translator = null;
+
+export function initializeTranslator({ apiKey }: { apiKey: string }) {
+  translator = new Translator(apiKey);
+}
 
 const deeplTranslateTextOptions: TranslateTextOptions = {
   formality: "prefer_less",
@@ -15,8 +22,11 @@ export async function translate(
   targetLocale: TargetLanguageCode,
   handleHtml: boolean,
 ) {
-  const { Translator } = await import("deepl-node");
-  const translator = new Translator(process.env.DEEPL_API_AUTH_KEY!);
+  if (!translator) {
+    throw new Error(
+      "Translator not initialized. The plugin must be initialized with a DeepL API key for translation features to be available.",
+    );
+  }
 
   return await translator.translateText(text, sourceLocale, targetLocale, {
     ...deeplTranslateTextOptions,

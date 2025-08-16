@@ -7,6 +7,7 @@ import { MediaCategories } from "./collections/media-categories/config.js";
 import { Users } from "./collections/users/config.js";
 import { editor } from "./common/editor.js";
 import { localization } from "./common/localization.js";
+import { initializeTranslator } from "./common/translation.js";
 import { autoTranslateEndpoint } from "./endpoints/auto-translate.js";
 import { translationsEndpoint } from "./endpoints/translations.js";
 import { Common } from "./globals/common/config.js";
@@ -16,11 +17,20 @@ import { translations } from "./translations.js";
 export * from "./common/index.js";
 export * from "./fields/index.js";
 
+export type CmsPluginOptions = {
+  deeplApiKey?: string;
+  openAIApiKey?: string;
+};
+
 export const cmsPlugin =
-  () =>
+  (options: CmsPluginOptions = {}) =>
   (config: Config): Config => {
     if (!config.collections) {
       config.collections = [];
+    }
+
+    if (options.deeplApiKey) {
+      initializeTranslator({ apiKey: options.deeplApiKey });
     }
 
     config.collections.push(Media);

@@ -15,5 +15,5 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.DATABASE_URI || "",
   }),
-  plugins: [cmsPlugin()],
+  plugins: [cmsPlugin({ deeplApiKey: process.env.DEEPL_API_KEY })],
 });
