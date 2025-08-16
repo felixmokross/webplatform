@@ -1,10 +1,12 @@
 import type { Config } from "payload";
 
+import { ApiKeys } from "./collections/api-keys/config.js";
+import { Users } from "./collections/users/config.js";
+import { editor } from "./common/editor.js";
 import { autoTranslateEndpoint } from "./endpoints/auto-translate.js";
 import { translationsEndpoint } from "./endpoints/translations.js";
+import { Settings } from "./globals/settings/config.js";
 import { translations } from "./translations.js";
-import { Users } from "./collections/users/config.js";
-import { ApiKeys } from "./collections/api-keys/config.js";
 
 export * from "./common/index.js";
 export * from "./fields/index.js";
@@ -19,6 +21,12 @@ export const cmsPlugin =
     config.collections.push(Users);
     config.collections.push(ApiKeys);
 
+    if (!config.globals) {
+      config.globals = [];
+    }
+
+    config.globals.push(Settings);
+
     if (!config.admin) {
       config.admin = {};
     }
@@ -32,6 +40,39 @@ export const cmsPlugin =
     config.admin.components.beforeNavLinks = [
       "@fxmk/cms-plugin/rsc#VersionInfo",
     ];
+
+    if (!config.admin.livePreview) {
+      config.admin.livePreview = {};
+    }
+
+    config.admin.livePreview.breakpoints = [
+      {
+        name: "mobile",
+        height: 844,
+        label: "Mobile",
+        width: 390,
+      },
+      {
+        name: "tablet-portrait",
+        height: 1180,
+        label: "Tablet (Portrait)",
+        width: 820,
+      },
+      {
+        name: "tablet-landscape",
+        height: 820,
+        label: "Tablet (Landscape)",
+        width: 1180,
+      },
+      {
+        name: "desktop",
+        height: 900,
+        label: "Desktop",
+        width: 1440,
+      },
+    ];
+
+    config.editor = editor();
 
     if (!config.endpoints) {
       config.endpoints = [];

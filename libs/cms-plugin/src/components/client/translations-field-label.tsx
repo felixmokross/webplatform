@@ -12,8 +12,6 @@ import type {
 } from "payload";
 import type { PropsWithChildren, ReactNode } from "react";
 
-import { getLabelText } from "../../common/labels.js";
-
 import { convertLexicalToHTML } from "@payloadcms/richtext-lexical/html";
 import { convertLexicalToPlaintext } from "@payloadcms/richtext-lexical/plaintext";
 import {
@@ -44,7 +42,9 @@ import type {
 
 import { cn } from "../../common/cn.js";
 import { SparklesIcon } from "../../common/icons.js";
+import { getLabelText } from "../../common/labels.js";
 import { Label } from "./labels.js";
+import styles from "./translations-field-label.module.css";
 
 export function TranslationsFieldLabel({
   field,
@@ -83,7 +83,7 @@ export function TranslationsFieldLabel({
   }
 
   return (
-    <div className="tw:flex tw:justify-between tw:items-baseline tw:gap-4">
+    <div className={styles.container}>
       <FieldLabel
         label={label}
         localized={true}
@@ -102,7 +102,7 @@ export function TranslationsFieldLabel({
             }
           >
             <button
-              className="tw:disabled:opacity-50 tw:disabled:cursor-not-allowed tw:disabled:hover:text-theme-elevation-800 tw:bg-transparent tw:underline tw:hover:text-theme-elevation-1000 tw:cursor-pointer tw:border-none tw:p-0 tw:text-theme-elevation-800"
+              className={styles.translationsButton}
               disabled={translationsDisabled}
               onClick={() => openModal(modalSlug)}
               type="button"
@@ -200,7 +200,7 @@ function DrawerContent({
 
   if (!data) {
     return (
-      <div className="tw:flex tw:h-[calc(100vh-10rem)] tw:items-center tw:justify-center tw:text-2xl tw:text-theme-elevation-600">
+      <div className={styles.loadingIndicator}>
         {t("cmsPlugin:common:loading")}
       </div>
     );
@@ -218,7 +218,7 @@ function DrawerContent({
         slug={selectLocalesModalSlug}
         title={t("cmsPlugin:translations:selectLocales")}
       >
-        <div className="tw:mt-8 tw:space-y-4">
+        <div className={styles.selectLocalesText}>
           <p>
             <Translation
               elements={{
@@ -233,7 +233,7 @@ function DrawerContent({
                 ),
               }}
               // @ts-expect-error types don't match
-              i18nKey="custom:translations:selectLocalesDescription"
+              i18nKey="cmsPlugin:translations:selectLocalesDescription"
               // @ts-expect-error types don't match
               t={t}
               variables={{
@@ -242,7 +242,7 @@ function DrawerContent({
             />
           </p>
         </div>
-        <div className="tw:mt-8 tw:space-y-4">
+        <div className={styles.selectLocalesList}>
           {otherLocales.map((locale) => (
             <div key={locale.code}>
               <CheckboxInput
@@ -261,16 +261,16 @@ function DrawerContent({
           ))}
         </div>
 
-        <p className="tw:mt-8">
+        <p className={styles.selectLocalesNote}>
           <Translation
             elements={{ s: ({ children }) => <strong>{children}</strong> }}
             // @ts-expect-error types don't match
-            i18nKey="custom:translations:selectLocalesNote"
+            i18nKey="cmsPlugin:translations:selectLocalesNote"
             // @ts-expect-error types don't match
             t={t}
           />
         </p>
-        <div className="tw:mt-1">
+        <div className={styles.selectLocalesFooter}>
           <Button
             disabled={isTranslating || selectedLocaleCodes.length === 0}
             onClick={async () => {
@@ -329,13 +329,9 @@ function DrawerContent({
         </div>
       </Drawer>
       <div className="table">
-        <div className="tw:max-h-[calc(100vh-10rem)] tw:overflow-y-auto">
-          <table
-            cellPadding="0"
-            cellSpacing="0"
-            className="tw:min-w-[unset] tw:table-fixed"
-          >
-            <thead className="tw:bg-theme-bg">
+        <div className={styles.tableWrapper}>
+          <table cellPadding="0" cellSpacing="0">
+            <thead>
               <tr>
                 <TableHeaderFooterCell
                   isHighlighted={true}
@@ -376,7 +372,7 @@ function DrawerContent({
                 ))}
               </tr>
             </tbody>
-            <tfoot className="tw:bg-theme-bg">
+            <tfoot>
               <tr>
                 <TableHeaderFooterCell
                   isHighlighted={true}
@@ -437,22 +433,22 @@ function TableHeaderFooterCell({
   return (
     <th
       className={cn(
-        "tw:px-12 tw:py-3",
+        styles.tableHeaderFooterCell,
         isHighlighted
-          ? "tw:bg-theme-elevation-50 tw:text-theme-elevation-700"
-          : "tw:bg-theme-bg",
-        (isStickyTop || isStickyLeft || isStickyBottom) &&
-          cn(
-            "tw:sticky",
-            isStickyLeft && "tw:left-0",
-            isStickyTop && "tw:top-0 tw:shadow-sm tw:z-20",
-            isStickyBottom && "tw:bottom-0",
-          ),
-        isStickyTop && isStickyLeft && "tw:z-30",
-        isStickyBottom && isStickyLeft && "tw:z-20",
+          ? styles.tableHeaderFooterCellHighlighted
+          : styles.tableHeaderFooterCellNonHighlighted,
+        isStickyLeft && styles.tableHeaderFooterCellStickyLeft,
+        isStickyTop && styles.tableHeaderFooterCellStickyTop,
+        isStickyBottom && styles.tableHeaderFooterCellStickyBottom,
+        isStickyTop &&
+          isStickyLeft &&
+          styles.tableHeaderFooterCellStickyTopLeft,
+        isStickyBottom &&
+          isStickyLeft &&
+          styles.tableHeaderFooterCellStickyBottomLeft,
       )}
     >
-      <div className="tw:flex tw:gap-4 tw:items-center">{children}</div>
+      <div>{children}</div>
     </th>
   );
 }
@@ -472,14 +468,10 @@ function TableContentCell({
   return (
     <td
       className={cn(
-        isWide
-          ? "tw:w-[40rem] tw:min-w-[40rem]"
-          : "tw:w-[24rem] tw:min-w-[24rem]",
-        "tw:p-12",
-        isHighlighted
-          ? "tw:bg-theme-elevation-100"
-          : "tw:bg-theme-elevation-50",
-        isStickyLeft && "tw:sticky tw:left-0 tw:z-10",
+        styles.tableContentCell,
+        isWide ? styles.tableContentCellWide : styles.tableContentCellNonWide,
+        isHighlighted && styles.highlighted,
+        isStickyLeft && styles.stickyLeft,
       )}
     >
       {children}
@@ -511,7 +503,7 @@ function AllLocalesTextRenderer({
         text
       ) : (
         <div
-          className="rich-text-html tw:prose-xl tw:pointer-events-none tw:hyphens-auto tw:font-serif"
+          className={styles.richTextHtml}
           dangerouslySetInnerHTML={{
             __html: convertLexicalToHTML({
               data: text,
