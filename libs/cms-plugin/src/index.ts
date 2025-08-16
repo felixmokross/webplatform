@@ -114,6 +114,23 @@ export const cmsPlugin =
           },
         });
       }
+
+      const settings = await payload.findGlobal({ slug: "settings" });
+      if (
+        !settings?.publishedLocales ||
+        settings.publishedLocales.length === 0 ||
+        !settings.fallbackLocale
+      ) {
+        await payload.updateGlobal({
+          slug: "settings",
+          data: {
+            publishedLocales: {
+              fallbackLocale: "en",
+              publishedLocales: ["en"],
+            },
+          },
+        });
+      }
     };
 
     if (!config.i18n?.translations) {

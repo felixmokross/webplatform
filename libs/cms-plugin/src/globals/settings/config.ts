@@ -16,50 +16,50 @@ export const Settings: GlobalConfig = {
     {
       type: "tabs",
       tabs: [
-        // {
-        //   name: "publishedLocales",
-        //   fields: [
-        //     {
-        //       name: "publishedLocales",
-        //       type: "relationship",
-        //       admin: {
-        //         description: {
-        //           en: "Select locales with completely translated content to make them available to the user on the website. To add a new locale, it must be first added to the 'Locale Configurations' collection.",
-        //           es: "Selecciona los idiomas con contenido completamente traducido para hacerlos disponibles al usuario en el sitio web. Para agregar un nuevo idioma, primero debe agregarse a la colección 'Configuraciones de Idioma'.",
-        //         },
-        //       },
-        //       hasMany: true,
-        //       label: { en: "Published Locales", es: "Idiomas Publicados" },
-        //       relationTo: "locale-configs",
-        //       required: true,
-        //     },
-        //     {
-        //       name: "fallbackLocale",
-        //       type: "relationship",
-        //       admin: {
-        //         description: {
-        //           en: "The fallback locale is used when a translation is not available in the requested locale. It must be one of the published locales.",
-        //           es: "El idioma predeterminado se utiliza cuando no hay una traducción disponible en el idioma solicitado. Debe ser uno de los idiomas publicados.",
-        //         },
-        //       },
-        //       filterOptions: ({ siblingData }) => ({
-        //         id: {
-        //           in: (siblingData as Record<string, unknown>).publishedLocales,
-        //         },
-        //       }),
-        //       label: {
-        //         en: "Fallback Locale",
-        //         es: "Idioma predeterminado",
-        //       },
-        //       relationTo: "locale-configs",
-        //       required: true,
-        //     },
-        //   ],
-        //   label: {
-        //     en: "Published Locales",
-        //     es: "Idiomas Publicados",
-        //   },
-        // },
+        {
+          name: "publishedLocales",
+          fields: [
+            {
+              name: "publishedLocales",
+              type: "relationship",
+              admin: {
+                description: {
+                  en: "Select locales with completely translated content to make them available to the user on the website. To add a new locale, it must be first added to the 'Locale Configurations' collection.",
+                  es: "Selecciona los idiomas con contenido completamente traducido para hacerlos disponibles al usuario en el sitio web. Para agregar un nuevo idioma, primero debe agregarse a la colección 'Configuraciones de Idioma'.",
+                },
+              },
+              hasMany: true,
+              label: { en: "Published Locales", es: "Idiomas Publicados" },
+              relationTo: "locale-configs",
+              required: true,
+            },
+            {
+              name: "fallbackLocale",
+              type: "relationship",
+              admin: {
+                description: {
+                  en: "The fallback locale is used when a translation is not available in the requested locale. It must be one of the published locales.",
+                  es: "El idioma predeterminado se utiliza cuando no hay una traducción disponible en el idioma solicitado. Debe ser uno de los idiomas publicados.",
+                },
+              },
+              filterOptions: ({ siblingData }) => ({
+                id: {
+                  in: (siblingData as Record<string, unknown>).publishedLocales,
+                },
+              }),
+              label: {
+                en: "Fallback Locale",
+                es: "Idioma predeterminado",
+              },
+              relationTo: "locale-configs",
+              required: true,
+            },
+          ],
+          label: {
+            en: "Published Locales",
+            es: "Idiomas Publicados",
+          },
+        },
         {
           name: "maintenanceScreen",
           admin: {

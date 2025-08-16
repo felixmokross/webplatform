@@ -784,6 +784,16 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface Settings {
   id: string;
+  publishedLocales: {
+    /**
+     * Select locales with completely translated content to make them available to the user on the website. To add a new locale, it must be first added to the 'Locale Configurations' collection.
+     */
+    publishedLocales: (string | LocaleConfig)[];
+    /**
+     * The fallback locale is used when a translation is not available in the requested locale. It must be one of the published locales.
+     */
+    fallbackLocale: string | LocaleConfig;
+  };
   /**
    * Hide the complete website and show a maintenance screen instead.
    */
@@ -799,6 +809,12 @@ export interface Settings {
  * via the `definition` "settings_select".
  */
 export interface SettingsSelect<T extends boolean = true> {
+  publishedLocales?:
+    | T
+    | {
+        publishedLocales?: T;
+        fallbackLocale?: T;
+      };
   maintenanceScreen?:
     | T
     | {
