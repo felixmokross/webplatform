@@ -26,6 +26,17 @@ export const en = {
       },
     },
     fields: {
+      callToAction: {
+        label: "Call to Action (CTA)",
+        label_field: { label: "Label" },
+        variant: {
+          label: "Variant",
+          options: {
+            primary: "Primary",
+            secondary: "Secondary",
+          },
+        },
+      },
       description: {
         label: "Description",
       },
@@ -60,6 +71,23 @@ export const en = {
         url: { label: "URL" },
       },
       moreOptions: { label: "More Options" },
+      overlayTextBox: {
+        callToActionLabel: {
+          description: "Leave blank to hide the call to action.",
+          label: "Call to Action Label",
+        },
+        heading: { label: "Heading" },
+        label: "Overlay Text Box",
+        position: {
+          label: "Position",
+          options: {
+            bottomLeft: "Bottom Left",
+            bottomRight: "Bottom Right",
+            topLeft: "Top Left",
+            topRight: "Top Right",
+          },
+        },
+      },
       richText: { label: "Text" },
       show: { label: "Show" },
       text: { label: "Text" },

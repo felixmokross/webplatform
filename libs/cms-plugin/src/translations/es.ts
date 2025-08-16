@@ -24,6 +24,17 @@ export const es: TranslationsObject = {
       },
     },
     fields: {
+      callToAction: {
+        label: "Call to Action (CTA)",
+        label_field: { label: "Etiqueta" },
+        variant: {
+          label: "Variante",
+          options: {
+            primary: "Primario",
+            secondary: "Secundario",
+          },
+        },
+      },
       description: {
         label: "Descripción",
       },
@@ -58,6 +69,23 @@ export const es: TranslationsObject = {
         url: { label: "URL" },
       },
       moreOptions: { label: "Más opciones" },
+      overlayTextBox: {
+        callToActionLabel: {
+          description: "Deja en blanco para ocultar el call to action.",
+          label: "Etiqueta del Call to Action",
+        },
+        heading: { label: "Título" },
+        label: "Caja de texto superpuesta",
+        position: {
+          label: "Posición",
+          options: {
+            bottomLeft: "Abajo a la izquierda",
+            bottomRight: "Abajo a la derecha",
+            topLeft: "Arriba a la izquierda",
+            topRight: "Arriba a la derecha",
+          },
+        },
+      },
       richText: { label: "Texto" },
       show: { label: "Mostrar" },
       text: { label: "Texto" },
