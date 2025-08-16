@@ -22,11 +22,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
-    "@payloadcms/db-mongodb": "3.50.0",
     "@payloadcms/eslint-config": "3.9.0",
-    "@payloadcms/richtext-lexical": "^3.50.0",
-    "@payloadcms/translations": "^3.50.0",
-    "@payloadcms/ui": "^3.50.0",
     "@swc-node/register": "1.10.9",
     "@swc/cli": "0.6.0",
     "@types/jsdom": "^21.1.7",
@@ -40,26 +36,33 @@
     "eslint-config-next": "15.4.4",
     "jsdom": "26.1.0",
     "next": "15.4.4",
-    "payload": "^3.50.0",
+    "payload": "^3.52.0",
     "prettier": "^3.4.2",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "rimraf": "3.0.2",
     "typescript": "5.7.3",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^3.1.2"
+    "vitest": "^3.1.2",
+    "@payloadcms/ui": "^3.52.0",
+    "@payloadcms/richtext-lexical": "^3.52.0"
   },
   "peerDependencies": {
-    "@payloadcms/db-mongodb": "3.50.0",
-    "@payloadcms/richtext-lexical": "^3.50.0",
-    "@payloadcms/translations": "^3.50.0",
-    "@payloadcms/ui": "^3.50.0",
     "bson": "^6.10.4",
     "jsdom": "26.1.0",
     "next": "15.4.4",
-    "payload": "^3.50.0",
+    "payload": "^3.52.0",
     "react": "^18 || ^19",
-    "react-dom": "^18 || ^19"
+    "react-dom": "^18 || ^19",
+    "@payloadcms/ui": "^3.52.0",
+    "@payloadcms/richtext-lexical": "^3.52.0"
+  },
+  "dependencies": {
+    "@payloadcms/db-mongodb": "^3.52.0",
+    "@payloadcms/storage-s3": "^3.52.0",
+    "@payloadcms/translations": "^3.52.0",
+    "deepl-node": "^1.19.0",
+    "openai": "^5.12.2"
   },
   "engines": {
     "node": "^18.20.2 || >=20.9.0",
@@ -84,10 +87,5 @@
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "registry": "https://registry.npmjs.org/",
-  "dependencies": {
-    "@payloadcms/storage-s3": "^3.50.0",
-    "deepl-node": "^1.19.0",
-    "openai": "^5.12.2"
-  }
+  "registry": "https://registry.npmjs.org/"
 }
