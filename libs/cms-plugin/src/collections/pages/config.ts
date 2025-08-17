@@ -7,6 +7,7 @@ import type { TranslationsKey } from "../../translations/types.js";
 
 import { canManageContent } from "../../common/access-control.js";
 import { descriptionField } from "../../fields/description.js";
+import { heroField } from "../../fields/hero.js";
 import { textField } from "../../fields/text.js";
 import { textareaField } from "../../fields/textarea.js";
 import { contentGroup } from "../../groups.js";
@@ -57,14 +58,14 @@ export const Pages: CollectionConfig = {
     {
       type: "tabs",
       tabs: [
-        // TODO add hero and content fields
-        // {
-        //   fields: [heroField()],
-        //   label: {
-        //     en: "Hero",
-        //     es: "Héroe",
-        //   },
-        // },
+        {
+          fields: [heroField()],
+          label: {
+            en: "Hero",
+            es: "Héroe",
+          },
+        },
+        // TODO add content field
         // {
         //   fields: [contentField],
         //   label: {

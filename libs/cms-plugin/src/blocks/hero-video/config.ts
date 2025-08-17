@@ -1,0 +1,61 @@
+import type { Block } from "payload";
+
+import { imageField } from "../../fields/image.js";
+import { overlayTitleField } from "../../fields/overlay-title.js";
+
+const optionalImageField = imageField({ required: false });
+
+export const HeroVideoBlock: Block = {
+  slug: "HeroVideo",
+  fields: [
+    {
+      name: "video",
+      type: "upload",
+      admin: {
+        description: {
+          en: "The video should be optimized for web pages before uploading it.",
+          es: "El video debe estar optimizado para páginas web antes de subirlo.",
+        },
+      },
+      filterOptions: {
+        mimeType: { contains: "video/" },
+      },
+      label: {
+        en: "Video",
+        es: "Video",
+      },
+      relationTo: "media",
+      required: true,
+    },
+    {
+      ...optionalImageField,
+      name: "previewImage",
+      admin: {
+        ...optionalImageField.admin,
+        description: {
+          en: "The preview image is shown while the video is still loading. It should be the first frame of the video to provide a seamless transition.",
+          es: "La imagen de vista previa se muestra mientras el video aún se está cargando. Debe ser el primer fotograma del video para proporcionar una transición sin interrupciones.",
+        },
+      },
+      label: {
+        en: "Preview Image",
+        es: "Imagen de vista previa",
+      },
+    },
+    overlayTitleField({ optional: true }),
+  ],
+  imageAltText:
+    "Preview of the Hero Video block, showing a image with an overlay title and a CTA.",
+  imageURL: "/assets/blocks/HeroVideo.png",
+  interfaceName: "HeroVideo",
+  labels: {
+    plural: {
+      en: "Hero Videos",
+      es: "Videos de héroe",
+    },
+    singular: {
+      en: "Hero Video",
+      es: "Video de héroe",
+    },
+  },
+};

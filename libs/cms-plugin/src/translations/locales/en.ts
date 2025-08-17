@@ -125,6 +125,9 @@ export const en = {
         },
       },
     },
+    heroSlides: {
+      slideRowLabel: "Slide {{ n }}",
+    },
     localeConfigs: {
       deeplSourceLanguage: { label: "DeepL Source Language" },
       deeplTargetLanguage: { label: "DeepL Target Language" },

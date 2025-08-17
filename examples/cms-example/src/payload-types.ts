@@ -718,6 +718,10 @@ export interface NewLink {
  */
 export interface Page {
   id: string;
+  /**
+   * A hero section is the first thing a user sees when they visit a page. Only one hero block can be added to a page. To replace the current hero block by a different block type, remove it and add a new one.
+   */
+  hero?: (HeroSlides | HeroVideo | HeroHeading)[] | null;
   seo?: {
     /**
      * The description is shown in search engine results. It should be between 100 and 150 characters.
@@ -744,6 +748,150 @@ export interface Page {
   title?: string | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroSlides".
+ */
+export interface HeroSlides {
+  /**
+   * This heading is only used for SEO purposes and is not shown on the page. Since the slide overlay titles semantically don't define the page's main heading, you can use this field to define the main heading of the page.
+   */
+  seoPageHeading: string;
+  /**
+   * You can use this either for a single hero image or a slideshow with multiple images. Each slide can have an overlay title and a call-to-action button. You can add up to six slides.
+   */
+  slides: {
+    image: string | Media;
+    /**
+     * Depending on the user’s device or window size, the slide often has a different aspect ratio than the image. This setting defines how the image is aligned within the slide area.
+     */
+    imageAlignment?: ('center' | 'bottom') | null;
+    overlayTitle?: {
+      show?: boolean | null;
+      text?: {
+        root: {
+          type: string;
+          children: {
+            type: string;
+            version: number;
+            [k: string]: unknown;
+          }[];
+          direction: ('ltr' | 'rtl') | null;
+          format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+          indent: number;
+          version: number;
+        };
+        [k: string]: unknown;
+      } | null;
+      supportingText?: {
+        root: {
+          type: string;
+          children: {
+            type: string;
+            version: number;
+            [k: string]: unknown;
+          }[];
+          direction: ('ltr' | 'rtl') | null;
+          format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+          indent: number;
+          version: number;
+        };
+        [k: string]: unknown;
+      } | null;
+      cta?: {
+        show?: boolean | null;
+        label?: string | null;
+        link?: NewLink;
+        variant?: ('primary' | 'secondary') | null;
+      };
+      position?: ('center' | 'top-left' | 'top-right' | 'bottom-right' | 'bottom-left') | null;
+      /**
+       * The overlay is a semi-transparent black layer that is placed on top of the image to make the text more readable. Choose the intensity that is the best trade-off between readability of the text and brightness of the image.
+       */
+      overlay?: ('subtle' | 'moderate' | 'intense') | null;
+    };
+    id?: string | null;
+  }[];
+  /**
+   * Depending on the amount of information in the slides (title, CTA), different intervals might be more suitable. The default value is 7 seconds.
+   */
+  autoplayIntervalInSeconds?: number | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'HeroSlides';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroVideo".
+ */
+export interface HeroVideo {
+  /**
+   * The video should be optimized for web pages before uploading it.
+   */
+  video: string | Media;
+  /**
+   * The preview image is shown while the video is still loading. It should be the first frame of the video to provide a seamless transition.
+   */
+  previewImage?: (string | null) | Media;
+  overlayTitle?: {
+    show?: boolean | null;
+    text?: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    supportingText?: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    cta?: {
+      show?: boolean | null;
+      label?: string | null;
+      link?: NewLink;
+      variant?: ('primary' | 'secondary') | null;
+    };
+    position?: ('center' | 'top-left' | 'top-right' | 'bottom-right' | 'bottom-left') | null;
+    /**
+     * The overlay is a semi-transparent black layer that is placed on top of the image to make the text more readable. Choose the intensity that is the best trade-off between readability of the text and brightness of the image.
+     */
+    overlay?: ('subtle' | 'moderate' | 'intense') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'HeroVideo';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroHeading".
+ */
+export interface HeroHeading {
+  heading: string;
+  image?: (string | null) | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'HeroHeading';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1028,6 +1176,13 @@ export interface NewLinkSelect<T extends boolean = true> {
  * via the `definition` "pages_select".
  */
 export interface PagesSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        HeroSlides?: T | HeroSlidesSelect<T>;
+        HeroVideo?: T | HeroVideoSelect<T>;
+        HeroHeading?: T | HeroHeadingSelect<T>;
+      };
   seo?:
     | T
     | {
@@ -1041,6 +1196,77 @@ export interface PagesSelect<T extends boolean = true> {
   title?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroSlides_select".
+ */
+export interface HeroSlidesSelect<T extends boolean = true> {
+  seoPageHeading?: T;
+  slides?:
+    | T
+    | {
+        image?: T;
+        imageAlignment?: T;
+        overlayTitle?:
+          | T
+          | {
+              show?: T;
+              text?: T;
+              supportingText?: T;
+              cta?:
+                | T
+                | {
+                    show?: T;
+                    label?: T;
+                    link?: T | NewLinkSelect<T>;
+                    variant?: T;
+                  };
+              position?: T;
+              overlay?: T;
+            };
+        id?: T;
+      };
+  autoplayIntervalInSeconds?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroVideo_select".
+ */
+export interface HeroVideoSelect<T extends boolean = true> {
+  video?: T;
+  previewImage?: T;
+  overlayTitle?:
+    | T
+    | {
+        show?: T;
+        text?: T;
+        supportingText?: T;
+        cta?:
+          | T
+          | {
+              show?: T;
+              label?: T;
+              link?: T | NewLinkSelect<T>;
+              variant?: T;
+            };
+        position?: T;
+        overlay?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroHeading_select".
+ */
+export interface HeroHeadingSelect<T extends boolean = true> {
+  heading?: T;
+  image?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

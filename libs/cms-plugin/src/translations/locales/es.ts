@@ -125,6 +125,9 @@ export const es: TranslationsObject = {
         },
       },
     },
+    heroSlides: {
+      slideRowLabel: "Diapositiva {{ n }}",
+    },
     localeConfigs: {
       deeplSourceLanguage: { label: "Idioma de Origen DeepL" },
       deeplTargetLanguage: { label: "Idioma de Destino DeepL" },
