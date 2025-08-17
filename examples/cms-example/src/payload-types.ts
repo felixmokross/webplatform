@@ -693,8 +693,24 @@ export interface LocaleConfig {
 export interface Banner {
   id: string;
   message: string;
+  cta?: {
+    show?: boolean | null;
+    label?: string | null;
+    link?: NewLink;
+  };
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewLink".
+ */
+export interface NewLink {
+  linkType: 'custom' | 'internal';
+  doc?: (string | null) | Page;
+  queryString?: string | null;
+  fragment?: string | null;
+  url?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -775,17 +791,6 @@ export interface Brand {
   };
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "NewLink".
- */
-export interface NewLink {
-  linkType: 'custom' | 'internal';
-  doc?: (string | null) | Page;
-  queryString?: string | null;
-  fragment?: string | null;
-  url?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -997,8 +1002,26 @@ export interface LocaleConfigsSelect<T extends boolean = true> {
  */
 export interface BannersSelect<T extends boolean = true> {
   message?: T;
+  cta?:
+    | T
+    | {
+        show?: T;
+        label?: T;
+        link?: T | NewLinkSelect<T>;
+      };
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewLink_select".
+ */
+export interface NewLinkSelect<T extends boolean = true> {
+  linkType?: T;
+  doc?: T;
+  queryString?: T;
+  fragment?: T;
+  url?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1079,17 +1102,6 @@ export interface BrandsSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "NewLink_select".
- */
-export interface NewLinkSelect<T extends boolean = true> {
-  linkType?: T;
-  doc?: T;
-  queryString?: T;
-  fragment?: T;
-  url?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -36,7 +36,7 @@ export const Banners: CollectionConfig = {
               name: "message",
               label: translated("cmsPlugin:banners:edit:message:label"),
             }),
-            // callToActionField({ optional: true, variant: false }),
+            callToActionField({ optional: true, variant: false }),
           ],
           label: translated("cmsPlugin:banners:edit:label"),
         },

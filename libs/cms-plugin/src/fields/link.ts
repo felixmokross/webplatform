@@ -56,7 +56,6 @@ export function linkField({
           condition: (_, siblingData) => siblingData.linkType === "internal",
         },
         label: translated("cmsPlugin:fields:link:doc:label"),
-        // @ts-ignore TODO add pages to cms-plugin config
         relationTo: "pages",
         required,
       },
