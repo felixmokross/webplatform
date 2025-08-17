@@ -1,4 +1,4 @@
-import type { Block, Config, Plugin } from "payload";
+import type { Block, Config, Field, Plugin } from "payload";
 
 import { s3Storage } from "@payloadcms/storage-s3";
 
@@ -28,6 +28,7 @@ export * from "./groups.js";
 export type CmsPluginOptions = {
   additionalContentBlocks?: Block[];
   additionalHeroBlocks?: Block[];
+  additionalUiLabelFields?: Field[];
   deeplApiKey?: string;
   mediaS3Storage: {
     accessKeyId: string;
@@ -43,6 +44,7 @@ export const cmsPlugin =
   ({
     additionalContentBlocks,
     additionalHeroBlocks,
+    additionalUiLabelFields,
     deeplApiKey,
     mediaS3Storage,
     openaiApiKey,
@@ -84,7 +86,7 @@ export const cmsPlugin =
     }
 
     config.globals.push(Settings);
-    config.globals.push(Common);
+    config.globals.push(Common({ additionalUiLabelFields }));
 
     if (!config.admin) {
       config.admin = {};

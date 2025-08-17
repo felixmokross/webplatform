@@ -1,7 +1,7 @@
 import { mongooseAdapter } from "@payloadcms/db-mongodb";
 import path from "path";
 import { buildConfig } from "payload";
-import { cmsPlugin } from "@fxmk/cms-plugin";
+import { cmsPlugin, textField } from "@fxmk/cms-plugin";
 import { fileURLToPath } from "url";
 import { en } from "payload/i18n/en";
 import { es } from "payload/i18n/es";
@@ -21,6 +21,9 @@ export default buildConfig({
   plugins: [
     cmsPlugin({
       additionalContentBlocks: [RoomListBlock],
+      additionalUiLabelFields: [
+        textField({ name: "test", label: "Test Field" }),
+      ],
       deeplApiKey: process.env.DEEPL_API_KEY,
       openaiApiKey: process.env.OPENAI_API_KEY,
       publicMediaBaseUrl: process.env.PUBLIC_MEDIA_BASE_URL,
