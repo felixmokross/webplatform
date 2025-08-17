@@ -722,6 +722,12 @@ export interface Page {
    * A hero section is the first thing a user sees when they visit a page. Only one hero block can be added to a page. To replace the current hero block by a different block type, remove it and add a new one.
    */
   hero?: (HeroSlides | HeroVideo | HeroHeading)[] | null;
+  /**
+   * Add blocks to fill the page with content. You can reorder the blocks by dragging and dropping them using the handle on the left side.
+   */
+  content?:
+    | (LeadText | ImageWithFloatingText | Story | Features | Separator | WideImage | TextColumnsWithImages)[]
+    | null;
   seo?: {
     /**
      * The description is shown in search engine results. It should be between 100 and 150 characters.
@@ -892,6 +898,257 @@ export interface HeroHeading {
   id?: string | null;
   blockName?: string | null;
   blockType: 'HeroHeading';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LeadText".
+ */
+export interface LeadText {
+  heading?: string | null;
+  text: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  cta?: {
+    show?: boolean | null;
+    label?: string | null;
+    link?: NewLink;
+    variant?: ('primary' | 'secondary') | null;
+  };
+  elementId?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'LeadText';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageWithFloatingText".
+ */
+export interface ImageWithFloatingText {
+  image: string | Media;
+  overlayTitle: {
+    text: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    position?: ('top-left' | 'top-right') | null;
+    /**
+     * The overlay is a semi-transparent black layer that is placed on top of the image to make the text more readable. Choose the intensity that is the best trade-off between readability of the text and brightness of the image.
+     */
+    overlay?: ('subtle' | 'moderate' | 'intense') | null;
+  };
+  text: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  elementId?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ImageWithFloatingText';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Story".
+ */
+export interface Story {
+  heading?: string | null;
+  text: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  image?: (string | null) | Media;
+  imagePosition?: ('left' | 'right') | null;
+  /**
+   * Check this box to display the image in grayscale.
+   */
+  grayscaleImage?: boolean | null;
+  elementId?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'Story';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Features".
+ */
+export interface Features {
+  orientation?: ('first-image-left' | 'first-image-right') | null;
+  items: {
+    image: string | Media;
+    heading: string;
+    text: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    cta?: {
+      show?: boolean | null;
+      label?: string | null;
+      link?: NewLink;
+      variant?: ('primary' | 'secondary') | null;
+    };
+    id?: string | null;
+  }[];
+  elementId?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'Features';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Separator".
+ */
+export interface Separator {
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'Separator';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "WideImage".
+ */
+export interface WideImage {
+  image: string | Media;
+  overlayTextBox?: {
+    show?: boolean | null;
+    heading?: string | null;
+    text?: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    cta?: {
+      show?: boolean | null;
+      label?: string | null;
+      link?: NewLink;
+      variant?: ('primary' | 'secondary') | null;
+    };
+    position?: ('top-left' | 'top-right' | 'bottom-left' | 'bottom-right') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'WideImage';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TextColumnsWithImages".
+ */
+export interface TextColumnsWithImages {
+  heading?: string | null;
+  text?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Note that the specified number of columns per row is for standard desktop screens (width of 1280px or more) and will be reduced automatically on smaller screens.
+   */
+  numberOfColumns?: number | null;
+  items: {
+    image?: (string | null) | Media;
+    size?: ('full' | 'medium' | 'small') | null;
+    heading?: string | null;
+    text?: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    cta?: {
+      show?: boolean | null;
+      label?: string | null;
+      link?: NewLink;
+      variant?: ('primary' | 'secondary') | null;
+    };
+    id?: string | null;
+  }[];
+  elementId?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'TextColumnsWithImages';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1183,6 +1440,17 @@ export interface PagesSelect<T extends boolean = true> {
         HeroVideo?: T | HeroVideoSelect<T>;
         HeroHeading?: T | HeroHeadingSelect<T>;
       };
+  content?:
+    | T
+    | {
+        LeadText?: T | LeadTextSelect<T>;
+        ImageWithFloatingText?: T | ImageWithFloatingTextSelect<T>;
+        Story?: T | StorySelect<T>;
+        Features?: T | FeaturesSelect<T>;
+        Separator?: T | SeparatorSelect<T>;
+        WideImage?: T | WideImageSelect<T>;
+        TextColumnsWithImages?: T | TextColumnsWithImagesSelect<T>;
+      };
   seo?:
     | T
     | {
@@ -1265,6 +1533,145 @@ export interface HeroVideoSelect<T extends boolean = true> {
 export interface HeroHeadingSelect<T extends boolean = true> {
   heading?: T;
   image?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LeadText_select".
+ */
+export interface LeadTextSelect<T extends boolean = true> {
+  heading?: T;
+  text?: T;
+  cta?:
+    | T
+    | {
+        show?: T;
+        label?: T;
+        link?: T | NewLinkSelect<T>;
+        variant?: T;
+      };
+  elementId?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageWithFloatingText_select".
+ */
+export interface ImageWithFloatingTextSelect<T extends boolean = true> {
+  image?: T;
+  overlayTitle?:
+    | T
+    | {
+        text?: T;
+        position?: T;
+        overlay?: T;
+      };
+  text?: T;
+  elementId?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Story_select".
+ */
+export interface StorySelect<T extends boolean = true> {
+  heading?: T;
+  text?: T;
+  image?: T;
+  imagePosition?: T;
+  grayscaleImage?: T;
+  elementId?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Features_select".
+ */
+export interface FeaturesSelect<T extends boolean = true> {
+  orientation?: T;
+  items?:
+    | T
+    | {
+        image?: T;
+        heading?: T;
+        text?: T;
+        cta?:
+          | T
+          | {
+              show?: T;
+              label?: T;
+              link?: T | NewLinkSelect<T>;
+              variant?: T;
+            };
+        id?: T;
+      };
+  elementId?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Separator_select".
+ */
+export interface SeparatorSelect<T extends boolean = true> {
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "WideImage_select".
+ */
+export interface WideImageSelect<T extends boolean = true> {
+  image?: T;
+  overlayTextBox?:
+    | T
+    | {
+        show?: T;
+        heading?: T;
+        text?: T;
+        cta?:
+          | T
+          | {
+              show?: T;
+              label?: T;
+              link?: T | NewLinkSelect<T>;
+              variant?: T;
+            };
+        position?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TextColumnsWithImages_select".
+ */
+export interface TextColumnsWithImagesSelect<T extends boolean = true> {
+  heading?: T;
+  text?: T;
+  numberOfColumns?: T;
+  items?:
+    | T
+    | {
+        image?: T;
+        size?: T;
+        heading?: T;
+        text?: T;
+        cta?:
+          | T
+          | {
+              show?: T;
+              label?: T;
+              link?: T | NewLinkSelect<T>;
+              variant?: T;
+            };
+        id?: T;
+      };
+  elementId?: T;
   id?: T;
   blockName?: T;
 }

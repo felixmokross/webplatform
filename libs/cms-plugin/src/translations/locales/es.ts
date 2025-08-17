@@ -138,8 +138,8 @@ export const es: TranslationsObject = {
       },
       googleMapsLanguage: { label: "Idioma de Google Maps" },
       labels: {
-        plural: "Configuraciones de Idioma",
-        singular: "Configuración de Idioma",
+        plural: "Configuraciones de idioma",
+        singular: "Configuración de idioma",
       },
       locale: { label: "Idioma" },
     },
@@ -147,7 +147,7 @@ export const es: TranslationsObject = {
       alt: {
         description:
           "Una breve descripción del medio para lectores de pantalla y motores de búsqueda. No se muestra en la página pero es importante para la accesibilidad. Para las imágenes se puede generar un texto alternativo automáticamente utilizando OpenAI.",
-        label: "Texto Alternativo",
+        label: "Texto alternativo",
       },
       category: {
         description:

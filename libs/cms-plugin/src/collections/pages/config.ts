@@ -6,6 +6,7 @@ import { text } from "payload/shared";
 import type { TranslationsKey } from "../../translations/types.js";
 
 import { canManageContent } from "../../common/access-control.js";
+import { contentField } from "../../fields/content.js";
 import { descriptionField } from "../../fields/description.js";
 import { heroField } from "../../fields/hero.js";
 import { textField } from "../../fields/text.js";
@@ -65,14 +66,13 @@ export const Pages: CollectionConfig = {
             es: "Héroe",
           },
         },
-        // TODO add content field
-        // {
-        //   fields: [contentField],
-        //   label: {
-        //     en: "Content",
-        //     es: "Contenido",
-        //   },
-        // },
+        {
+          fields: [contentField],
+          label: {
+            en: "Content",
+            es: "Contenido",
+          },
+        },
         {
           name: "seo",
           fields: [

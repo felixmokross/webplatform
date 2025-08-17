@@ -1,4 +1,5 @@
 export * from "./call-to-action.js";
+export * from "./content.js";
 export * from "./description.js";
 export * from "./element-id.js";
 export * from "./hero.js";
