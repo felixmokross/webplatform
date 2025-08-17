@@ -726,7 +726,18 @@ export interface Page {
    * Add blocks to fill the page with content. You can reorder the blocks by dragging and dropping them using the handle on the left side.
    */
   content?:
-    | (LeadText | ImageWithFloatingText | Story | Features | Separator | WideImage | TextColumnsWithImages | RoomList)[]
+    | (
+        | LeadText
+        | ImageWithFloatingText
+        | Story
+        | Features
+        | Separator
+        | WideImage
+        | TextColumnsWithImages
+        | Map
+        | Testimonials
+        | RoomList
+      )[]
     | null;
   seo?: {
     /**
@@ -1152,6 +1163,76 @@ export interface TextColumnsWithImages {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Map".
+ */
+export interface Map {
+  /**
+   * Enter the address to display on the map, including the business name. It should resolve unambiguously to a place on Google Maps.
+   */
+  address: string;
+  /**
+   * Enter a number from 0 to 22. The level of detail for the different zoom levels is approximately: 1—World, 5—Landmass/continent, 10—City, 15—Streets, 20—Buildings. Floating point numbers are allowed, e.g. 14.5.
+   */
+  zoomLevel: number;
+  overlayTextBox: {
+    heading: string;
+    text: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    callToActionLabel?: string | null;
+    position?: ('top-left' | 'top-right' | 'bottom-left' | 'bottom-right') | null;
+  };
+  elementId?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'Map';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Testimonials".
+ */
+export interface Testimonials {
+  heading?: string | null;
+  supportingText?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  items?:
+    | {
+        text: string;
+        author: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'testimonials';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "RoomList".
  */
 export interface RoomList {
@@ -1488,6 +1569,8 @@ export interface PagesSelect<T extends boolean = true> {
         Separator?: T | SeparatorSelect<T>;
         WideImage?: T | WideImageSelect<T>;
         TextColumnsWithImages?: T | TextColumnsWithImagesSelect<T>;
+        Map?: T | MapSelect<T>;
+        testimonials?: T | TestimonialsSelect<T>;
         RoomList?: T | RoomListSelect<T>;
       };
   seo?:
@@ -1716,6 +1799,42 @@ export interface TextColumnsWithImagesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Map_select".
+ */
+export interface MapSelect<T extends boolean = true> {
+  address?: T;
+  zoomLevel?: T;
+  overlayTextBox?:
+    | T
+    | {
+        heading?: T;
+        text?: T;
+        callToActionLabel?: T;
+        position?: T;
+      };
+  elementId?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Testimonials_select".
+ */
+export interface TestimonialsSelect<T extends boolean = true> {
+  heading?: T;
+  supportingText?: T;
+  items?:
+    | T
+    | {
+        text?: T;
+        author?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "RoomList_select".
  */
 export interface RoomListSelect<T extends boolean = true> {
@@ -1914,7 +2033,16 @@ export interface Common {
       [k: string]: unknown;
     } | null;
   };
-  uiLabels?: {
+  uiLabels: {
+    banner?: {
+      dismiss?: string | null;
+    };
+    slidesBlock?: {
+      /**
+       * Use the {{slide}} placeholder to display the slide number.
+       */
+      goToSlide?: string | null;
+    };
     errorBoundary?: {
       title?: string | null;
       text?: string | null;
@@ -1927,6 +2055,7 @@ export interface Common {
       password?: string | null;
       submit?: string | null;
     };
+    test: string;
   };
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -1978,6 +2107,16 @@ export interface CommonSelect<T extends boolean = true> {
   uiLabels?:
     | T
     | {
+        banner?:
+          | T
+          | {
+              dismiss?: T;
+            };
+        slidesBlock?:
+          | T
+          | {
+              goToSlide?: T;
+            };
         errorBoundary?:
           | T
           | {
@@ -1996,6 +2135,7 @@ export interface CommonSelect<T extends boolean = true> {
               password?: T;
               submit?: T;
             };
+        test?: T;
       };
   updatedAt?: T;
   createdAt?: T;
