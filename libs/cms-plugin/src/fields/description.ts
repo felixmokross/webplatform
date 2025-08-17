@@ -1,6 +1,6 @@
 import type { UIField } from "payload";
 
-import { allTranslations } from "../translations/index.js";
+import { allTranslations } from "../translations/translations.js";
 
 export function descriptionField(description: Record<string, string>): UIField {
   return {

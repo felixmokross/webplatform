@@ -73,6 +73,10 @@ export interface Config {
     users: User;
     'api-keys': ApiKey;
     'locale-configs': LocaleConfig;
+    banners: Banner;
+    pages: Page;
+    redirects: Redirect;
+    brands: Brand;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -88,6 +92,10 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     'api-keys': ApiKeysSelect<false> | ApiKeysSelect<true>;
     'locale-configs': LocaleConfigsSelect<false> | LocaleConfigsSelect<true>;
+    banners: BannersSelect<false> | BannersSelect<true>;
+    pages: PagesSelect<false> | PagesSelect<true>;
+    redirects: RedirectsSelect<false> | RedirectsSelect<true>;
+    brands: BrandsSelect<false> | BrandsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -680,6 +688,570 @@ export interface LocaleConfig {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "banners".
+ */
+export interface Banner {
+  id: string;
+  message: string;
+  cta?: {
+    show?: boolean | null;
+    label?: string | null;
+    link?: NewLink;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewLink".
+ */
+export interface NewLink {
+  linkType: 'custom' | 'internal';
+  doc?: (string | null) | Page;
+  queryString?: string | null;
+  fragment?: string | null;
+  url?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: string;
+  /**
+   * A hero section is the first thing a user sees when they visit a page. Only one hero block can be added to a page. To replace the current hero block by a different block type, remove it and add a new one.
+   */
+  hero?: (HeroSlides | HeroVideo | HeroHeading)[] | null;
+  /**
+   * Add blocks to fill the page with content. You can reorder the blocks by dragging and dropping them using the handle on the left side.
+   */
+  content?:
+    | (LeadText | ImageWithFloatingText | Story | Features | Separator | WideImage | TextColumnsWithImages | RoomList)[]
+    | null;
+  seo?: {
+    /**
+     * The description is shown in search engine results. It should be between 100 and 150 characters.
+     */
+    description?: string | null;
+    /**
+     * The image is shown in search engine results and when the page is shared on social media. It will be automatically sized to 1200x630 pixels.
+     */
+    image?: (string | null) | Media;
+  };
+  /**
+   * Choose the brand to which the page belongs. The brand determines the theme of the page.
+   */
+  brand: string | Brand;
+  /**
+   * The pathname is used to navigate to this page. It must be unique. The first path segment must be the brand's home link.
+   */
+  pathname: string;
+  pathname_locked?: boolean | null;
+  pathname_createRedirect?: boolean | null;
+  /**
+   * The title is shown in the title bar of the browser and in search engine results. Include important keywords for SEO. The brand’s base title is appended to the title.
+   */
+  title?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroSlides".
+ */
+export interface HeroSlides {
+  /**
+   * This heading is only used for SEO purposes and is not shown on the page. Since the slide overlay titles semantically don't define the page's main heading, you can use this field to define the main heading of the page.
+   */
+  seoPageHeading: string;
+  /**
+   * You can use this either for a single hero image or a slideshow with multiple images. Each slide can have an overlay title and a call-to-action button. You can add up to six slides.
+   */
+  slides: {
+    image: string | Media;
+    /**
+     * Depending on the user’s device or window size, the slide often has a different aspect ratio than the image. This setting defines how the image is aligned within the slide area.
+     */
+    imageAlignment?: ('center' | 'bottom') | null;
+    overlayTitle?: {
+      show?: boolean | null;
+      text?: {
+        root: {
+          type: string;
+          children: {
+            type: string;
+            version: number;
+            [k: string]: unknown;
+          }[];
+          direction: ('ltr' | 'rtl') | null;
+          format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+          indent: number;
+          version: number;
+        };
+        [k: string]: unknown;
+      } | null;
+      supportingText?: {
+        root: {
+          type: string;
+          children: {
+            type: string;
+            version: number;
+            [k: string]: unknown;
+          }[];
+          direction: ('ltr' | 'rtl') | null;
+          format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+          indent: number;
+          version: number;
+        };
+        [k: string]: unknown;
+      } | null;
+      cta?: {
+        show?: boolean | null;
+        label?: string | null;
+        link?: NewLink;
+        variant?: ('primary' | 'secondary') | null;
+      };
+      position?: ('center' | 'top-left' | 'top-right' | 'bottom-right' | 'bottom-left') | null;
+      /**
+       * The overlay is a semi-transparent black layer that is placed on top of the image to make the text more readable. Choose the intensity that is the best trade-off between readability of the text and brightness of the image.
+       */
+      overlay?: ('subtle' | 'moderate' | 'intense') | null;
+    };
+    id?: string | null;
+  }[];
+  /**
+   * Depending on the amount of information in the slides (title, CTA), different intervals might be more suitable. The default value is 7 seconds.
+   */
+  autoplayIntervalInSeconds?: number | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'HeroSlides';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroVideo".
+ */
+export interface HeroVideo {
+  /**
+   * The video should be optimized for web pages before uploading it.
+   */
+  video: string | Media;
+  /**
+   * The preview image is shown while the video is still loading. It should be the first frame of the video to provide a seamless transition.
+   */
+  previewImage?: (string | null) | Media;
+  overlayTitle?: {
+    show?: boolean | null;
+    text?: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    supportingText?: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    cta?: {
+      show?: boolean | null;
+      label?: string | null;
+      link?: NewLink;
+      variant?: ('primary' | 'secondary') | null;
+    };
+    position?: ('center' | 'top-left' | 'top-right' | 'bottom-right' | 'bottom-left') | null;
+    /**
+     * The overlay is a semi-transparent black layer that is placed on top of the image to make the text more readable. Choose the intensity that is the best trade-off between readability of the text and brightness of the image.
+     */
+    overlay?: ('subtle' | 'moderate' | 'intense') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'HeroVideo';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroHeading".
+ */
+export interface HeroHeading {
+  heading: string;
+  image?: (string | null) | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'HeroHeading';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LeadText".
+ */
+export interface LeadText {
+  heading?: string | null;
+  text: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  cta?: {
+    show?: boolean | null;
+    label?: string | null;
+    link?: NewLink;
+    variant?: ('primary' | 'secondary') | null;
+  };
+  elementId?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'LeadText';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageWithFloatingText".
+ */
+export interface ImageWithFloatingText {
+  image: string | Media;
+  overlayTitle: {
+    text: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    position?: ('top-left' | 'top-right') | null;
+    /**
+     * The overlay is a semi-transparent black layer that is placed on top of the image to make the text more readable. Choose the intensity that is the best trade-off between readability of the text and brightness of the image.
+     */
+    overlay?: ('subtle' | 'moderate' | 'intense') | null;
+  };
+  text: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  elementId?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ImageWithFloatingText';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Story".
+ */
+export interface Story {
+  heading?: string | null;
+  text: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  image?: (string | null) | Media;
+  imagePosition?: ('left' | 'right') | null;
+  /**
+   * Check this box to display the image in grayscale.
+   */
+  grayscaleImage?: boolean | null;
+  elementId?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'Story';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Features".
+ */
+export interface Features {
+  orientation?: ('first-image-left' | 'first-image-right') | null;
+  items: {
+    image: string | Media;
+    heading: string;
+    text: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    cta?: {
+      show?: boolean | null;
+      label?: string | null;
+      link?: NewLink;
+      variant?: ('primary' | 'secondary') | null;
+    };
+    id?: string | null;
+  }[];
+  elementId?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'Features';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Separator".
+ */
+export interface Separator {
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'Separator';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "WideImage".
+ */
+export interface WideImage {
+  image: string | Media;
+  overlayTextBox?: {
+    show?: boolean | null;
+    heading?: string | null;
+    text?: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    cta?: {
+      show?: boolean | null;
+      label?: string | null;
+      link?: NewLink;
+      variant?: ('primary' | 'secondary') | null;
+    };
+    position?: ('top-left' | 'top-right' | 'bottom-left' | 'bottom-right') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'WideImage';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TextColumnsWithImages".
+ */
+export interface TextColumnsWithImages {
+  heading?: string | null;
+  text?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Note that the specified number of columns per row is for standard desktop screens (width of 1280px or more) and will be reduced automatically on smaller screens.
+   */
+  numberOfColumns?: number | null;
+  items: {
+    image?: (string | null) | Media;
+    size?: ('full' | 'medium' | 'small') | null;
+    heading?: string | null;
+    text?: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    cta?: {
+      show?: boolean | null;
+      label?: string | null;
+      link?: NewLink;
+      variant?: ('primary' | 'secondary') | null;
+    };
+    id?: string | null;
+  }[];
+  elementId?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'TextColumnsWithImages';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RoomList".
+ */
+export interface RoomList {
+  rooms: {
+    heading: string;
+    text?: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    images: {
+      image: string | Media;
+      caption?: string | null;
+      id?: string | null;
+    }[];
+    cta: {
+      label: string;
+      link: NewLink;
+      variant?: ('primary' | 'secondary') | null;
+    };
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'RoomList';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "brands".
+ */
+export interface Brand {
+  id: string;
+  name: string;
+  homeLink?: NewLink;
+  /**
+   * The base title is appended to the titles of the brand’s pages. If the page does not have a title, the base title will be used as the title. Include important keywords in the title for SEO.
+   */
+  baseTitle?: string | null;
+  logo: string | Media;
+  /**
+   * A banner is useful to announce promotions or important news and can have a call to action. It will be shown on all pages of the brand.
+   */
+  banner?: (string | null) | Banner;
+  navLinks?:
+    | {
+        label: string;
+        link: NewLink;
+        id?: string | null;
+      }[]
+    | null;
+  bookCta?: {
+    show?: boolean | null;
+    label?: string | null;
+    link?: NewLink;
+  };
+  footer?: {
+    linkGroups?:
+      | {
+          title: string;
+          links?:
+            | {
+                label: string;
+                link: NewLink;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "redirects".
+ */
+export interface Redirect {
+  id: string;
+  fromPathname: string;
+  to: {
+    page: string | Page;
+    queryString?: string | null;
+    fragment?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -704,6 +1276,22 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'locale-configs';
         value: string | LocaleConfig;
+      } | null)
+    | ({
+        relationTo: 'banners';
+        value: string | Banner;
+      } | null)
+    | ({
+        relationTo: 'pages';
+        value: string | Page;
+      } | null)
+    | ({
+        relationTo: 'redirects';
+        value: string | Redirect;
+      } | null)
+    | ({
+        relationTo: 'brands';
+        value: string | Brand;
       } | null);
   globalSlug?: string | null;
   user:
@@ -853,6 +1441,371 @@ export interface LocaleConfigsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "banners_select".
+ */
+export interface BannersSelect<T extends boolean = true> {
+  message?: T;
+  cta?:
+    | T
+    | {
+        show?: T;
+        label?: T;
+        link?: T | NewLinkSelect<T>;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewLink_select".
+ */
+export interface NewLinkSelect<T extends boolean = true> {
+  linkType?: T;
+  doc?: T;
+  queryString?: T;
+  fragment?: T;
+  url?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages_select".
+ */
+export interface PagesSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        HeroSlides?: T | HeroSlidesSelect<T>;
+        HeroVideo?: T | HeroVideoSelect<T>;
+        HeroHeading?: T | HeroHeadingSelect<T>;
+      };
+  content?:
+    | T
+    | {
+        LeadText?: T | LeadTextSelect<T>;
+        ImageWithFloatingText?: T | ImageWithFloatingTextSelect<T>;
+        Story?: T | StorySelect<T>;
+        Features?: T | FeaturesSelect<T>;
+        Separator?: T | SeparatorSelect<T>;
+        WideImage?: T | WideImageSelect<T>;
+        TextColumnsWithImages?: T | TextColumnsWithImagesSelect<T>;
+        RoomList?: T | RoomListSelect<T>;
+      };
+  seo?:
+    | T
+    | {
+        description?: T;
+        image?: T;
+      };
+  brand?: T;
+  pathname?: T;
+  pathname_locked?: T;
+  pathname_createRedirect?: T;
+  title?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroSlides_select".
+ */
+export interface HeroSlidesSelect<T extends boolean = true> {
+  seoPageHeading?: T;
+  slides?:
+    | T
+    | {
+        image?: T;
+        imageAlignment?: T;
+        overlayTitle?:
+          | T
+          | {
+              show?: T;
+              text?: T;
+              supportingText?: T;
+              cta?:
+                | T
+                | {
+                    show?: T;
+                    label?: T;
+                    link?: T | NewLinkSelect<T>;
+                    variant?: T;
+                  };
+              position?: T;
+              overlay?: T;
+            };
+        id?: T;
+      };
+  autoplayIntervalInSeconds?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroVideo_select".
+ */
+export interface HeroVideoSelect<T extends boolean = true> {
+  video?: T;
+  previewImage?: T;
+  overlayTitle?:
+    | T
+    | {
+        show?: T;
+        text?: T;
+        supportingText?: T;
+        cta?:
+          | T
+          | {
+              show?: T;
+              label?: T;
+              link?: T | NewLinkSelect<T>;
+              variant?: T;
+            };
+        position?: T;
+        overlay?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroHeading_select".
+ */
+export interface HeroHeadingSelect<T extends boolean = true> {
+  heading?: T;
+  image?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LeadText_select".
+ */
+export interface LeadTextSelect<T extends boolean = true> {
+  heading?: T;
+  text?: T;
+  cta?:
+    | T
+    | {
+        show?: T;
+        label?: T;
+        link?: T | NewLinkSelect<T>;
+        variant?: T;
+      };
+  elementId?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageWithFloatingText_select".
+ */
+export interface ImageWithFloatingTextSelect<T extends boolean = true> {
+  image?: T;
+  overlayTitle?:
+    | T
+    | {
+        text?: T;
+        position?: T;
+        overlay?: T;
+      };
+  text?: T;
+  elementId?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Story_select".
+ */
+export interface StorySelect<T extends boolean = true> {
+  heading?: T;
+  text?: T;
+  image?: T;
+  imagePosition?: T;
+  grayscaleImage?: T;
+  elementId?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Features_select".
+ */
+export interface FeaturesSelect<T extends boolean = true> {
+  orientation?: T;
+  items?:
+    | T
+    | {
+        image?: T;
+        heading?: T;
+        text?: T;
+        cta?:
+          | T
+          | {
+              show?: T;
+              label?: T;
+              link?: T | NewLinkSelect<T>;
+              variant?: T;
+            };
+        id?: T;
+      };
+  elementId?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Separator_select".
+ */
+export interface SeparatorSelect<T extends boolean = true> {
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "WideImage_select".
+ */
+export interface WideImageSelect<T extends boolean = true> {
+  image?: T;
+  overlayTextBox?:
+    | T
+    | {
+        show?: T;
+        heading?: T;
+        text?: T;
+        cta?:
+          | T
+          | {
+              show?: T;
+              label?: T;
+              link?: T | NewLinkSelect<T>;
+              variant?: T;
+            };
+        position?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TextColumnsWithImages_select".
+ */
+export interface TextColumnsWithImagesSelect<T extends boolean = true> {
+  heading?: T;
+  text?: T;
+  numberOfColumns?: T;
+  items?:
+    | T
+    | {
+        image?: T;
+        size?: T;
+        heading?: T;
+        text?: T;
+        cta?:
+          | T
+          | {
+              show?: T;
+              label?: T;
+              link?: T | NewLinkSelect<T>;
+              variant?: T;
+            };
+        id?: T;
+      };
+  elementId?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RoomList_select".
+ */
+export interface RoomListSelect<T extends boolean = true> {
+  rooms?:
+    | T
+    | {
+        heading?: T;
+        text?: T;
+        images?:
+          | T
+          | {
+              image?: T;
+              caption?: T;
+              id?: T;
+            };
+        cta?:
+          | T
+          | {
+              label?: T;
+              link?: T | NewLinkSelect<T>;
+              variant?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "redirects_select".
+ */
+export interface RedirectsSelect<T extends boolean = true> {
+  fromPathname?: T;
+  to?:
+    | T
+    | {
+        page?: T;
+        queryString?: T;
+        fragment?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "brands_select".
+ */
+export interface BrandsSelect<T extends boolean = true> {
+  id?: T;
+  name?: T;
+  homeLink?: T | NewLinkSelect<T>;
+  baseTitle?: T;
+  logo?: T;
+  banner?: T;
+  navLinks?:
+    | T
+    | {
+        label?: T;
+        link?: T | NewLinkSelect<T>;
+        id?: T;
+      };
+  bookCta?:
+    | T
+    | {
+        show?: T;
+        label?: T;
+        link?: T | NewLinkSelect<T>;
+      };
+  footer?:
+    | T
+    | {
+        linkGroups?:
+          | T
+          | {
+              title?: T;
+              links?:
+                | T
+                | {
+                    label?: T;
+                    link?: T | NewLinkSelect<T>;
+                    id?: T;
+                  };
+              id?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents_select".
  */
 export interface PayloadLockedDocumentsSelect<T extends boolean = true> {
@@ -905,6 +1858,16 @@ export interface Settings {
   maintenanceScreen?: {
     show?: boolean | null;
     message?: string | null;
+  };
+  maps: {
+    /**
+     * Enter the region code for maps, e.g. CO for Colombia. Must be two letters in uppercase. See https://developers.google.com/maps/coverage#coverage-legend
+     */
+    region?: string | null;
+    /**
+     * Enter the ID of the map to display. This is the ID of the map in the Google Maps Platform and defines styling and POI settings.
+     */
+    mapId: string;
   };
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -984,6 +1947,12 @@ export interface SettingsSelect<T extends boolean = true> {
     | {
         show?: T;
         message?: T;
+      };
+  maps?:
+    | T
+    | {
+        region?: T;
+        mapId?: T;
       };
   updatedAt?: T;
   createdAt?: T;

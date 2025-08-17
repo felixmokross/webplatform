@@ -18,6 +18,24 @@ export const en = {
         },
       },
     },
+    banners: {
+      admin: {
+        description:
+          "A banner is useful to announce promotions or important news and can have a call to action. Here you can create and manage banners. Go to Brands to enable a banner on all pages of the brand.",
+      },
+      edit: {
+        label: "Edit",
+        message: { label: "Message" },
+      },
+      labels: {
+        plural: "Banners",
+        singular: "Banner",
+      },
+      usages: { label: "Usages" },
+    },
+    brands: {
+      navLinkRowLabel: "Navigation Link {{ n }}",
+    },
     common: {
       id: "ID",
       loading: "Loading…",
@@ -107,6 +125,9 @@ export const en = {
         },
       },
     },
+    heroSlides: {
+      slideRowLabel: "Slide {{ n }}",
+    },
     localeConfigs: {
       deeplSourceLanguage: { label: "DeepL Source Language" },
       deeplTargetLanguage: { label: "DeepL Target Language" },
@@ -168,6 +189,46 @@ export const en = {
       media: {
         label: "Media",
       },
+    },
+    pages: {
+      labels: { plural: "Pages", singular: "Page" },
+      pathname: {
+        alreadyExists: "There is already a page with this pathname.",
+        createRedirect:
+          "Create a redirect from '{{ previousPathname }}' to this page.",
+        lock: "Lock",
+        pathnameMustStartWithPrefix:
+          "The pathname must start with '{{ prefix }}'.",
+        pleaseEnterAPathname: "Please enter a pathname.",
+        pleaseSelectABrandFirst: "Please select a brand first.",
+        unlock: "Unlock",
+      },
+    },
+    redirects: {
+      fromPathname: { label: "From Pathname" },
+      labels: {
+        plural: "Redirects",
+        singular: "Redirect",
+      },
+      to: {
+        fragment: {
+          description:
+            "If a fragment is provided, it will be appended to the URL with a '#' character. Use this to link to a section of a page, defined by an 'Element ID'.",
+          label: "Fragment",
+        },
+        label: "Redirect To",
+        page: { label: "Page" },
+        queryString: {
+          description:
+            "If a query string is provided, it will be appended to the URL with a '?' character.",
+          label: "Query String",
+        },
+      },
+    },
+    rowLabel: {
+      item: "Item {{ n }}",
+      link: "Link {{ n }}",
+      linkGroup: "Link Group {{ n }}",
     },
     translations: {
       autoTranslate: "Auto-Translate",

@@ -5,6 +5,7 @@ import { cmsPlugin } from "@fxmk/cms-plugin";
 import { fileURLToPath } from "url";
 import { en } from "payload/i18n/en";
 import { es } from "payload/i18n/es";
+import { RoomListBlock } from "./blocks/room-list/config";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -19,6 +20,7 @@ export default buildConfig({
   }),
   plugins: [
     cmsPlugin({
+      additionalContentBlocks: [RoomListBlock],
       deeplApiKey: process.env.DEEPL_API_KEY,
       openaiApiKey: process.env.OPENAI_API_KEY,
       publicMediaBaseUrl: process.env.PUBLIC_MEDIA_BASE_URL,
@@ -30,5 +32,16 @@ export default buildConfig({
       },
     }),
   ],
-  i18n: { supportedLanguages: { en, es } },
+  i18n: {
+    supportedLanguages: { en, es },
+    translations: {
+      en: {
+        custom: {
+          roomList: {
+            roomRowLabel: "Room",
+          },
+        },
+      },
+    },
+  },
 });

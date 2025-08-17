@@ -1,6 +1,6 @@
 import type { UploadField } from "payload";
 
-import { translated } from "../translations/index.js";
+import { translated } from "../translations/translations.js";
 
 export function imageField(config: Partial<UploadField> = {}): UploadField {
   return {

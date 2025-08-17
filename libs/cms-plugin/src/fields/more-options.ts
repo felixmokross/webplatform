@@ -1,6 +1,6 @@
 import type { CollapsibleField, Field } from "payload";
 
-import { translated } from "../translations/index.js";
+import { translated } from "../translations/translations.js";
 
 export function moreOptionsField(...fields: Field[]): CollapsibleField {
   return {

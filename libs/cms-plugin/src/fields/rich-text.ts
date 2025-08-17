@@ -1,6 +1,6 @@
 import type { RichTextField } from "payload";
 
-import { translated } from "../translations/index.js";
+import { translated } from "../translations/translations.js";
 
 export function optionalRichTextField(
   config: Partial<RichTextField> = {},

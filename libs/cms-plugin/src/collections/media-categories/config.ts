@@ -2,7 +2,7 @@ import type { CollectionConfig } from "payload";
 
 import { canManageContent } from "../../common/access-control.js";
 import { adminGroup } from "../../groups.js";
-import { translated } from "../../translations/index.js";
+import { translated } from "../../translations/translations.js";
 
 export const MediaCategories: CollectionConfig = {
   slug: "mediaCategory",

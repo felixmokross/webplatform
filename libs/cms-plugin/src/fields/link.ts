@@ -3,7 +3,7 @@ import type { GroupField, RowField, TextField } from "payload";
 import { validateUrl } from "@payloadcms/richtext-lexical";
 import { text } from "payload/shared";
 
-import { translated } from "../translations/index.js";
+import { translated } from "../translations/translations.js";
 
 type LinkFieldOptions = {
   allowedLinkTypes?: ("custom" | "internal")[];
@@ -56,7 +56,6 @@ export function linkField({
           condition: (_, siblingData) => siblingData.linkType === "internal",
         },
         label: translated("cmsPlugin:fields:link:doc:label"),
-        // @ts-ignore TODO add pages to cms-plugin config
         relationTo: "pages",
         required,
       },

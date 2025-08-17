@@ -1,6 +1,6 @@
 import type { CheckboxField } from "payload";
 
-import { translated } from "../translations/index.js";
+import { translated } from "../translations/translations.js";
 
 export function showField(config: Partial<CheckboxField> = {}): CheckboxField {
   return {

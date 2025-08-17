@@ -1,4 +1,4 @@
-import type { TranslationsObject } from "./types.js";
+import type { TranslationsObject } from "../types.js";
 
 export const es: TranslationsObject = {
   cmsPlugin: {
@@ -15,6 +15,24 @@ export const es: TranslationsObject = {
         label: "Rol",
         options: { cicd: "CI/CD", e2eTests: "E2E Tests", frontend: "Frontend" },
       },
+    },
+    banners: {
+      admin: {
+        description:
+          "Un banner es útil para anunciar promociones o noticias importantes y puede tener un call to action. Aquí puedes crear y gestionar banners. Ve a Marcas para habilitar un banner en todas las páginas de la marca.",
+      },
+      edit: {
+        label: "Editar",
+        message: { label: "Mensaje" },
+      },
+      labels: {
+        plural: "Banners",
+        singular: "Banner",
+      },
+      usages: { label: "Usos" },
+    },
+    brands: {
+      navLinkRowLabel: "Enlace de navegación {{ n }}",
     },
     common: {
       id: "ID",
@@ -107,6 +125,9 @@ export const es: TranslationsObject = {
         },
       },
     },
+    heroSlides: {
+      slideRowLabel: "Diapositiva {{ n }}",
+    },
     localeConfigs: {
       deeplSourceLanguage: { label: "Idioma de Origen DeepL" },
       deeplTargetLanguage: { label: "Idioma de Destino DeepL" },
@@ -117,8 +138,8 @@ export const es: TranslationsObject = {
       },
       googleMapsLanguage: { label: "Idioma de Google Maps" },
       labels: {
-        plural: "Configuraciones de Idioma",
-        singular: "Configuración de Idioma",
+        plural: "Configuraciones de idioma",
+        singular: "Configuración de idioma",
       },
       locale: { label: "Idioma" },
     },
@@ -126,7 +147,7 @@ export const es: TranslationsObject = {
       alt: {
         description:
           "Una breve descripción del medio para lectores de pantalla y motores de búsqueda. No se muestra en la página pero es importante para la accesibilidad. Para las imágenes se puede generar un texto alternativo automáticamente utilizando OpenAI.",
-        label: "Texto Alternativo",
+        label: "Texto alternativo",
       },
       category: {
         description:
@@ -168,6 +189,48 @@ export const es: TranslationsObject = {
       media: {
         label: "Medios",
       },
+    },
+    pages: {
+      labels: {
+        plural: "Páginas",
+        singular: "Página",
+      },
+      pathname: {
+        alreadyExists: "Ya existe una página con esta ruta.",
+        createRedirect:
+          "Crear una redirección para esta ruta a la página seleccionada",
+        lock: "Bloquear",
+        pathnameMustStartWithPrefix: `La ruta debe comenzar con '{{ prefix }}'.`,
+        pleaseEnterAPathname: "Por favor, ingrese una ruta.",
+        pleaseSelectABrandFirst: "Por favor, seleccione una marca primero.",
+        unlock: "Desbloquear",
+      },
+    },
+    redirects: {
+      fromPathname: { label: "Desde la ruta" },
+      labels: {
+        plural: "Redirecciones",
+        singular: "Redirección",
+      },
+      to: {
+        fragment: {
+          description:
+            "Si se proporciona un fragmento, se añadirá a la URL con un carácter '#'. Úsalo para enlazar a una sección de una página, definida por un 'ID de elemento'.",
+          label: "Fragmento",
+        },
+        label: "Redirigir a",
+        page: { label: "Página" },
+        queryString: {
+          description:
+            "Si se proporciona una cadena de consulta, se añadirá a la URL con un carácter '?'.",
+          label: "Cadena de consulta",
+        },
+      },
+    },
+    rowLabel: {
+      item: "Elemento {{ n }}",
+      link: "Enlace {{ n }}",
+      linkGroup: "Grupo de enlaces {{ n }}",
     },
     translations: {
       autoTranslate: "Auto-traducir",

@@ -1,6 +1,6 @@
 import type { TextareaField } from "payload";
 
-import { translated } from "../translations/index.js";
+import { translated } from "../translations/translations.js";
 
 export function optionalTextareaField(
   config: Partial<TextareaField> = {},

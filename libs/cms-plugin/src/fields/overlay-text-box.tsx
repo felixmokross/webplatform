@@ -1,8 +1,10 @@
 import type { GroupField } from "payload";
 
-import { richTextField, showField, textField } from "../fields/index.js";
-import { translated } from "../translations/index.js";
+import { translated } from "../translations/translations.js";
 import { callToActionField } from "./call-to-action.js";
+import { richTextField } from "./rich-text.js";
+import { showField } from "./show.js";
+import { textField } from "./text.js";
 
 const configuredCallToActionField = callToActionField({
   optional: true,

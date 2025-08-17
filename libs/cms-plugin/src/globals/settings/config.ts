@@ -1,7 +1,8 @@
 import type { GlobalConfig } from "payload";
 
 import { canManageContent } from "../../common/access-control.js";
-import { showField, textField } from "../../fields/index.js";
+import { showField } from "../../fields/show.js";
+import { textField } from "../../fields/text.js";
 import { adminGroup } from "../../groups.js";
 
 export const Settings: GlobalConfig = {
@@ -83,46 +84,46 @@ export const Settings: GlobalConfig = {
             es: "Pantalla de Mantenimiento",
           },
         },
-        // {
-        //   name: "maps",
-        //   fields: [
-        //     {
-        //       name: "region",
-        //       type: "text",
-        //       admin: {
-        //         description: {
-        //           en: "Enter the region code for maps, e.g. CO for Colombia. Must be two letters in uppercase. See https://developers.google.com/maps/coverage#coverage-legend",
-        //           es: "Ingresa el código de región para mapas, por ejemplo CO para Colombia. Debe ser de dos letras en mayúsculas. Consulta https://developers.google.com/maps/coverage#coverage-legend",
-        //         },
-        //       },
-        //       label: {
-        //         en: "Region Code",
-        //         es: "Código de región",
-        //       },
-        //       maxLength: 2,
-        //       minLength: 2,
-        //     },
-        //     {
-        //       name: "mapId",
-        //       type: "text",
-        //       admin: {
-        //         description: {
-        //           en: "Enter the ID of the map to display. This is the ID of the map in the Google Maps Platform and defines styling and POI settings.",
-        //           es: "Ingresa el ID del mapa a mostrar. Este es el ID del mapa en Google Maps Platform y define la configuración de estilo y POI.",
-        //         },
-        //       },
-        //       label: {
-        //         en: "Map ID",
-        //         es: "ID de mapa",
-        //       },
-        //       required: true,
-        //     },
-        //   ],
-        //   label: {
-        //     en: "Maps",
-        //     es: "Mapas",
-        //   },
-        // },
+        {
+          name: "maps",
+          fields: [
+            {
+              name: "region",
+              type: "text",
+              admin: {
+                description: {
+                  en: "Enter the region code for maps, e.g. CO for Colombia. Must be two letters in uppercase. See https://developers.google.com/maps/coverage#coverage-legend",
+                  es: "Ingresa el código de región para mapas, por ejemplo CO para Colombia. Debe ser de dos letras en mayúsculas. Consulta https://developers.google.com/maps/coverage#coverage-legend",
+                },
+              },
+              label: {
+                en: "Region Code",
+                es: "Código de región",
+              },
+              maxLength: 2,
+              minLength: 2,
+            },
+            {
+              name: "mapId",
+              type: "text",
+              admin: {
+                description: {
+                  en: "Enter the ID of the map to display. This is the ID of the map in the Google Maps Platform and defines styling and POI settings.",
+                  es: "Ingresa el ID del mapa a mostrar. Este es el ID del mapa en Google Maps Platform y define la configuración de estilo y POI.",
+                },
+              },
+              label: {
+                en: "Map ID",
+                es: "ID de mapa",
+              },
+              required: true,
+            },
+          ],
+          label: {
+            en: "Maps",
+            es: "Mapas",
+          },
+        },
       ],
     },
   ],

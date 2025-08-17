@@ -1,11 +1,15 @@
-import type { Config, Plugin } from "payload";
+import type { Block, Config, Plugin } from "payload";
 
 import { s3Storage } from "@payloadcms/storage-s3";
 
 import { ApiKeys } from "./collections/api-keys/config.js";
+import { Banners } from "./collections/banners/config.js";
+import { Brands } from "./collections/brands/config.js";
 import { LocaleConfigs } from "./collections/locale-configs/config.js";
 import { Media } from "./collections/media/config.js";
 import { MediaCategories } from "./collections/media-categories/config.js";
+import { Pages } from "./collections/pages/config.js";
+import { Redirects } from "./collections/redirects/config.js";
 import { Users } from "./collections/users/config.js";
 import { editor } from "./common/editor.js";
 import { localization } from "./common/localization.js";
@@ -15,12 +19,14 @@ import { autoTranslateEndpoint } from "./endpoints/auto-translate.js";
 import { translationsEndpoint } from "./endpoints/translations.js";
 import { Common } from "./globals/common/config.js";
 import { Settings } from "./globals/settings/config.js";
-import { translations } from "./translations/index.js";
+import { translations } from "./translations/translations.js";
 
 export * from "./common/index.js";
 export * from "./fields/index.js";
 
 export type CmsPluginOptions = {
+  additionalContentBlocks?: Block[];
+  additionalHeroBlocks?: Block[];
   deeplApiKey?: string;
   mediaS3Storage: {
     accessKeyId: string;
@@ -33,26 +39,31 @@ export type CmsPluginOptions = {
 };
 
 export const cmsPlugin =
-  (options: CmsPluginOptions): Plugin =>
+  ({
+    additionalContentBlocks,
+    additionalHeroBlocks,
+    deeplApiKey,
+    mediaS3Storage,
+    openaiApiKey,
+    publicMediaBaseUrl,
+  }: CmsPluginOptions): Plugin =>
   (config: Config) => {
     if (!config.collections) {
       config.collections = [];
     }
 
-    if (options.deeplApiKey) {
-      initializeTranslator({ apiKey: options.deeplApiKey });
+    if (deeplApiKey) {
+      initializeTranslator({ apiKey: deeplApiKey });
     }
 
-    if (options.openaiApiKey) {
-      initializeOpenAI({ apiKey: options.openaiApiKey });
+    if (openaiApiKey) {
+      initializeOpenAI({ apiKey: openaiApiKey });
     }
 
     config.collections.push(
       Media({
-        generateAltTextOptions: options.publicMediaBaseUrl
-          ? {
-              publicMediaBaseUrl: options.publicMediaBaseUrl,
-            }
+        generateAltTextOptions: publicMediaBaseUrl
+          ? { publicMediaBaseUrl }
           : undefined,
       }),
     );
@@ -60,6 +71,12 @@ export const cmsPlugin =
     config.collections.push(Users);
     config.collections.push(ApiKeys);
     config.collections.push(LocaleConfigs);
+    config.collections.push(Banners);
+    config.collections.push(
+      Pages({ additionalContentBlocks, additionalHeroBlocks }),
+    );
+    config.collections.push(Redirects);
+    config.collections.push(Brands);
 
     if (!config.globals) {
       config.globals = [];
@@ -190,16 +207,16 @@ export const cmsPlugin =
     }
 
     return s3Storage({
-      bucket: options.mediaS3Storage.bucket,
+      bucket: mediaS3Storage.bucket,
       collections: {
         media: true,
       },
       config: {
         credentials: {
-          accessKeyId: options.mediaS3Storage.accessKeyId,
-          secretAccessKey: options.mediaS3Storage.secretAccessKey,
+          accessKeyId: mediaS3Storage.accessKeyId,
+          secretAccessKey: mediaS3Storage.secretAccessKey,
         },
-        region: options.mediaS3Storage.region,
+        region: mediaS3Storage.region,
       },
     })(config);
   };
