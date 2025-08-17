@@ -157,9 +157,9 @@ export const cmsPlugin =
 
       const settings = await payload.findGlobal({ slug: "settings" });
       if (
-        !settings?.publishedLocales ||
-        settings.publishedLocales.length === 0 ||
-        !settings.fallbackLocale
+        !settings?.publishedLocales?.publishedLocales ||
+        settings.publishedLocales.publishedLocales.length === 0 ||
+        !settings.publishedLocales.fallbackLocale
       ) {
         await payload.updateGlobal({
           slug: "settings",
