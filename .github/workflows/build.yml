@@ -90,10 +90,10 @@ jobs:
         with:
           name: cms-plugin-dist
           path: libs/cms-plugin/dist
+      - name: Install dependencies
+        run: pnpm --filter cms-example --filter cms-plugin install
       - name: Build
-        uses: ./.github/actions/build
-        with:
-          package: "cms-example"
+        run: pnpm --filter cms-example build
 
   create-release:
     name: Create release
