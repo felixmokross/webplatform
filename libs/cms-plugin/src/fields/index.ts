@@ -3,6 +3,7 @@ export * from "./content.js";
 export * from "./description.js";
 export * from "./element-id.js";
 export * from "./hero.js";
+export * from "./image.js";
 export * from "./link.js";
 export * from "./more-options.js";
 export * from "./overlay-text-box.js";

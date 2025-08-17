@@ -1,10 +1,14 @@
-import type { BlocksField } from "payload";
+import type { Block, BlocksField } from "payload";
 
 import { HeroHeadingBlock } from "../blocks/hero-heading/config.js";
 import { HeroSlidesBlock } from "../blocks/hero-slides/config.js";
 import { HeroVideoBlock } from "../blocks/hero-video/config.js";
 
-export function heroField(): BlocksField {
+type HeroFieldOptions = {
+  additionalBlocks?: Block[];
+};
+
+export function heroField({ additionalBlocks }: HeroFieldOptions): BlocksField {
   return {
     name: "hero",
     type: "blocks",
@@ -15,7 +19,12 @@ export function heroField(): BlocksField {
       },
       initCollapsed: true,
     },
-    blocks: [HeroSlidesBlock, HeroVideoBlock, HeroHeadingBlock],
+    blocks: [
+      HeroSlidesBlock,
+      HeroVideoBlock,
+      HeroHeadingBlock,
+      ...(additionalBlocks ?? []),
+    ],
     label: {
       en: "Hero",
       es: "Héroe",

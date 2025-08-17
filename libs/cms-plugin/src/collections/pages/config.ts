@@ -1,5 +1,10 @@
 import type { TFunction } from "@payloadcms/translations";
-import type { CollectionConfig, TextField, ValidateOptions } from "payload";
+import type {
+  Block,
+  CollectionConfig,
+  TextField,
+  ValidateOptions,
+} from "payload";
 
 import { text } from "payload/shared";
 
@@ -18,301 +23,313 @@ import {
 } from "./localized-pathname.js";
 import { pageUsagesField } from "./usages.js";
 
-export const Pages: CollectionConfig = {
-  slug: "pages",
-  access: {
-    create: canManageContent,
-    delete: canManageContent,
-    update: canManageContent,
-  },
-  admin: {
-    defaultColumns: ["pathname", "title", "brand", "updatedAt"],
-    group: contentGroup,
-    listSearchableFields: ["id", "pathname", "title", "brand.name"],
-    // TODO set up live preview
-    // livePreview: {
-    //   url: ({
-    //     data,
-    //     locale,
-    //   }: {
-    //     collectionConfig?: SanitizedCollectionConfig;
-    //     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    //     data: Record<string, any>;
-    //     locale: Locale;
-    //     payload: Payload;
-    //   }) =>
-    //     getLivePreviewUrl(
-    //       (data as Page).pathname,
-    //       `pages/${data.id}`,
-    //       locale.code,
-    //     ),
-    // },
-    useAsTitle: "pathname",
-  },
-  defaultPopulate: {
-    brand: true,
-    pathname: true,
-  },
-  defaultSort: "pathname",
-  endpoints: [getLocalizedPathnameEndpoint],
-  fields: [
-    {
-      type: "tabs",
-      tabs: [
-        {
-          fields: [heroField()],
-          label: {
-            en: "Hero",
-            es: "Héroe",
-          },
-        },
-        {
-          fields: [contentField],
-          label: {
-            en: "Content",
-            es: "Contenido",
-          },
-        },
-        {
-          name: "seo",
-          fields: [
-            descriptionField({
-              en: "The SEO fields are used to improve the page's visibility in search engine results and social media. The data should be unique and relevant to the page.",
-              es: "Los campos SEO se utilizan para mejorar la visibilidad de la página en los resultados de los motores de búsqueda y en las redes sociales. Los datos deben ser únicos y relevantes para la página.",
-            }),
-            textareaField({
-              name: "description",
-              admin: {
-                description: {
-                  en: "The description is shown in search engine results. It should be between 100 and 150 characters.",
-                  es: "La descripción se muestra en los resultados de los motores de búsqueda. Debe tener entre 100 y 150 caracteres.",
-                },
-              },
-              label: {
-                en: "Description",
-                es: "Descripción",
-              },
-              required: false,
-            }),
-            {
-              name: "image",
-              type: "upload",
-              admin: {
-                description: {
-                  en: "The image is shown in search engine results and when the page is shared on social media. It will be automatically sized to 1200x630 pixels.",
-                  es: "La imagen se muestra en los resultados de los motores de búsqueda y cuando se comparte la página en las redes sociales. Se redimensionará automáticamente a 1200x630 píxeles.",
-                },
-              },
-              filterOptions: {
-                mimeType: { contains: "image/" },
-              },
-              label: {
-                en: "Image",
-                es: "Imagen",
-              },
-              relationTo: "media",
+type PagesOptions = {
+  additionalContentBlocks?: Block[];
+  additionalHeroBlocks?: Block[];
+};
+
+export function Pages({
+  additionalContentBlocks,
+  additionalHeroBlocks,
+}: PagesOptions): CollectionConfig {
+  return {
+    slug: "pages",
+    access: {
+      create: canManageContent,
+      delete: canManageContent,
+      update: canManageContent,
+    },
+    admin: {
+      defaultColumns: ["pathname", "title", "brand", "updatedAt"],
+      group: contentGroup,
+      listSearchableFields: ["id", "pathname", "title", "brand.name"],
+      // TODO set up live preview
+      // livePreview: {
+      //   url: ({
+      //     data,
+      //     locale,
+      //   }: {
+      //     collectionConfig?: SanitizedCollectionConfig;
+      //     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      //     data: Record<string, any>;
+      //     locale: Locale;
+      //     payload: Payload;
+      //   }) =>
+      //     getLivePreviewUrl(
+      //       (data as Page).pathname,
+      //       `pages/${data.id}`,
+      //       locale.code,
+      //     ),
+      // },
+      useAsTitle: "pathname",
+    },
+    defaultPopulate: {
+      brand: true,
+      pathname: true,
+    },
+    defaultSort: "pathname",
+    endpoints: [getLocalizedPathnameEndpoint],
+    fields: [
+      {
+        type: "tabs",
+        tabs: [
+          {
+            fields: [heroField({ additionalBlocks: additionalHeroBlocks })],
+            label: {
+              en: "Hero",
+              es: "Héroe",
             },
-          ],
-          label: {
-            en: "SEO",
-            es: "SEO",
           },
-        },
-        {
-          fields: [pageUsagesField()],
-          label: {
-            en: "Usages",
-            es: "Usos",
+          {
+            fields: [
+              contentField({ additionalBlocks: additionalContentBlocks }),
+            ],
+            label: {
+              en: "Content",
+              es: "Contenido",
+            },
           },
-        },
-      ],
-    },
-
-    {
-      name: "brand",
-      type: "relationship",
-      access: {
-        update: () => false,
-      },
-      admin: {
-        description: {
-          en: "Choose the brand to which the page belongs. The brand determines the theme of the page.",
-          es: "Elige la marca a la que pertenece la página. La marca determina el tema de la página.",
-        },
-        position: "sidebar",
-      },
-      label: {
-        en: "Brand",
-        es: "Marca",
-      },
-      relationTo: "brands",
-      required: true,
-    },
-    {
-      name: "pathname",
-      type: "text",
-      admin: {
-        components: {
-          Field: "@fxmk/cms-plugin/client#PathnameField",
-        },
-        description: {
-          en: "The pathname is used to navigate to this page. It must be unique. The first path segment must be the brand's home link.",
-          es: "La ruta se utiliza para navegar a esta página. Debe ser única. El primer segmento de la ruta debe ser el enlace de inicio de la marca.",
-        },
-        placeholder: "e.g. /experiences/lost-city",
-        position: "sidebar",
-      },
-      hooks: {
-        afterChange: [
-          async ({ operation, previousDoc, req, siblingData }) => {
-            if (operation !== "update") {
-              return;
-            }
-            if (!siblingData["pathname_createRedirect"]) {
-              return;
-            }
-
-            const redirects = await req.payload.find({
-              collection: "redirects",
-              pagination: false,
-              where: {
-                fromPathname: { equals: previousDoc.pathname },
+          {
+            name: "seo",
+            fields: [
+              descriptionField({
+                en: "The SEO fields are used to improve the page's visibility in search engine results and social media. The data should be unique and relevant to the page.",
+                es: "Los campos SEO se utilizan para mejorar la visibilidad de la página en los resultados de los motores de búsqueda y en las redes sociales. Los datos deben ser únicos y relevantes para la página.",
+              }),
+              textareaField({
+                name: "description",
+                admin: {
+                  description: {
+                    en: "The description is shown in search engine results. It should be between 100 and 150 characters.",
+                    es: "La descripción se muestra en los resultados de los motores de búsqueda. Debe tener entre 100 y 150 caracteres.",
+                  },
+                },
+                label: {
+                  en: "Description",
+                  es: "Descripción",
+                },
+                required: false,
+              }),
+              {
+                name: "image",
+                type: "upload",
+                admin: {
+                  description: {
+                    en: "The image is shown in search engine results and when the page is shared on social media. It will be automatically sized to 1200x630 pixels.",
+                    es: "La imagen se muestra en los resultados de los motores de búsqueda y cuando se comparte la página en las redes sociales. Se redimensionará automáticamente a 1200x630 píxeles.",
+                  },
+                },
+                filterOptions: {
+                  mimeType: { contains: "image/" },
+                },
+                label: {
+                  en: "Image",
+                  es: "Imagen",
+                },
+                relationTo: "media",
               },
-            });
-
-            if (redirects.totalDocs > 0) {
-              // Redirect already exists, so we don't need to create it again.
-              console.log(
-                `Redirect already exists for ${previousDoc.pathname}`,
-              );
-              return;
-            }
-
-            console.log(`Creating redirect for ${previousDoc.pathname}`);
-            await req.payload.create({
-              collection: "redirects",
-              data: {
-                fromPathname: previousDoc.pathname,
-                to: { page: previousDoc.id },
-              },
-            });
+            ],
+            label: {
+              en: "SEO",
+              es: "SEO",
+            },
+          },
+          {
+            fields: [pageUsagesField()],
+            label: {
+              en: "Usages",
+              es: "Usos",
+            },
           },
         ],
       },
-      index: true,
-      label: {
-        en: "Pathname",
-        es: "Ruta",
-      },
-      localized: true,
-      required: true,
-      unique: true,
-      validate: async (
-        value: null | string | undefined,
-        options: ValidateOptions<
-          Record<string, unknown>,
-          Record<string, unknown>,
-          TextField,
-          string
-        >,
-      ) => {
-        const defaultValidationResult = text(value, options);
-        if (defaultValidationResult !== true) {
-          return defaultValidationResult;
-        }
 
-        const { id, req, siblingData } = options;
-        const t = req.t as unknown as TFunction<TranslationsKey>;
-
-        if (!siblingData.brand) {
-          return t("cmsPlugin:pages:pathname:pleaseSelectABrandFirst");
-        }
-
-        if (!value) {
-          return t("cmsPlugin:pages:pathname:pleaseEnterAPathname");
-        }
-
-        const brand = await req.payload.findByID({
-          id: siblingData.brand as string,
-          collection: "brands",
-          depth: 2,
-          select: {
-            homeLink: true,
-          },
-        });
-
-        const pageRelationship = brand.homeLink as
-          | Record<string, unknown>
-          | undefined;
-        if (pageRelationship?.doc) {
-          // Brand does not have a home link, so we can't validate the pathname.
-          // We can't make the brand home link required, because we need to create a brand when there is no page yet.
-
-          const brandHomeLinkPathname = (
-            pageRelationship.doc as Record<string, unknown>
-          ).pathname as string;
-          const safePrefix = brandHomeLinkPathname.endsWith("/")
-            ? brandHomeLinkPathname
-            : brandHomeLinkPathname + "/";
-          if (
-            value !== brandHomeLinkPathname &&
-            !value.startsWith(safePrefix)
-          ) {
-            return t("cmsPlugin:pages:pathname:pathnameMustStartWithPrefix", {
-              prefix: brandHomeLinkPathname,
-            });
-          }
-        }
-
-        // Unique constraint only checks within the locale, but our pathnames must be unique across locales
-        const pages = await getPagesForPathname(req, value);
-        const alreadyExists = pages.some((p) => p.id !== id);
-        if (alreadyExists) {
-          return t("cmsPlugin:pages:pathname:alreadyExists");
-        }
-
-        return true;
-      },
-    },
-    {
-      name: "pathname_locked",
-      type: "checkbox",
-      admin: {
-        hidden: true,
-      },
-      defaultValue: true,
-      virtual: true,
-    },
-    {
-      name: "pathname_createRedirect",
-      type: "checkbox",
-      admin: {
-        hidden: true,
-      },
-      defaultValue: true,
-      virtual: true,
-    },
-    textField({
-      name: "title",
-      admin: {
-        description: {
-          en: "The title is shown in the title bar of the browser and in search engine results. Include important keywords for SEO. The brand’s base title is appended to the title.",
-          es: "El título se muestra en la barra de título del navegador y en los resultados de los motores de búsqueda. Incluye palabras clave importantes para el SEO. El título base de la marca se añade al título.",
+      {
+        name: "brand",
+        type: "relationship",
+        access: {
+          update: () => false,
         },
-        position: "sidebar",
+        admin: {
+          description: {
+            en: "Choose the brand to which the page belongs. The brand determines the theme of the page.",
+            es: "Elige la marca a la que pertenece la página. La marca determina el tema de la página.",
+          },
+          position: "sidebar",
+        },
+        label: {
+          en: "Brand",
+          es: "Marca",
+        },
+        relationTo: "brands",
+        required: true,
       },
-      label: { en: "Title", es: "Título" },
-      required: false,
-    }),
-  ],
-  labels: {
-    plural: {
-      en: "Pages",
-      es: "Páginas",
+      {
+        name: "pathname",
+        type: "text",
+        admin: {
+          components: {
+            Field: "@fxmk/cms-plugin/client#PathnameField",
+          },
+          description: {
+            en: "The pathname is used to navigate to this page. It must be unique. The first path segment must be the brand's home link.",
+            es: "La ruta se utiliza para navegar a esta página. Debe ser única. El primer segmento de la ruta debe ser el enlace de inicio de la marca.",
+          },
+          placeholder: "e.g. /experiences/lost-city",
+          position: "sidebar",
+        },
+        hooks: {
+          afterChange: [
+            async ({ operation, previousDoc, req, siblingData }) => {
+              if (operation !== "update") {
+                return;
+              }
+              if (!siblingData["pathname_createRedirect"]) {
+                return;
+              }
+
+              const redirects = await req.payload.find({
+                collection: "redirects",
+                pagination: false,
+                where: {
+                  fromPathname: { equals: previousDoc.pathname },
+                },
+              });
+
+              if (redirects.totalDocs > 0) {
+                // Redirect already exists, so we don't need to create it again.
+                console.log(
+                  `Redirect already exists for ${previousDoc.pathname}`,
+                );
+                return;
+              }
+
+              console.log(`Creating redirect for ${previousDoc.pathname}`);
+              await req.payload.create({
+                collection: "redirects",
+                data: {
+                  fromPathname: previousDoc.pathname,
+                  to: { page: previousDoc.id },
+                },
+              });
+            },
+          ],
+        },
+        index: true,
+        label: {
+          en: "Pathname",
+          es: "Ruta",
+        },
+        localized: true,
+        required: true,
+        unique: true,
+        validate: async (
+          value: null | string | undefined,
+          options: ValidateOptions<
+            Record<string, unknown>,
+            Record<string, unknown>,
+            TextField,
+            string
+          >,
+        ) => {
+          const defaultValidationResult = text(value, options);
+          if (defaultValidationResult !== true) {
+            return defaultValidationResult;
+          }
+
+          const { id, req, siblingData } = options;
+          const t = req.t as unknown as TFunction<TranslationsKey>;
+
+          if (!siblingData.brand) {
+            return t("cmsPlugin:pages:pathname:pleaseSelectABrandFirst");
+          }
+
+          if (!value) {
+            return t("cmsPlugin:pages:pathname:pleaseEnterAPathname");
+          }
+
+          const brand = await req.payload.findByID({
+            id: siblingData.brand as string,
+            collection: "brands",
+            depth: 2,
+            select: {
+              homeLink: true,
+            },
+          });
+
+          const pageRelationship = brand.homeLink as
+            | Record<string, unknown>
+            | undefined;
+          if (pageRelationship?.doc) {
+            // Brand does not have a home link, so we can't validate the pathname.
+            // We can't make the brand home link required, because we need to create a brand when there is no page yet.
+
+            const brandHomeLinkPathname = (
+              pageRelationship.doc as Record<string, unknown>
+            ).pathname as string;
+            const safePrefix = brandHomeLinkPathname.endsWith("/")
+              ? brandHomeLinkPathname
+              : brandHomeLinkPathname + "/";
+            if (
+              value !== brandHomeLinkPathname &&
+              !value.startsWith(safePrefix)
+            ) {
+              return t("cmsPlugin:pages:pathname:pathnameMustStartWithPrefix", {
+                prefix: brandHomeLinkPathname,
+              });
+            }
+          }
+
+          // Unique constraint only checks within the locale, but our pathnames must be unique across locales
+          const pages = await getPagesForPathname(req, value);
+          const alreadyExists = pages.some((p) => p.id !== id);
+          if (alreadyExists) {
+            return t("cmsPlugin:pages:pathname:alreadyExists");
+          }
+
+          return true;
+        },
+      },
+      {
+        name: "pathname_locked",
+        type: "checkbox",
+        admin: {
+          hidden: true,
+        },
+        defaultValue: true,
+        virtual: true,
+      },
+      {
+        name: "pathname_createRedirect",
+        type: "checkbox",
+        admin: {
+          hidden: true,
+        },
+        defaultValue: true,
+        virtual: true,
+      },
+      textField({
+        name: "title",
+        admin: {
+          description: {
+            en: "The title is shown in the title bar of the browser and in search engine results. Include important keywords for SEO. The brand’s base title is appended to the title.",
+            es: "El título se muestra en la barra de título del navegador y en los resultados de los motores de búsqueda. Incluye palabras clave importantes para el SEO. El título base de la marca se añade al título.",
+          },
+          position: "sidebar",
+        },
+        label: { en: "Title", es: "Título" },
+        required: false,
+      }),
+    ],
+    labels: {
+      plural: {
+        en: "Pages",
+        es: "Páginas",
+      },
+      singular: {
+        en: "Page",
+        es: "Página",
+      },
     },
-    singular: {
-      en: "Page",
-      es: "Página",
-    },
-  },
-};
+  };
+}

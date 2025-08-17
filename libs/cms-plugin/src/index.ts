@@ -1,4 +1,4 @@
-import type { Config, Plugin } from "payload";
+import type { Block, Config, Plugin } from "payload";
 
 import { s3Storage } from "@payloadcms/storage-s3";
 
@@ -25,6 +25,8 @@ export * from "./common/index.js";
 export * from "./fields/index.js";
 
 export type CmsPluginOptions = {
+  additionalContentBlocks?: Block[];
+  additionalHeroBlocks?: Block[];
   deeplApiKey?: string;
   mediaS3Storage: {
     accessKeyId: string;
@@ -37,26 +39,31 @@ export type CmsPluginOptions = {
 };
 
 export const cmsPlugin =
-  (options: CmsPluginOptions): Plugin =>
+  ({
+    additionalContentBlocks,
+    additionalHeroBlocks,
+    deeplApiKey,
+    mediaS3Storage,
+    openaiApiKey,
+    publicMediaBaseUrl,
+  }: CmsPluginOptions): Plugin =>
   (config: Config) => {
     if (!config.collections) {
       config.collections = [];
     }
 
-    if (options.deeplApiKey) {
-      initializeTranslator({ apiKey: options.deeplApiKey });
+    if (deeplApiKey) {
+      initializeTranslator({ apiKey: deeplApiKey });
     }
 
-    if (options.openaiApiKey) {
-      initializeOpenAI({ apiKey: options.openaiApiKey });
+    if (openaiApiKey) {
+      initializeOpenAI({ apiKey: openaiApiKey });
     }
 
     config.collections.push(
       Media({
-        generateAltTextOptions: options.publicMediaBaseUrl
-          ? {
-              publicMediaBaseUrl: options.publicMediaBaseUrl,
-            }
+        generateAltTextOptions: publicMediaBaseUrl
+          ? { publicMediaBaseUrl }
           : undefined,
       }),
     );
@@ -65,7 +72,9 @@ export const cmsPlugin =
     config.collections.push(ApiKeys);
     config.collections.push(LocaleConfigs);
     config.collections.push(Banners);
-    config.collections.push(Pages);
+    config.collections.push(
+      Pages({ additionalContentBlocks, additionalHeroBlocks }),
+    );
     config.collections.push(Redirects);
     config.collections.push(Brands);
 
@@ -198,16 +207,16 @@ export const cmsPlugin =
     }
 
     return s3Storage({
-      bucket: options.mediaS3Storage.bucket,
+      bucket: mediaS3Storage.bucket,
       collections: {
         media: true,
       },
       config: {
         credentials: {
-          accessKeyId: options.mediaS3Storage.accessKeyId,
-          secretAccessKey: options.mediaS3Storage.secretAccessKey,
+          accessKeyId: mediaS3Storage.accessKeyId,
+          secretAccessKey: mediaS3Storage.secretAccessKey,
         },
-        region: options.mediaS3Storage.region,
+        region: mediaS3Storage.region,
       },
     })(config);
   };

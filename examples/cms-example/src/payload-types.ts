@@ -726,7 +726,7 @@ export interface Page {
    * Add blocks to fill the page with content. You can reorder the blocks by dragging and dropping them using the handle on the left side.
    */
   content?:
-    | (LeadText | ImageWithFloatingText | Story | Features | Separator | WideImage | TextColumnsWithImages)[]
+    | (LeadText | ImageWithFloatingText | Story | Features | Separator | WideImage | TextColumnsWithImages | RoomList)[]
     | null;
   seo?: {
     /**
@@ -1152,6 +1152,44 @@ export interface TextColumnsWithImages {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RoomList".
+ */
+export interface RoomList {
+  rooms: {
+    heading: string;
+    text?: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    images: {
+      image: string | Media;
+      caption?: string | null;
+      id?: string | null;
+    }[];
+    cta: {
+      label: string;
+      link: NewLink;
+      variant?: ('primary' | 'secondary') | null;
+    };
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'RoomList';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "brands".
  */
 export interface Brand {
@@ -1450,6 +1488,7 @@ export interface PagesSelect<T extends boolean = true> {
         Separator?: T | SeparatorSelect<T>;
         WideImage?: T | WideImageSelect<T>;
         TextColumnsWithImages?: T | TextColumnsWithImagesSelect<T>;
+        RoomList?: T | RoomListSelect<T>;
       };
   seo?:
     | T
@@ -1677,6 +1716,35 @@ export interface TextColumnsWithImagesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RoomList_select".
+ */
+export interface RoomListSelect<T extends boolean = true> {
+  rooms?:
+    | T
+    | {
+        heading?: T;
+        text?: T;
+        images?:
+          | T
+          | {
+              image?: T;
+              caption?: T;
+              id?: T;
+            };
+        cta?:
+          | T
+          | {
+              label?: T;
+              link?: T | NewLinkSelect<T>;
+              variant?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects_select".
  */
 export interface RedirectsSelect<T extends boolean = true> {
@@ -1791,6 +1859,16 @@ export interface Settings {
     show?: boolean | null;
     message?: string | null;
   };
+  maps: {
+    /**
+     * Enter the region code for maps, e.g. CO for Colombia. Must be two letters in uppercase. See https://developers.google.com/maps/coverage#coverage-legend
+     */
+    region?: string | null;
+    /**
+     * Enter the ID of the map to display. This is the ID of the map in the Google Maps Platform and defines styling and POI settings.
+     */
+    mapId: string;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1869,6 +1947,12 @@ export interface SettingsSelect<T extends boolean = true> {
     | {
         show?: T;
         message?: T;
+      };
+  maps?:
+    | T
+    | {
+        region?: T;
+        mapId?: T;
       };
   updatedAt?: T;
   createdAt?: T;
