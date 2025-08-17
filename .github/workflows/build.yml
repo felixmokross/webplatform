@@ -22,66 +22,64 @@ jobs:
     with:
       release: ${{ github.event.inputs.release }}
 
-  cms-plugin-build-publish:
-    name: "cms-plugin: Build and Publish"
+  cms-plugin-build:
+    name: "cms-plugin: Build"
     runs-on: ubuntu-latest
-    needs: version
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup
         uses: ./.github/actions/setup
-      - name: Build and Publish
-        uses: ./.github/actions/build-publish
+      - name: Build
+        uses: ./.github/actions/build
         with:
           package: "cms-plugin"
-          version: ${{ needs.version.outputs.version }}
-          prerelease_tag: ${{ needs.version.outputs.prerelease_tag }}
-          npmToken: ${{ secrets.NPM_TOKEN }}
       - name: Upload cms-plugin 'dist' directory
         uses: actions/upload-artifact@v4
         with:
           name: cms-plugin-dist
           path: libs/cms-plugin/dist
 
-  common-build-publish:
-    name: "common: Build and Publish"
+  common-build:
+    name: "common: Build"
     runs-on: ubuntu-latest
-    needs: version
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup
         uses: ./.github/actions/setup
-      - name: Build and Publish
-        uses: ./.github/actions/build-publish
+      - name: Build
+        uses: ./.github/actions/build
         with:
           package: "common"
-          version: ${{ needs.version.outputs.version }}
-          prerelease_tag: ${{ needs.version.outputs.prerelease_tag }}
-          npmToken: ${{ secrets.NPM_TOKEN }}
+      - name: Upload common 'dist' directory
+        uses: actions/upload-artifact@v4
+        with:
+          name: common-dist
+          path: libs/common/dist
 
-  releaser-build-publish:
-    name: "releaser: Build and Publish"
+  releaser-build:
+    name: "releaser: Build"
     runs-on: ubuntu-latest
-    needs: version
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup
         uses: ./.github/actions/setup
-      - name: Build and Publish
-        uses: ./.github/actions/build-publish
+      - name: Build
+        uses: ./.github/actions/build
         with:
           package: "releaser"
-          version: ${{ needs.version.outputs.version }}
-          prerelease_tag: ${{ needs.version.outputs.prerelease_tag }}
-          npmToken: ${{ secrets.NPM_TOKEN }}
+      - name: Upload releaser 'dist' directory
+        uses: actions/upload-artifact@v4
+        with:
+          name: releaser-dist
+          path: tools/releaser/dist
 
   cms-example-build:
     name: "cms-example: Build"
     runs-on: ubuntu-latest
-    needs: [version, cms-plugin-build-publish]
+    needs: [cms-plugin-build]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -100,12 +98,13 @@ jobs:
   create-release:
     name: Create release
     runs-on: ubuntu-latest
-    if: needs.version.outputs.is_new_release == 'true'
     needs:
-      - cms-plugin-build-publish
-      - common-build-publish
-      - releaser-build-publish
+      - cms-plugin-build
+      - common-build
+      - releaser-build
+      - cms-example-build
       - version
+    if: needs.version.outputs.is_new_release == 'true'
     permissions:
       contents: write
     steps:
@@ -122,3 +121,69 @@ jobs:
           pnpm releaser publish --draft ${{ needs.version.outputs.version }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  cms-plugin-publish:
+    name: "cms-plugin: Publish"
+    runs-on: ubuntu-latest
+    needs: [create-release, cms-plugin-build, version]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup
+        uses: ./.github/actions/setup
+      - name: Download cms-plugin 'dist' directory
+        uses: actions/download-artifact@v4
+        with:
+          name: cms-plugin-dist
+          path: libs/cms-plugin/dist
+      - name: Publish
+        uses: ./.github/actions/publish
+        with:
+          package: "cms-plugin"
+          version: ${{ needs.version.outputs.version }}
+          prerelease_tag: ${{ needs.version.outputs.prerelease_tag }}
+          npmToken: ${{ secrets.NPM_TOKEN }}
+
+  common-publish:
+    name: "common: Publish"
+    runs-on: ubuntu-latest
+    needs: [create-release, common-build, version]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup
+        uses: ./.github/actions/setup
+      - name: Download common 'dist' directory
+        uses: actions/download-artifact@v4
+        with:
+          name: common-dist
+          path: libs/common/dist
+      - name: Publish
+        uses: ./.github/actions/publish
+        with:
+          package: "common"
+          version: ${{ needs.version.outputs.version }}
+          prerelease_tag: ${{ needs.version.outputs.prerelease_tag }}
+          npmToken: ${{ secrets.NPM_TOKEN }}
+
+  releaser-publish:
+    name: "releaser: Publish"
+    runs-on: ubuntu-latest
+    needs: [create-release, releaser-build, version]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup
+        uses: ./.github/actions/setup
+      - name: Download releaser 'dist' directory
+        uses: actions/download-artifact@v4
+        with:
+          name: releaser-dist
+          path: tools/releaser/dist
+      - name: Publish
+        uses: ./.github/actions/publish
+        with:
+          package: "releaser"
+          version: ${{ needs.version.outputs.version }}
+          prerelease_tag: ${{ needs.version.outputs.prerelease_tag }}
+          npmToken: ${{ secrets.NPM_TOKEN }}
