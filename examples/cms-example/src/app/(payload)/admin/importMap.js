@@ -2,6 +2,9 @@ import { TranslationsFieldLabel as TranslationsFieldLabel_4e4d92471a8ffe9293251f
 import { GenerateAltTextButton as GenerateAltTextButton_4e4d92471a8ffe9293251f3f72fec394 } from '@fxmk/cms-plugin/client'
 import { UsagesField as UsagesField_28fa94cce12a23e7fb2af3fe07ac7e9a } from '@fxmk/cms-plugin/rsc'
 import { DescriptionField as DescriptionField_28fa94cce12a23e7fb2af3fe07ac7e9a } from '@fxmk/cms-plugin/rsc'
+import { PathnameField as PathnameField_4e4d92471a8ffe9293251f3f72fec394 } from '@fxmk/cms-plugin/client'
+import { ToCell as ToCell_4e4d92471a8ffe9293251f3f72fec394 } from '@fxmk/cms-plugin/client'
+import { RowLabel as RowLabel_4e4d92471a8ffe9293251f3f72fec394 } from '@fxmk/cms-plugin/client'
 import { RscEntryLexicalCell as RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { RscEntryLexicalField as RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { LexicalDiffComponent as LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
@@ -24,6 +27,9 @@ export const importMap = {
   "@fxmk/cms-plugin/client#GenerateAltTextButton": GenerateAltTextButton_4e4d92471a8ffe9293251f3f72fec394,
   "@fxmk/cms-plugin/rsc#UsagesField": UsagesField_28fa94cce12a23e7fb2af3fe07ac7e9a,
   "@fxmk/cms-plugin/rsc#DescriptionField": DescriptionField_28fa94cce12a23e7fb2af3fe07ac7e9a,
+  "@fxmk/cms-plugin/client#PathnameField": PathnameField_4e4d92471a8ffe9293251f3f72fec394,
+  "@fxmk/cms-plugin/client#ToCell": ToCell_4e4d92471a8ffe9293251f3f72fec394,
+  "@fxmk/cms-plugin/client#RowLabel": RowLabel_4e4d92471a8ffe9293251f3f72fec394,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalField": RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#LexicalDiffComponent": LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e,

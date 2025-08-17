@@ -31,6 +31,9 @@ export const es: TranslationsObject = {
       },
       usages: { label: "Usos" },
     },
+    brands: {
+      navLinkRowLabel: "Enlace de navegación {{ n }}",
+    },
     common: {
       id: "ID",
       loading: "Cargando…",
@@ -183,6 +186,48 @@ export const es: TranslationsObject = {
       media: {
         label: "Medios",
       },
+    },
+    pages: {
+      labels: {
+        plural: "Páginas",
+        singular: "Página",
+      },
+      pathname: {
+        alreadyExists: "Ya existe una página con esta ruta.",
+        createRedirect:
+          "Crear una redirección para esta ruta a la página seleccionada",
+        lock: "Bloquear",
+        pathnameMustStartWithPrefix: `La ruta debe comenzar con '{{ prefix }}'.`,
+        pleaseEnterAPathname: "Por favor, ingrese una ruta.",
+        pleaseSelectABrandFirst: "Por favor, seleccione una marca primero.",
+        unlock: "Desbloquear",
+      },
+    },
+    redirects: {
+      fromPathname: { label: "Desde la ruta" },
+      labels: {
+        plural: "Redirecciones",
+        singular: "Redirección",
+      },
+      to: {
+        fragment: {
+          description:
+            "Si se proporciona un fragmento, se añadirá a la URL con un carácter '#'. Úsalo para enlazar a una sección de una página, definida por un 'ID de elemento'.",
+          label: "Fragmento",
+        },
+        label: "Redirigir a",
+        page: { label: "Página" },
+        queryString: {
+          description:
+            "Si se proporciona una cadena de consulta, se añadirá a la URL con un carácter '?'.",
+          label: "Cadena de consulta",
+        },
+      },
+    },
+    rowLabel: {
+      item: "Elemento {{ n }}",
+      link: "Enlace {{ n }}",
+      linkGroup: "Grupo de enlaces {{ n }}",
     },
     translations: {
       autoTranslate: "Auto-traducir",

@@ -4,9 +4,12 @@ import { s3Storage } from "@payloadcms/storage-s3";
 
 import { ApiKeys } from "./collections/api-keys/config.js";
 import { Banners } from "./collections/banners/config.js";
+import { Brands } from "./collections/brands/config.js";
 import { LocaleConfigs } from "./collections/locale-configs/config.js";
 import { Media } from "./collections/media/config.js";
 import { MediaCategories } from "./collections/media-categories/config.js";
+import { Pages } from "./collections/pages/config.js";
+import { Redirects } from "./collections/redirects/config.js";
 import { Users } from "./collections/users/config.js";
 import { editor } from "./common/editor.js";
 import { localization } from "./common/localization.js";
@@ -62,6 +65,9 @@ export const cmsPlugin =
     config.collections.push(ApiKeys);
     config.collections.push(LocaleConfigs);
     config.collections.push(Banners);
+    config.collections.push(Pages);
+    config.collections.push(Redirects);
+    config.collections.push(Brands);
 
     if (!config.globals) {
       config.globals = [];

@@ -74,6 +74,9 @@ export interface Config {
     'api-keys': ApiKey;
     'locale-configs': LocaleConfig;
     banners: Banner;
+    pages: Page;
+    redirects: Redirect;
+    brands: Brand;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -90,6 +93,9 @@ export interface Config {
     'api-keys': ApiKeysSelect<false> | ApiKeysSelect<true>;
     'locale-configs': LocaleConfigsSelect<false> | LocaleConfigsSelect<true>;
     banners: BannersSelect<false> | BannersSelect<true>;
+    pages: PagesSelect<false> | PagesSelect<true>;
+    redirects: RedirectsSelect<false> | RedirectsSelect<true>;
+    brands: BrandsSelect<false> | BrandsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -692,6 +698,112 @@ export interface Banner {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: string;
+  seo?: {
+    /**
+     * The description is shown in search engine results. It should be between 100 and 150 characters.
+     */
+    description?: string | null;
+    /**
+     * The image is shown in search engine results and when the page is shared on social media. It will be automatically sized to 1200x630 pixels.
+     */
+    image?: (string | null) | Media;
+  };
+  /**
+   * Choose the brand to which the page belongs. The brand determines the theme of the page.
+   */
+  brand: string | Brand;
+  /**
+   * The pathname is used to navigate to this page. It must be unique. The first path segment must be the brand's home link.
+   */
+  pathname: string;
+  pathname_locked?: boolean | null;
+  pathname_createRedirect?: boolean | null;
+  /**
+   * The title is shown in the title bar of the browser and in search engine results. Include important keywords for SEO. The brand’s base title is appended to the title.
+   */
+  title?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "brands".
+ */
+export interface Brand {
+  id: string;
+  name: string;
+  homeLink?: NewLink;
+  /**
+   * The base title is appended to the titles of the brand’s pages. If the page does not have a title, the base title will be used as the title. Include important keywords in the title for SEO.
+   */
+  baseTitle?: string | null;
+  logo: string | Media;
+  /**
+   * A banner is useful to announce promotions or important news and can have a call to action. It will be shown on all pages of the brand.
+   */
+  banner?: (string | null) | Banner;
+  navLinks?:
+    | {
+        label: string;
+        link: NewLink;
+        id?: string | null;
+      }[]
+    | null;
+  bookCta?: {
+    show?: boolean | null;
+    label?: string | null;
+    link?: NewLink;
+  };
+  footer?: {
+    linkGroups?:
+      | {
+          title: string;
+          links?:
+            | {
+                label: string;
+                link: NewLink;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewLink".
+ */
+export interface NewLink {
+  linkType: 'custom' | 'internal';
+  doc?: (string | null) | Page;
+  queryString?: string | null;
+  fragment?: string | null;
+  url?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "redirects".
+ */
+export interface Redirect {
+  id: string;
+  fromPathname: string;
+  to: {
+    page: string | Page;
+    queryString?: string | null;
+    fragment?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -720,6 +832,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'banners';
         value: string | Banner;
+      } | null)
+    | ({
+        relationTo: 'pages';
+        value: string | Page;
+      } | null)
+    | ({
+        relationTo: 'redirects';
+        value: string | Redirect;
+      } | null)
+    | ({
+        relationTo: 'brands';
+        value: string | Brand;
       } | null);
   globalSlug?: string | null;
   user:
@@ -875,6 +999,97 @@ export interface BannersSelect<T extends boolean = true> {
   message?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages_select".
+ */
+export interface PagesSelect<T extends boolean = true> {
+  seo?:
+    | T
+    | {
+        description?: T;
+        image?: T;
+      };
+  brand?: T;
+  pathname?: T;
+  pathname_locked?: T;
+  pathname_createRedirect?: T;
+  title?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "redirects_select".
+ */
+export interface RedirectsSelect<T extends boolean = true> {
+  fromPathname?: T;
+  to?:
+    | T
+    | {
+        page?: T;
+        queryString?: T;
+        fragment?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "brands_select".
+ */
+export interface BrandsSelect<T extends boolean = true> {
+  id?: T;
+  name?: T;
+  homeLink?: T | NewLinkSelect<T>;
+  baseTitle?: T;
+  logo?: T;
+  banner?: T;
+  navLinks?:
+    | T
+    | {
+        label?: T;
+        link?: T | NewLinkSelect<T>;
+        id?: T;
+      };
+  bookCta?:
+    | T
+    | {
+        show?: T;
+        label?: T;
+        link?: T | NewLinkSelect<T>;
+      };
+  footer?:
+    | T
+    | {
+        linkGroups?:
+          | T
+          | {
+              title?: T;
+              links?:
+                | T
+                | {
+                    label?: T;
+                    link?: T | NewLinkSelect<T>;
+                    id?: T;
+                  };
+              id?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewLink_select".
+ */
+export interface NewLinkSelect<T extends boolean = true> {
+  linkType?: T;
+  doc?: T;
+  queryString?: T;
+  fragment?: T;
+  url?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
