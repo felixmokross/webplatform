@@ -3,8 +3,10 @@ import type { Block, BlocksField } from "payload";
 import { FeaturesBlock } from "../blocks/features/config.js";
 import { ImageWithFloatingTextBlock } from "../blocks/image-with-floating-text/config.js";
 import { LeadTextBlock } from "../blocks/lead-text/config.js";
+import { MapBlock } from "../blocks/map/config.js";
 import { SeparatorBlock } from "../blocks/separator/config.js";
 import { StoryBlock } from "../blocks/story/config.js";
+import { testimonialsBlock } from "../blocks/testimonials/config.js";
 import { TextColumnsWithImagesBlock } from "../blocks/text-columns-with-images/config.js";
 import { WideImageBlock } from "../blocks/wide-image/config.js";
 
@@ -33,6 +35,8 @@ export function contentField({
       SeparatorBlock,
       WideImageBlock,
       TextColumnsWithImagesBlock,
+      MapBlock,
+      testimonialsBlock,
       ...(additionalBlocks ?? []),
     ],
     label: {
