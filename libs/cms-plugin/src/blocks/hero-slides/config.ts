@@ -101,9 +101,6 @@ export const HeroSlidesBlock: Block = {
       },
     }),
   ],
-  imageAltText:
-    "Preview of the Hero Slides block, showing an image with an overlay title, CTA, and controls to switch slides.",
-  imageURL: "/assets/blocks/HeroSlides.png",
   interfaceName: "HeroSlides",
   labels: {
     plural: {

@@ -44,9 +44,6 @@ export const HeroVideoBlock: Block = {
     },
     overlayTitleField({ optional: true }),
   ],
-  imageAltText:
-    "Preview of the Hero Video block, showing a image with an overlay title and a CTA.",
-  imageURL: "/assets/blocks/HeroVideo.png",
   interfaceName: "HeroVideo",
   labels: {
     plural: {

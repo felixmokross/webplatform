@@ -16,9 +16,6 @@ export const HeroHeadingBlock: Block = {
     textField({ name: "heading", label: { en: "Heading", es: "Título" } }),
     optionalImageField,
   ],
-  imageAltText:
-    "Preview of the Hero Heading block, showing a centered heading on a brand color background.",
-  imageURL: "/assets/blocks/HeroHeading.png",
   interfaceName: "HeroHeading",
   labels: {
     plural: {
