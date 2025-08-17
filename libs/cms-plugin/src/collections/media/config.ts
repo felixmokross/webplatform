@@ -1,9 +1,9 @@
 import type { CollectionConfig } from "payload";
 
 import { canManageContent } from "../../common/access-control.js";
-import { textareaField } from "../../fields/index.js";
+import { textareaField } from "../../fields/textarea.js";
 import { contentGroup } from "../../groups.js";
-import { translated } from "../../translations/index.js";
+import { translated } from "../../translations/translations.js";
 import { generateAltTextEndpoint } from "./generate-alt-text-endpoint.js";
 import { mediaUsagesField } from "./usages.js";
 

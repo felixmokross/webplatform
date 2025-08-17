@@ -1,6 +1,6 @@
 import type { TextField } from "payload";
 
-import { translated } from "../translations/index.js";
+import { translated } from "../translations/translations.js";
 
 export function optionalTextField(config: Partial<TextField> = {}): TextField {
   return textField({ ...config, required: false });

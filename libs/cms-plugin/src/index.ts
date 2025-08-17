@@ -3,6 +3,7 @@ import type { Config, Plugin } from "payload";
 import { s3Storage } from "@payloadcms/storage-s3";
 
 import { ApiKeys } from "./collections/api-keys/config.js";
+import { Banners } from "./collections/banners/config.js";
 import { LocaleConfigs } from "./collections/locale-configs/config.js";
 import { Media } from "./collections/media/config.js";
 import { MediaCategories } from "./collections/media-categories/config.js";
@@ -15,7 +16,7 @@ import { autoTranslateEndpoint } from "./endpoints/auto-translate.js";
 import { translationsEndpoint } from "./endpoints/translations.js";
 import { Common } from "./globals/common/config.js";
 import { Settings } from "./globals/settings/config.js";
-import { translations } from "./translations/index.js";
+import { translations } from "./translations/translations.js";
 
 export * from "./common/index.js";
 export * from "./fields/index.js";
@@ -60,6 +61,7 @@ export const cmsPlugin =
     config.collections.push(Users);
     config.collections.push(ApiKeys);
     config.collections.push(LocaleConfigs);
+    config.collections.push(Banners);
 
     if (!config.globals) {
       config.globals = [];

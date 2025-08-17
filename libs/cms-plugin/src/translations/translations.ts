@@ -3,10 +3,8 @@ import type { Config } from "payload";
 
 import type { TranslationsKey, TranslationsObject } from "./types.js";
 
-import { en } from "./en.js";
-import { es } from "./es.js";
-
-export * from "./types.js";
+import { en } from "./locales/en.js";
+import { es } from "./locales/es.js";
 
 export const translations = {
   en,

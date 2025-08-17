@@ -73,6 +73,7 @@ export interface Config {
     users: User;
     'api-keys': ApiKey;
     'locale-configs': LocaleConfig;
+    banners: Banner;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -88,6 +89,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     'api-keys': ApiKeysSelect<false> | ApiKeysSelect<true>;
     'locale-configs': LocaleConfigsSelect<false> | LocaleConfigsSelect<true>;
+    banners: BannersSelect<false> | BannersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -680,6 +682,16 @@ export interface LocaleConfig {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "banners".
+ */
+export interface Banner {
+  id: string;
+  message: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -704,6 +716,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'locale-configs';
         value: string | LocaleConfig;
+      } | null)
+    | ({
+        relationTo: 'banners';
+        value: string | Banner;
       } | null);
   globalSlug?: string | null;
   user:
@@ -848,6 +864,15 @@ export interface LocaleConfigsSelect<T extends boolean = true> {
   deeplSourceLanguage?: T;
   deeplTargetLanguage?: T;
   googleMapsLanguage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "banners_select".
+ */
+export interface BannersSelect<T extends boolean = true> {
+  message?: T;
   updatedAt?: T;
   createdAt?: T;
 }

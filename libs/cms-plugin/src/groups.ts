@@ -1,6 +1,6 @@
 import type { CollectionAdminOptions } from "payload";
 
-import { allTranslations } from "./translations/index.js";
+import { allTranslations } from "./translations/translations.js";
 
 // Admin groups don't provide a way to use a 't' function
 

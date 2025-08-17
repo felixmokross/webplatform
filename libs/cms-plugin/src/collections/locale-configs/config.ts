@@ -6,7 +6,7 @@ import {
   deeplTargetLanguage as deeplTargetLanguageCodes,
 } from "../../common/translation.js";
 import { adminGroup } from "../../groups.js";
-import { translated } from "../../translations/index.js";
+import { translated } from "../../translations/translations.js";
 import { googleMapLanguageCodes } from "./google-maps-language-codes.js";
 
 export const LocaleConfigs: CollectionConfig = {

@@ -3,7 +3,7 @@ import type {
   NestedKeysStripped,
 } from "@payloadcms/translations";
 
-import type { en } from "./en.js";
+import type { en } from "./locales/en.js";
 
 export type TranslationsObject = typeof en;
 

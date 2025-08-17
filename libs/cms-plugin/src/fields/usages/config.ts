@@ -2,7 +2,7 @@ import type { UIField } from "payload";
 
 import type { UsagesConfig } from "./types.js";
 
-import { allTranslations } from "../../translations/index.js";
+import { allTranslations } from "../../translations/translations.js";
 
 export function usagesField(config: UsagesConfig): UIField {
   return {

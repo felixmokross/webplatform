@@ -1,4 +1,4 @@
-import type { TranslationsObject } from "./types.js";
+import type { TranslationsObject } from "../types.js";
 
 export const es: TranslationsObject = {
   cmsPlugin: {
@@ -15,6 +15,21 @@ export const es: TranslationsObject = {
         label: "Rol",
         options: { cicd: "CI/CD", e2eTests: "E2E Tests", frontend: "Frontend" },
       },
+    },
+    banners: {
+      admin: {
+        description:
+          "Un banner es útil para anunciar promociones o noticias importantes y puede tener un call to action. Aquí puedes crear y gestionar banners. Ve a Marcas para habilitar un banner en todas las páginas de la marca.",
+      },
+      edit: {
+        label: "Editar",
+        message: { label: "Mensaje" },
+      },
+      labels: {
+        plural: "Banners",
+        singular: "Banner",
+      },
+      usages: { label: "Usos" },
     },
     common: {
       id: "ID",

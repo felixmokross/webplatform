@@ -1,14 +1,15 @@
 import type { GlobalConfig } from "payload";
 
 import { canManageContent } from "../../common/access-control.js";
-import {
-  descriptionField,
-  optionalRichTextField,
-  optionalTextareaField,
-  optionalTextField,
-} from "../../fields/index.js";
+import { descriptionField } from "../../fields/description.js";
+import { optionalRichTextField } from "../../fields/rich-text.js";
+import { optionalTextField } from "../../fields/text.js";
+import { optionalTextareaField } from "../../fields/textarea.js";
 import { contentGroup } from "../../groups.js";
-import { allTranslations, translated } from "../../translations/index.js";
+import {
+  allTranslations,
+  translated,
+} from "../../translations/translations.js";
 
 export const Common: GlobalConfig = {
   slug: "common",

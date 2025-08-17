@@ -1,7 +1,8 @@
 import type { GlobalConfig } from "payload";
 
 import { canManageContent } from "../../common/access-control.js";
-import { showField, textField } from "../../fields/index.js";
+import { showField } from "../../fields/show.js";
+import { textField } from "../../fields/text.js";
 import { adminGroup } from "../../groups.js";
 
 export const Settings: GlobalConfig = {

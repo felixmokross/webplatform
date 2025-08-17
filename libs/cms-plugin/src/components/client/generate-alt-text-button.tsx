@@ -15,7 +15,7 @@ import { useState } from "react";
 import type {
   TranslationsKey,
   TranslationsObject,
-} from "../../translations/index.js";
+} from "../../translations/types.js";
 
 import { cn } from "../../common/cn.js";
 import { SparklesIcon } from "../../common/icons.js";

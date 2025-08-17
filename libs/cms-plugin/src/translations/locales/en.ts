@@ -18,6 +18,21 @@ export const en = {
         },
       },
     },
+    banners: {
+      admin: {
+        description:
+          "A banner is useful to announce promotions or important news and can have a call to action. Here you can create and manage banners. Go to Brands to enable a banner on all pages of the brand.",
+      },
+      edit: {
+        label: "Edit",
+        message: { label: "Message" },
+      },
+      labels: {
+        plural: "Banners",
+        singular: "Banner",
+      },
+      usages: { label: "Usages" },
+    },
     common: {
       id: "ID",
       loading: "Loading…",
