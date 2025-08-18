@@ -1978,7 +1978,7 @@ export interface Settings {
     show?: boolean | null;
     message?: string | null;
   };
-  maps: {
+  maps?: {
     /**
      * Enter the region code for maps, e.g. CO for Colombia. Must be two letters in uppercase. See https://developers.google.com/maps/coverage#coverage-legend
      */
@@ -1986,7 +1986,7 @@ export interface Settings {
     /**
      * Enter the ID of the map to display. This is the ID of the map in the Google Maps Platform and defines styling and POI settings.
      */
-    mapId: string;
+    mapId?: string | null;
   };
   updatedAt?: string | null;
   createdAt?: string | null;

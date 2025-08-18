@@ -2,6 +2,9 @@ import type { TFunction } from "@payloadcms/translations";
 import type {
   Block,
   CollectionConfig,
+  Locale,
+  Payload,
+  SanitizedCollectionConfig,
   TextField,
   ValidateOptions,
 } from "payload";
@@ -11,6 +14,7 @@ import { text } from "payload/shared";
 import type { TranslationsKey } from "../../translations/types.js";
 
 import { canManageContent } from "../../common/access-control.js";
+import { getLivePreviewUrl } from "../../common/live-preview.js";
 import { contentField } from "../../fields/content.js";
 import { descriptionField } from "../../fields/description.js";
 import { heroField } from "../../fields/hero.js";
@@ -26,11 +30,13 @@ import { pageUsagesField } from "./usages.js";
 type PagesOptions = {
   additionalContentBlocks?: Block[];
   additionalHeroBlocks?: Block[];
+  livePreviewBaseUrl?: string;
 };
 
 export function Pages({
   additionalContentBlocks,
   additionalHeroBlocks,
+  livePreviewBaseUrl,
 }: PagesOptions): CollectionConfig {
   return {
     slug: "pages",
@@ -43,24 +49,25 @@ export function Pages({
       defaultColumns: ["pathname", "title", "brand", "updatedAt"],
       group: contentGroup,
       listSearchableFields: ["id", "pathname", "title", "brand.name"],
-      // TODO set up live preview
-      // livePreview: {
-      //   url: ({
-      //     data,
-      //     locale,
-      //   }: {
-      //     collectionConfig?: SanitizedCollectionConfig;
-      //     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      //     data: Record<string, any>;
-      //     locale: Locale;
-      //     payload: Payload;
-      //   }) =>
-      //     getLivePreviewUrl(
-      //       (data as Page).pathname,
-      //       `pages/${data.id}`,
-      //       locale.code,
-      //     ),
-      // },
+      livePreview: livePreviewBaseUrl
+        ? {
+            url: ({
+              data,
+              locale,
+            }: {
+              collectionConfig?: SanitizedCollectionConfig;
+              data: Record<string, unknown>;
+              locale: Locale;
+              payload: Payload;
+            }) =>
+              getLivePreviewUrl(
+                livePreviewBaseUrl,
+                data.pathname as string,
+                `pages/${data.id as string}`,
+                locale.code,
+              ),
+          }
+        : undefined,
       useAsTitle: "pathname",
     },
     defaultPopulate: {

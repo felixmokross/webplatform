@@ -30,6 +30,7 @@ export type CmsPluginOptions = {
   additionalHeroBlocks?: Block[];
   additionalUiLabelFields?: Field[];
   deeplApiKey?: string;
+  livePreviewBaseUrl?: string;
   mediaS3Storage: {
     accessKeyId: string;
     bucket: string;
@@ -46,6 +47,7 @@ export const cmsPlugin =
     additionalHeroBlocks,
     additionalUiLabelFields,
     deeplApiKey,
+    livePreviewBaseUrl,
     mediaS3Storage,
     openaiApiKey,
     publicMediaBaseUrl,
@@ -76,10 +78,14 @@ export const cmsPlugin =
     config.collections.push(LocaleConfigs);
     config.collections.push(Banners);
     config.collections.push(
-      Pages({ additionalContentBlocks, additionalHeroBlocks }),
+      Pages({
+        additionalContentBlocks,
+        additionalHeroBlocks,
+        livePreviewBaseUrl,
+      }),
     );
     config.collections.push(Redirects);
-    config.collections.push(Brands);
+    config.collections.push(Brands({ livePreviewBaseUrl }));
 
     if (!config.globals) {
       config.globals = [];
