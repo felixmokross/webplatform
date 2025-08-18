@@ -39,6 +39,7 @@ export type CmsPluginOptions = {
   };
   openaiApiKey?: string;
   publicMediaBaseUrl?: string;
+  serverUrl?: string;
 };
 
 export const cmsPlugin =
@@ -51,6 +52,7 @@ export const cmsPlugin =
     mediaS3Storage,
     openaiApiKey,
     publicMediaBaseUrl,
+    serverUrl,
   }: CmsPluginOptions): Plugin =>
   (config: Config) => {
     if (!config.collections) {
@@ -139,6 +141,7 @@ export const cmsPlugin =
       },
     ];
 
+    config.serverURL = serverUrl;
     config.cors = livePreviewBaseUrl ? [livePreviewBaseUrl] : undefined;
     config.csrf = livePreviewBaseUrl ? [livePreviewBaseUrl] : [];
 
