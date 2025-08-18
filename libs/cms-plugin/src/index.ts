@@ -139,6 +139,9 @@ export const cmsPlugin =
       },
     ];
 
+    config.cors = livePreviewBaseUrl ? [livePreviewBaseUrl] : undefined;
+    config.csrf = livePreviewBaseUrl ? [livePreviewBaseUrl] : [];
+
     config.editor = editor();
 
     if (!config.endpoints) {
