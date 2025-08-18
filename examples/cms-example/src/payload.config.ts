@@ -33,6 +33,7 @@ export default buildConfig({
         secretAccessKey: process.env.MEDIA_S3_SECRET_ACCESS_KEY || "",
         region: process.env.MEDIA_S3_REGION || "",
       },
+      livePreviewBaseUrl: "https://example.com",
     }),
   ],
   i18n: {

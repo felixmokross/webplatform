@@ -30,6 +30,7 @@ export type CmsPluginOptions = {
   additionalHeroBlocks?: Block[];
   additionalUiLabelFields?: Field[];
   deeplApiKey?: string;
+  livePreviewBaseUrl?: string;
   mediaS3Storage: {
     accessKeyId: string;
     bucket: string;
@@ -38,6 +39,7 @@ export type CmsPluginOptions = {
   };
   openaiApiKey?: string;
   publicMediaBaseUrl?: string;
+  serverUrl?: string;
 };
 
 export const cmsPlugin =
@@ -46,9 +48,11 @@ export const cmsPlugin =
     additionalHeroBlocks,
     additionalUiLabelFields,
     deeplApiKey,
+    livePreviewBaseUrl,
     mediaS3Storage,
     openaiApiKey,
     publicMediaBaseUrl,
+    serverUrl,
   }: CmsPluginOptions): Plugin =>
   (config: Config) => {
     if (!config.collections) {
@@ -76,10 +80,14 @@ export const cmsPlugin =
     config.collections.push(LocaleConfigs);
     config.collections.push(Banners);
     config.collections.push(
-      Pages({ additionalContentBlocks, additionalHeroBlocks }),
+      Pages({
+        additionalContentBlocks,
+        additionalHeroBlocks,
+        livePreviewBaseUrl,
+      }),
     );
     config.collections.push(Redirects);
-    config.collections.push(Brands);
+    config.collections.push(Brands({ livePreviewBaseUrl }));
 
     if (!config.globals) {
       config.globals = [];
@@ -132,6 +140,10 @@ export const cmsPlugin =
         width: 1440,
       },
     ];
+
+    config.serverURL = serverUrl;
+    config.cors = livePreviewBaseUrl ? [livePreviewBaseUrl] : undefined;
+    config.csrf = livePreviewBaseUrl ? [livePreviewBaseUrl] : [];
 
     config.editor = editor();
 
