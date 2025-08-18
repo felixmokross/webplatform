@@ -116,7 +116,6 @@ export const Settings: GlobalConfig = {
                 en: "Map ID",
                 es: "ID de mapa",
               },
-              required: true,
             },
           ],
           label: {
