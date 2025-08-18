@@ -76,6 +76,24 @@ jobs:
           name: releaser-dist
           path: tools/releaser/dist
 
+  frontend-build:
+    name: "frontend: Build"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup
+        uses: ./.github/actions/setup
+      - name: Build
+        uses: ./.github/actions/build
+        with:
+          package: "frontend"
+      - name: Upload frontend 'dist' directory
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: libs/frontend/dist
+
   cms-example-build:
     name: "cms-example: Build"
     runs-on: ubuntu-latest
@@ -102,6 +120,7 @@ jobs:
       - cms-plugin-build
       - common-build
       - releaser-build
+      - frontend-build
       - cms-example-build
       - version
     if: needs.version.outputs.is_new_release == 'true'
@@ -125,7 +144,7 @@ jobs:
   cms-plugin-publish:
     name: "cms-plugin: Publish"
     runs-on: ubuntu-latest
-    needs: [create-release, cms-plugin-build, version]
+    needs: [create-release, version]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -147,7 +166,7 @@ jobs:
   common-publish:
     name: "common: Publish"
     runs-on: ubuntu-latest
-    needs: [create-release, common-build, version]
+    needs: [create-release, version]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -169,7 +188,7 @@ jobs:
   releaser-publish:
     name: "releaser: Publish"
     runs-on: ubuntu-latest
-    needs: [create-release, releaser-build, version]
+    needs: [create-release, version]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -184,6 +203,28 @@ jobs:
         uses: ./.github/actions/publish
         with:
           package: "releaser"
+          version: ${{ needs.version.outputs.version }}
+          prerelease_tag: ${{ needs.version.outputs.prerelease_tag }}
+          npmToken: ${{ secrets.NPM_TOKEN }}
+
+  frontend-publish:
+    name: "frontend: Publish"
+    runs-on: ubuntu-latest
+    needs: [create-release, version]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup
+        uses: ./.github/actions/setup
+      - name: Download frontend 'dist' directory
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-dist
+          path: libs/frontend/dist
+      - name: Publish
+        uses: ./.github/actions/publish
+        with:
+          package: "frontend"
           version: ${{ needs.version.outputs.version }}
           prerelease_tag: ${{ needs.version.outputs.prerelease_tag }}
           npmToken: ${{ secrets.NPM_TOKEN }}
