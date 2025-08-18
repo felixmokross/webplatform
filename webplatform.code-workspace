@@ -2,6 +2,10 @@
   "folders": [
     { "name": "<root>", "path": "." },
     { "name": "examples/cms-example", "path": "./examples/cms-example" },
+    {
+      "name": "examples/frontend-example",
+      "path": "./examples/frontend-example",
+    },
     { "name": "libs/cms-plugin", "path": "./libs/cms-plugin" },
     { "name": "libs/common", "path": "./libs/common" },
     { "name": "libs/frontend", "path": "./libs/frontend" },
