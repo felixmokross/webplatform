@@ -30,6 +30,7 @@ export type CmsPluginOptions = {
   additionalHeroBlocks?: Block[];
   additionalUiLabelFields?: Field[];
   deeplApiKey?: string;
+  e2eTestsApiKey?: string;
   livePreviewBaseUrl?: string;
   mediaS3Storage: {
     accessKeyId: string;
@@ -48,6 +49,7 @@ export const cmsPlugin =
     additionalHeroBlocks,
     additionalUiLabelFields,
     deeplApiKey,
+    e2eTestsApiKey,
     livePreviewBaseUrl,
     mediaS3Storage,
     openaiApiKey,
@@ -202,6 +204,24 @@ export const cmsPlugin =
             },
           },
         });
+      }
+
+      if (e2eTestsApiKey) {
+        const e2eTestsApiKeysInDb = await payload.find({
+          collection: "api-keys",
+          where: { role: { equals: "e2e-tests" } },
+        });
+
+        if (e2eTestsApiKeysInDb.totalDocs === 0) {
+          await payload.create({
+            collection: "api-keys",
+            data: {
+              apiKey: e2eTestsApiKey,
+              enableAPIKey: true,
+              role: "e2e-tests",
+            },
+          });
+        }
       }
     };
 
