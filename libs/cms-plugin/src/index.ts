@@ -24,6 +24,7 @@ import { translations } from "./translations/translations.js";
 export * from "./common/index.js";
 export * from "./fields/index.js";
 export * from "./groups.js";
+export * from "./payload-types.js";
 
 export type CmsPluginOptions = {
   additionalContentBlocks?: Block[];
