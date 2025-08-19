@@ -52,13 +52,13 @@ jobs:
         with:
           fetch-depth: 0
       - name: Setup
-        uses: felixmokross/webplatform/.github/actions/setup@main
+        uses: ./.github/actions/setup
       - name: Install dependencies
-        run: pnpm --workspace-root install
+        run: pnpm --filter releaser install
       - name: Get version
         id: get-version
         run: |
-          RESULT=$(pnpm releaser get-version $([[ "${{ inputs.release }}" == 'true' ]] && echo '--release'))
+          RESULT=$(pnpm --filter releaser --silent start get-version $([[ "${{ inputs.release }}" == 'true' ]] && echo '--release'))
 
           echo $RESULT
 
