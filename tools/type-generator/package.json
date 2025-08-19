@@ -1,0 +1,19 @@
+{
+  "name": "@fxmk/type-generator",
+  "version": "0.0.0-unknown",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "tsx src/index.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.16.5",
+    "tsx": "^4.20.3"
+  },
+  "dependencies": {
+    "@fxmk/cms-plugin": "workspace:*",
+    "@payloadcms/db-mongodb": "^3.52.0",
+    "commander": "^13.1.0",
+    "payload": "^3.52.0"
+  }
+}
