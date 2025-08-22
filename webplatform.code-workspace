@@ -2,12 +2,24 @@
   "folders": [
     { "name": "<root>", "path": "." },
     { "name": "examples/cms-example", "path": "./examples/cms-example" },
+    {
+      "name": "examples/frontend-example",
+      "path": "./examples/frontend-example",
+    },
     { "name": "libs/cms-plugin", "path": "./libs/cms-plugin" },
     { "name": "libs/common", "path": "./libs/common" },
+    { "name": "libs/frontend", "path": "./libs/frontend" },
     { "name": "tools/releaser", "path": "./tools/releaser" },
+    { "name": "tools/type-generator", "path": "./tools/type-generator" },
   ],
   "settings": {
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "github.copilot.enable": {
+      "*": true,
+      "plaintext": false,
+      "markdown": false,
+      "scminput": false,
+    },
   },
 }
