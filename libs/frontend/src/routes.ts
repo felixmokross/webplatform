@@ -10,4 +10,8 @@ const { route } = relative(join(directory, "routes"));
 export const routes = [
   route("/api/version", "./version.js"),
   route("/sitemap.xml", "./sitemap.js"),
+  route("/robots.txt", "./robots.js"),
+  route("/logout", "./logout.js"),
+  route("/api/purge-cache", "./api.purge-cache.js"),
+  route("/api/ui-labels", "./api.ui-labels.js"),
 ] satisfies RouteConfigEntry[];
