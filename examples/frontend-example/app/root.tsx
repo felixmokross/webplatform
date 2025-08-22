@@ -5,10 +5,12 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  type unstable_MiddlewareFunction,
 } from "react-router";
 
 import type { Route } from "./+types/root";
 import "./app.css";
+import { initializeCms, initializeSessions } from "@fxmk/frontend";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -73,3 +75,19 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     </main>
   );
 }
+
+const middleware: unstable_MiddlewareFunction = function middleware({
+  request,
+}) {
+  initializeCms({
+    apiKey: process.env.PAYLOAD_CMS_API_KEY!,
+    baseUrl: process.env.PAYLOAD_CMS_BASE_URL!,
+    redisUrl: process.env.REDIS_URL!,
+  });
+  initializeSessions({
+    canonicalHostname: process.env.CANONICAL_HOSTNAME!,
+    sessionSecret: process.env.SESSION_SECRET!,
+  });
+};
+
+export const unstable_middleware = [middleware];

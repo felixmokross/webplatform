@@ -1,11 +1,11 @@
 import { LocaleConfig } from "../cms-plugin-types";
-import { getSettings, loadData } from "../cms-data.server";
 import { buildLocalizedRelativeUrl, getCanonicalRequestUrl } from "../routing";
 import { LoaderFunctionArgs } from "react-router";
-import { isAuthenticated } from "../auth";
+import { isAuthenticated } from "../auth.server";
+import { cms } from "../cms.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const settings = await getSettings(request);
+  const settings = await cms().getSettings(request);
   if (settings.maintenanceScreen?.show && !(await isAuthenticated(request))) {
     throw new Response(null, {
       status: 401,
@@ -39,7 +39,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 async function getAllPages() {
-  return (await loadData(`pages`, "all", 0, {})).docs as {
+  return (await cms().loadData(`pages`, "all", 0, {})).docs as {
     pathname: Record<string, string>;
     updatedAt: string;
   }[];

@@ -1,5 +1,5 @@
 // app/sessions.ts
-import { createCookieSessionStorage } from "react-router"; // or cloudflare/deno
+import { createCookieSessionStorage, SessionStorage } from "react-router"; // or cloudflare/deno
 
 type SessionData = {
   userId: string;
@@ -9,24 +9,39 @@ type SessionFlashData = {
   error: string;
 };
 
-if (!process.env.CANONICAL_HOSTNAME) {
-  throw new Error("CANONICAL_HOSTNAME is required");
+declare global {
+  var _sessions: SessionStorage<SessionData, SessionFlashData> | undefined;
 }
-if (!process.env.SESSION_SECRET) throw new Error("SESSION_SECRET is required");
 
-const { getSession, commitSession, destroySession } =
-  createCookieSessionStorage<SessionData, SessionFlashData>({
-    cookie: {
-      name: "__session",
+export function sessions() {
+  if (!globalThis._sessions) {
+    throw new Error("Sessions not initialized. Call initializeSessions first.");
+  }
+  return globalThis._sessions;
+}
 
-      domain: process.env.CANONICAL_HOSTNAME,
-      httpOnly: true,
-      maxAge: 60 * 60 * 24 * 7,
-      path: "/",
-      sameSite: true,
-      secrets: [process.env.SESSION_SECRET],
-      secure: true,
-    },
-  });
+type SessionsInit = {
+  canonicalHostname: string;
+  sessionSecret: string;
+};
 
-export { getSession, commitSession, destroySession };
+export function initializeSessions(init: SessionsInit) {
+  if (!globalThis._sessions) {
+    globalThis._sessions = createCookieSessionStorage<
+      SessionData,
+      SessionFlashData
+    >({
+      cookie: {
+        name: "__session",
+
+        domain: init.canonicalHostname,
+        httpOnly: true,
+        maxAge: 60 * 60 * 24 * 7,
+        path: "/",
+        sameSite: true,
+        secrets: [init.sessionSecret],
+        secure: true,
+      },
+    });
+  }
+}

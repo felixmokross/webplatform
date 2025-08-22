@@ -37,6 +37,7 @@ export function getRequestUrl(request: Request) {
   return url;
 }
 
+// TODO avoid using environment variables here
 export function getCanonicalRequestUrl(request: Request) {
   if (!process.env.CANONICAL_HOSTNAME) {
     throw new Error("Missing CANONICAL_HOSTNAME");
